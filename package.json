@@ -1,6 +1,6 @@
 {
   "author": "Robert Ostermann",
-  "name": "march-madness-auction",
+  "name": "maple-river-basketball",
   "version": "0.1.0",
   "scripts": {
     "install": "cd client && npm install && cd ../server && npm install",
@@ -18,8 +18,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "dependencies": {
-    "@types/pg": "^8.6.5"
   }
 }

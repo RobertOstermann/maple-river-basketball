@@ -3,7 +3,6 @@ import "dotenv/config";
 
 import express, { Request, Response } from "express";
 import jwt from "express-jwt";
-import jwtAuthz from "express-jwt-authz";
 import jwks from "jwks-rsa";
 import path from "path";
 
@@ -57,19 +56,20 @@ app.get("/api/v1/public", (req: any, res: Response) => {
 });
 
 // This route needs authentication.
-app.get("/api/v1/private", jwtCheck, (req: any, res: Response) => {
-  res.json({
-    message:
-      `Hello from a private endpoint! You need to be authenticated to see this.\n${JSON.stringify(req.user)}`,
+app.get(
+  "/api/v1/private",
+  jwtCheck,
+  (req: any, res: Response) => {
+    res.json({
+      message:
+        `Hello from a private endpoint! You need to be authenticated to see this.\n${JSON.stringify(req.user)}`,
+    });
   });
-});
 
 // This route needs authentication with a scope of coach.
-const checkScopes = jwtAuthz(["coach"]);
 app.get(
   "/api/v1/private-scoped",
   jwtCheck,
-  checkScopes,
   (req: Request, res: Response) => {
     res.json({
       message:
@@ -79,11 +79,11 @@ app.get(
 );
 
 // Users
+app.get("/api/v1/user", jwtCheck, UserController.getUser);
+
 app.get("/api/v1/users", UserController.getUsers);
 app.get("/api/v1/users/:id", UserController.getUserById);
-app.post("/api/v1/users", UserController.createUser);
 app.put("/api/v1/users/:id", UserController.updateUser);
-app.delete("/api/v1/users/:id", UserController.deleteUser);
 
 app.use(jwtCheck);
 app.listen(PORT, () => {

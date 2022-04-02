@@ -1,5 +1,6 @@
 export default interface User {
   id?: number,
+  authId?: string,
   firstName?: string,
-  email?: string;
+  lastName?: string,
 }

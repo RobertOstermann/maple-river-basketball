@@ -8,8 +8,6 @@ const Request = () => {
   const [data, setData] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
 
-  const audience = process.env.REACT_APP_AUTH0_AUDIENCE ?? "";
-
   let api = "http://localhost:3001/api/v1";
   if (process.env.NODE_ENV === "production") {
     api = `${window.location.origin}/api/v1`;
@@ -47,16 +45,11 @@ const Request = () => {
     }
   };
 
-  const callScopedApi = async () => {
+  const callPermissionApi = async () => {
     try {
-      const token = await getAccessTokenSilently({
-        audience: audience,
-        scope: "coach",
-      });
+      const token = await getAccessTokenSilently();
 
-      console.log(token);
-
-      const response = await axios.get(`${api}/private-scoped`, {
+      const response = await axios.get(`${api}/user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,7 +78,7 @@ const Request = () => {
       <button onClick={() => callSecureApi()}>Private Api</button>
       <br />
       <br />
-      <button onClick={() => callScopedApi()}>Scoped Api</button>
+      <button onClick={() => callPermissionApi()}>User Permission Api</button>
       <br />
       <br />
       <div>
