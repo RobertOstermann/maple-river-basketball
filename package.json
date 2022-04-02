@@ -1,0 +1,25 @@
+{
+  "author": "Robert Ostermann",
+  "name": "march-madness-auction",
+  "version": "0.1.0",
+  "scripts": {
+    "install": "cd client && npm install && cd ../server && npm install",
+    "start": "cd server && npm start",
+    "build": "cd client && npm install && npm run build && cd ../server && npm install"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@types/pg": "^8.6.5"
+  }
+}
