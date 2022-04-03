@@ -1,8 +1,10 @@
+import * as Auth0 from "auth0";
 import Express from "express";
 import { QueryResult } from "pg";
 
 import database from "../database/database";
 import User from "../models/User";
+import AuthController from "./AuthController";
 
 export default class UserController {
   static getUser = async (request: Express.Request | any, response: Express.Response) => {
@@ -17,6 +19,7 @@ export default class UserController {
 
     if (rowCount === 1) {
       user = rows[0];
+
       response.status(200).json({
         message: JSON.stringify(user)
       });
@@ -25,12 +28,16 @@ export default class UserController {
     }
 
     if (rowCount === 0) {
+      const userInformation: Auth0.User = await AuthController.getUserInformation(authId);
+      const email = userInformation.email;
+      const permission = "player";
+
       await database.query(
-        "INSERT INTO users (auth_id) VALUES ($1)",
-        [authId]
+        "INSERT INTO users (auth_id, email, permission) VALUES ($1, $2, $3)",
+        [authId, email, permission]
       );
 
-      user.authId = authId;
+      user.permission = permission;
       response.status(200).json({
         message: JSON.stringify(user)
       });
@@ -45,36 +52,19 @@ export default class UserController {
     });
   };
 
-  static getUserById = (request: any, response: any) => {
-    const user = {
-      id: parseInt(request.params.id)
-    };
+  static updateUser = async (request: any, response: any) => {
+    const authId = request.user.sub;
+    const user: User = request.body;
 
     database.query(
-      "SELECT * FROM users WHERE id = $1",
-      [user.id],
-      (error: Error, results: QueryResult) => {
-        if (error) throw error;
-
-        response.status(200).json(results.rows);
-      }
-    );
-  };
-
-  static updateUser = (request: any, response: any) => {
-    const { firstName } = request.body;
-    const user: User = {
-      id: parseInt(request.params.id),
-      firstName: firstName,
-    };
-
-    database.query(
-      "UPDATE users SET first_name = $1 WHERE id = $2",
-      [user.firstName, user.id],
+      "UPDATE users SET first_name = $1, last_name = $2 WHERE auth_id = $3",
+      [user.firstName, user.lastName, authId],
       (error: Error) => {
         if (error) throw error;
 
-        response.status(200).send(`User modified with ID: ${user.id}`);
+        response.status(200).json({
+          message: "User Updated"
+        });
       });
   };
 }

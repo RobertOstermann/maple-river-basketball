@@ -6,15 +6,14 @@ import jwt from "express-jwt";
 import jwks from "jwks-rsa";
 import path from "path";
 
+import AuthController from "./controllers/AuthController";
+import EntryController from "./controllers/EntryContoller";
 import UserController from "./controllers/UserController";
 
 const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
-
-const audience = process.env.AUTH0_AUDIENCE ?? "No Audience";
-const domain = process.env.AUTH0_DOMAIN ?? "No Domain";
 
 app.use(cors());
 app.options("*", cors());
@@ -28,25 +27,6 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../client/build")));
 }
 
-// Authorization middleware. When used, the
-// Access Token must exist and be verified against
-// the Auth0 JSON Web Key Set.
-const jwtCheck = jwt({
-  // Dynamically provide a signing key
-  // based on the kid in the header and
-  // the signing keys provided by the JWKS endpoint.
-  secret: jwks.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://${domain}/.well-known/jwks.json`,
-  }),
-  // Validate the audience and the issuer.
-  audience: audience,
-  issuer: `https://${domain}/`,
-  algorithms: ["RS256"],
-});
-
 // This route doesn't need authentication.
 app.get("/api/v1/public", (req: any, res: Response) => {
   res.json({
@@ -58,7 +38,7 @@ app.get("/api/v1/public", (req: any, res: Response) => {
 // This route needs authentication.
 app.get(
   "/api/v1/private",
-  jwtCheck,
+  AuthController.jwtCheck,
   (req: any, res: Response) => {
     res.json({
       message:
@@ -69,7 +49,7 @@ app.get(
 // This route needs authentication with a scope of coach.
 app.get(
   "/api/v1/private-scoped",
-  jwtCheck,
+  AuthController.jwtCheck,
   (req: Request, res: Response) => {
     res.json({
       message:
@@ -79,15 +59,17 @@ app.get(
 );
 
 // Users
-app.get("/api/v1/user", jwtCheck, UserController.getUser);
+app.get("/api/v1/get-user", AuthController.jwtCheck, UserController.getUser);
+app.get("/api/v1/coach/get-users", AuthController.jwtCheck, UserController.getUsers);
+app.put("/api/v1/update-user", AuthController.jwtCheck, UserController.updateUser);
 
-app.get("/api/v1/users", UserController.getUsers);
-app.get("/api/v1/users/:id", UserController.getUserById);
-app.put("/api/v1/users/:id", UserController.updateUser);
+// Entries
+app.get("/api/v1/get-user-entries", AuthController.jwtCheck, EntryController.getUserEntries);
+app.post("/api/v1/create-entry", AuthController.jwtCheck, EntryController.createEntry);
 
-app.use(jwtCheck);
+app.use(AuthController.jwtCheck);
 app.listen(PORT, () => {
   console.log(
-    `Server is running at https://localhost:${PORT}\n${audience}\n${domain}`
+    `Server is running at https://localhost:${PORT}`
   );
 });
