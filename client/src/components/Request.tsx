@@ -1,13 +1,35 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useState } from "react";
+import { FloatingLabel, Form } from "react-bootstrap";
 
 import Entry from "../../../server/src/models/Entry";
-import Profile from "./Profile";
 
 const Request = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
+  const [entry, setEntry] = useState<Entry>({
+    activity: "Game",
+    activityDuration: 15,
+  });
   const { getAccessTokenSilently } = useAuth0();
+
+  const updateActivity = (value: string) => {
+    const updatedEntry = entry;
+    updatedEntry.activity = value;
+    setEntry(updatedEntry);
+  };
+
+  const updateDate = (updatedDate: Date) => {
+    const updatedEntry = entry;
+    updatedEntry.activityDate = updatedDate;
+    setEntry(updatedEntry);
+  };
+
+  const updateDuration = (updatedDuration: number) => {
+    const updatedEntry = entry;
+    updatedEntry.activityDuration = updatedDuration;
+    setEntry(updatedEntry);
+  };
 
   let api = "http://localhost:3001/api/v1";
   if (process.env.NODE_ENV === "production") {
@@ -111,16 +133,18 @@ const Request = () => {
         },
       };
 
-      const data: Entry = {
-        activity: "Game",
-        activityDate: new Date("2022-04-03"),
-        activityDuration: 30,
-      };
+      if (
+        entry.activity !== undefined &&
+        entry.activityDate !== undefined &&
+        entry.activityDuration !== undefined
+      ) {
+        const response = await axios.post(`${api}/create-entry`, entry, config);
+        const responseData = await response.data;
 
-      const response = await axios.post(`${api}/create-entry`, data, config);
-      const responseData = await response.data;
-
-      setData(responseData.message);
+        setData(responseData.message);
+      } else {
+        setData(["Complete All Selections"]);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -129,7 +153,7 @@ const Request = () => {
   return (
     <div>
       <br />
-      <h3>{data}</h3>
+      <p>{data}</p>
       <br />
       <button onClick={() => setData([])}>Remove Data</button>
       <br />
@@ -143,10 +167,55 @@ const Request = () => {
       <button onClick={() => getUserApi()}>Get User Api</button>
       <br />
       <br />
+      <button onClick={() => updateUserApi()}>Update User Api</button>
+      <br />
+      <br />
       <button onClick={() => getEntriesApi()}>Get Entries Api</button>
       <br />
       <br />
+      <FloatingLabel controlId="floatingSelect" label="Activity">
+        <Form.Select onChange={(event) => updateActivity(event.target.value)}>
+          <option value="Game">Game</option>
+          <option value="Shooting">Shooting</option>
+          <option value="Skills">
+            Skills (Camp, Ball Handling, Drills, etc.)
+          </option>
+          <option value="Community Service">Community Service</option>
+          <option value="Weight Room">Weight Room</option>
+        </Form.Select>
+      </FloatingLabel>
+      <br />
+      <FloatingLabel controlId="floatingDate" label="Date">
+        <Form.Control
+          type="date"
+          name="Date"
+          onChange={(event) => updateDate(new Date(event.target.value))}
+        />
+      </FloatingLabel>
+      <br />
+      <FloatingLabel controlId="floatingSelect" label="Duration">
+        <Form.Select
+          onChange={(event) => updateDuration(parseInt(event.target.value))}
+        >
+          <option value={15}>15 Minutes</option>
+          <option value={30}>30 Minutes</option>
+          <option value={45}>45 Minutes</option>
+          <option value={60}>1 Hour</option>
+          <option value={75}>1 Hour 15 Minutes</option>
+          <option value={90}>1 Hour 30 Minutes</option>
+          <option value={105}>1 Hour 45 Minutes</option>
+          <option value={120}>2 Hours</option>
+          <option value={135}>2 Hours 15 Minutes</option>
+          <option value={150}>2 Hours 30 Minutes</option>
+          <option value={165}>2 Hours 45 Minutes</option>
+          <option value={180}>3 Hours</option>
+        </Form.Select>
+      </FloatingLabel>
+      <br />
       <button onClick={() => createEntryApi()}>Create Entry Api</button>
+      <br />
+      <br />
+      <h4>{JSON.stringify(entry)}</h4>
       <br />
       <br />
     </div>

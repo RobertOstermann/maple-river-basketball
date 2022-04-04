@@ -2,8 +2,6 @@
 import "dotenv/config";
 
 import express, { Request, Response } from "express";
-import jwt from "express-jwt";
-import jwks from "jwks-rsa";
 import path from "path";
 
 import AuthController from "./controllers/AuthController";

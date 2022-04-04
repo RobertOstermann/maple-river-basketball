@@ -6,7 +6,7 @@ import AuthenticationProviderWithHistory from "components/auth0/AuthenticationPr
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import "./index.css";
+import "./index.scss";
 
 ReactDOM.render(
   <React.StrictMode>
