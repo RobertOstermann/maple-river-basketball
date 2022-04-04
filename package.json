@@ -2,6 +2,7 @@
   "author": "Robert Ostermann",
   "name": "maple-river-basketball",
   "version": "0.1.0",
+  "main": "dist/index.js",
   "scripts": {
     "install": "cd client && npm install && cd ../server && npm install",
     "start": "cd server && npm start",

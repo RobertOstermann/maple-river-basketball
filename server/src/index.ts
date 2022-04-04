@@ -21,9 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 // Node serves the frontend files.
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "../client/build")));
-}
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 // This route doesn't need authentication.
 app.get("/api/v1/public", (req: any, res: Response) => {
