@@ -8,11 +8,10 @@ import AuthController from "./controllers/AuthController";
 import EntryController from "./controllers/EntryContoller";
 import UserController from "./controllers/UserController";
 
-const cors = require("cors");
-
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+const cors = require("cors");
 app.use(cors());
 app.options("*", cors());
 
@@ -22,6 +21,7 @@ app.use(express.urlencoded());
 
 // Node serves the frontend files.
 if (process.env.NODE_ENV === "production") {
+  console.log("production");
   app.use(express.static(path.resolve(__dirname, "../client/build")));
 }
 
