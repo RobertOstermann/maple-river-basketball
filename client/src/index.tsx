@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
+import AuthenticationProviderWithHistory from "components/auth0/AuthenticationProviderWithHistory";
 import App from "./App";
-import AuthenticationProviderWithHistory from "./components/auth0/AuthenticationProviderWithHistory";
 import reportWebVitals from "./reportWebVitals";
 
-import "./index.scss";
+import "index.scss";
 
 ReactDOM.render(
   <React.StrictMode>

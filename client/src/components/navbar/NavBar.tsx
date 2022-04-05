@@ -1,4 +1,4 @@
-import AuthenticationNavBar from "./AuthenticationNavBar";
+import AuthenticationNavBar from "components/navbar/AuthenticationNavBar";
 
 const NavBar = () => {
   return (
