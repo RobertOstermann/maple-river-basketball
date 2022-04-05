@@ -2,6 +2,7 @@ import * as Auth0 from "auth0";
 import Express from "express";
 import { QueryResult } from "pg";
 
+import { PermissionLevels } from "../constants/PermissionLevels";
 import database from "../database/database";
 import User from "../models/User";
 import AuthController from "./AuthController";
@@ -30,14 +31,14 @@ export default class UserController {
     if (rowCount === 0) {
       const userInformation: Auth0.User = await AuthController.getUserInformation(authId);
       const email = userInformation.email;
-      const permission = "player";
+      const permissionLevel = PermissionLevels;
 
       await database.query(
-        "INSERT INTO users (auth_id, email, permission) VALUES ($1, $2, $3)",
-        [authId, email, permission]
+        "INSERT INTO users (auth_id, permission_level, email) VALUES ($1, $2, $3)",
+        [authId, permissionLevel.player.id, email]
       );
 
-      user.permission = permission;
+      user.permissionLevel = permissionLevel.player.id;
       response.status(200).json({
         message: JSON.stringify(user)
       });

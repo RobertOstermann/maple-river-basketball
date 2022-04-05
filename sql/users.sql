@@ -5,18 +5,18 @@ DROP TABLE users;
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     auth_id VARCHAR UNIQUE NOT NULL,
+    permission_level SMALLINT NOT NULL CHECK (permission_level >= 0),
     email VARCHAR NOT NULL,
     first_name VARCHAR,
-    last_name VARCHAR,
-    permission VARCHAR NOT NULL
+    last_name VARCHAR
 );
 
 -- Insert into the users table
-INSERT INTO "users" (auth_id, email, permission, first_name, last_name)
+INSERT INTO "users" (auth_id, permission_level, email, first_name, last_name)
 VALUES (
     'auth0|62422c51b0344000692f3c4d',
+    2,
     'test@gmail.com',
-    'coach',
     'test',
     'user'
 );

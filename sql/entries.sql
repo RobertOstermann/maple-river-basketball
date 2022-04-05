@@ -5,16 +5,16 @@ DROP TABLE entries;
 CREATE TABLE IF NOT EXISTS entries (
     id SERIAL PRIMARY KEY,
     auth_id VARCHAR REFERENCES users (auth_id),
-    activity VARCHAR NOT NULL,
+    activity_type SMALLINT NOT NULL CHECK (activity_type >= 0),
     activity_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    activity_duration INTEGER NOT NULL
+    activity_duration INTEGER NOT NULL CHECK (activity_duration >= 0)
 );
 
 -- Insert into the entries table
-INSERT INTO "entries" (auth_id, activity, activity_duration)
+INSERT INTO "entries" (auth_id, activity_type, activity_duration)
 VALUES (
     'auth0|62422c51b0344000692f3c4c',
-    'Game',
+    0,
     30
 );
 

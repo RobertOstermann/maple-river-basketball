@@ -3,19 +3,20 @@ import axios from "axios";
 import { useState } from "react";
 import { FloatingLabel, Form } from "react-bootstrap";
 
-import Entry from "../../../server/src/models/Entry";
+import { ActivityTypes } from "../shared/constants/ActivityTypes";
+import Entry from "../shared/models/Entry";
 
 const Request = () => {
   const [data, setData] = useState<any>([]);
   const [entry, setEntry] = useState<Entry>({
-    activity: "Game",
+    activityType: ActivityTypes.game.id,
     activityDuration: 15,
   });
   const { getAccessTokenSilently } = useAuth0();
 
-  const updateActivity = (value: string) => {
+  const updateActivity = (value: number) => {
     const updatedEntry = entry;
-    updatedEntry.activity = value;
+    updatedEntry.activityType = value;
     setEntry(updatedEntry);
   };
 
@@ -134,7 +135,7 @@ const Request = () => {
       };
 
       if (
-        entry.activity !== undefined &&
+        entry.activityType !== undefined &&
         entry.activityDate !== undefined &&
         entry.activityDuration !== undefined
       ) {
@@ -174,14 +175,15 @@ const Request = () => {
       <br />
       <br />
       <FloatingLabel controlId="floatingSelect" label="Activity">
-        <Form.Select onChange={(event) => updateActivity(event.target.value)}>
-          <option value="Game">Game</option>
-          <option value="Shooting">Shooting</option>
-          <option value="Skills">
-            Skills (Camp, Ball Handling, Drills, etc.)
-          </option>
-          <option value="Community Service">Community Service</option>
-          <option value="Weight Room">Weight Room</option>
+        <Form.Select
+          onChange={(event) => updateActivity(parseInt(event.target.value))}
+        >
+          {/* TODO: Map ActivityTypes */}
+          <option value={0}>Game</option>
+          <option value={1}>Shooting</option>
+          <option value={2}>Skills (Camp, Ball Handling, Drills, etc.)</option>
+          <option value={3}>Community Service</option>
+          <option value={4}>Weight Room</option>
         </Form.Select>
       </FloatingLabel>
       <br />
