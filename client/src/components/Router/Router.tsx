@@ -20,7 +20,7 @@ export default function Router() {
       <Route path={COACH_ROUTES.home.path} element={<Profile />} />
       <Route path={COACH_ROUTES.players.path} element={<Profile />} />
       <Route path={COACH_ROUTES.profile.path} element={<Profile />} />
-      <Route path={COACH_ROUTES.teamLeaders.path} element={<Profile />} />
+      <Route path={COACH_ROUTES.leaders.path} element={<Profile />} />
       {/* Player Routes */}
       <Route path={PLAYER_ROUTES.history.path} element={<Profile />} />
       <Route

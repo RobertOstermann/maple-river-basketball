@@ -1,16 +1,44 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Col, Nav, Navbar, NavItem, Row } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+
 import AuthenticationNavBar from "components/navbar/AuthenticationNavBar";
+import RouterHelper, { RouterHelperInterface } from "../Router/RouterHelper";
 
-const NavBar = () => {
+import styles from "./NavBar.module.scss";
+
+export default function NavBar() {
   return (
-    <div className="nav-container mb-3">
-      <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <div className="container">
-          <div className="navbar-brand logo" />
-          <AuthenticationNavBar />
-        </div>
-      </nav>
-    </div>
+    <Navbar
+      bg="navbar"
+      fixed="bottom"
+      id="navbar"
+      role="navigation"
+      variant="dark"
+    >
+      <Nav className="w-100">
+        <Row className="w-100">
+          {Object.values(RouterHelper.coach).map(
+            (tab: RouterHelperInterface, index) => (
+              <Col key={`tab-col-coach-${index}`}>
+                <NavItem key={`tab-coach-${index}`}>
+                  <NavLink
+                    to={tab.path}
+                    className={({ isActive }) =>
+                      isActive ? styles.active : styles.link
+                    }
+                  >
+                    <Row className="d-flex flex-column justify-content-center align-items-center">
+                      <FontAwesomeIcon size="lg" icon={tab.icon} />
+                      {tab.label}
+                    </Row>
+                  </NavLink>
+                </NavItem>
+              </Col>
+            )
+          )}
+        </Row>
+      </Nav>
+    </Navbar>
   );
-};
-
-export default NavBar;
+}

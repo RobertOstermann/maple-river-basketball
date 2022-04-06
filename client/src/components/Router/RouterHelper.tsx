@@ -1,5 +1,11 @@
 import * as fontAwesome from "@fortawesome/free-solid-svg-icons";
 
+export interface RouterHelperInterface {
+  path: string;
+  label: string;
+  icon: fontAwesome.IconDefinition;
+}
+
 const RouterHelper = {
   admin: {
     home: {
@@ -9,11 +15,6 @@ const RouterHelper = {
     },
   },
   coach: {
-    entries: {
-      path: "/coach/players/entry-history",
-      label: "Entries",
-      icon: fontAwesome.faHistory,
-    },
     home: {
       path: "/coach",
       label: "Home",
@@ -24,27 +25,32 @@ const RouterHelper = {
       label: "Players",
       icon: fontAwesome.faPeopleGroup,
     },
+    leaders: {
+      path: "/coach/players/team-leaders",
+      label: "Leaders",
+      icon: fontAwesome.faBasketball,
+    },
+    entries: {
+      path: "/coach/players/entry-history",
+      label: "Entries",
+      icon: fontAwesome.faHistory,
+    },
     profile: {
       path: "/coach/profile",
       label: "Profile",
       icon: fontAwesome.faUser,
     },
-    teamLeaders: {
-      path: "/coach/players/team-leaders",
-      label: "Leaders",
-      icon: fontAwesome.faBasketball,
-    },
   },
   player: {
-    history: {
-      path: "/player/history",
-      label: "History",
-      icon: fontAwesome.faHistory,
-    },
     home: {
       path: "/player",
       label: "Home",
       icon: fontAwesome.faHome,
+    },
+    history: {
+      path: "/player/history",
+      label: "History",
+      icon: fontAwesome.faHistory,
     },
     newEntry: {
       path: "/player/new-entry",

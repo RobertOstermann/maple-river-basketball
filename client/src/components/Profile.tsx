@@ -27,6 +27,13 @@ const Profile = () => {
           </div>
         </div>
         <div className="row">{JSON.stringify(user, null, 2)}</div>
+        <div className="row">{JSON.stringify(user, null, 2)}</div>
+        <div className="row">{JSON.stringify(user, null, 2)}</div>
+        <div className="row">{JSON.stringify(user, null, 2)}</div>
+        <div className="row">{JSON.stringify(user, null, 2)}</div>
+        <div className="row">{JSON.stringify(user, null, 2)}</div>
+        <div className="row">{JSON.stringify(user, null, 2)}</div>
+        <div className="row">{JSON.stringify(user, null, 2)}</div>
       </div>
     );
   }
