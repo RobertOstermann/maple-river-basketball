@@ -3,33 +3,16 @@ $light-blue: #35baf6;
 $red: #ff0000;
 $dark-red: #b10000;
 $white: whitesmoke;
-$light-grey: #d5d5d5;
+$light-grey: #cdcdcd;
 $grey: #555555;
 $black: #282828;
-$green: #00ff0d;
-$dark-green: #0fad01;
+$green: #028e59;
+$light-green: #34a47c;
+$dark-green: #02301e;
 $orange: #ff7300;
 
 // NavBar
-$navbar: $grey;
-$navbar-button-background: $blue;
-$navbar-button-hover-text: $red;
-$navbar-button-hover-background: $white;
-$navbar-button-text: $white;
-$navbar-button-active-text: $white;
-$navbar-button-active-background: $red;
-
-// Footer
-$footer: $grey;
-$footer-text: $light-grey;
-$footer-hr: $red;
-
-// Home
-
-// Team Card
-$teamcard-border: $grey;
-$teamcard-border-hover: $blue;
-$teamcard-border-active: $green;
-$teamcard-border-active-hover: $dark-green;
-$teamcard-border-taken: $red;
-$teamcard-border-taken-hover: $red;
+$navbar: $dark-green;
+$navbar-button: $light-green;
+$navbar-button-hover: $green;
+$navbar-button-active: $light-grey;

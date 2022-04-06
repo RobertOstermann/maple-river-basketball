@@ -10,19 +10,17 @@ import AuthController from "./AuthController";
 export default class UserController {
   static getUser = async (request: Express.Request | any, response: Express.Response) => {
     const authId = request.user.sub;
-    let user: User = {};
-
 
     const { rows, rowCount } = await database.query(
-      "SELECT * FROM users WHERE auth_id = $1",
+      "SELECT * FROM users WHERE auth_id = $1 LIMIT 1",
       [authId]
     );
 
     if (rowCount === 1) {
-      user = rows[0];
+      const user = rows[0];
 
       response.status(200).json({
-        message: JSON.stringify(user)
+        user: user
       });
 
       return;
@@ -30,23 +28,35 @@ export default class UserController {
 
     if (rowCount === 0) {
       const userInformation: Auth0.User = await AuthController.getUserInformation(authId);
-      const email = userInformation.email;
-      const permissionLevel = PermissionLevels;
+      const user: User = {
+        authId: authId,
+        permissionLevel: PermissionLevels.player.id,
+        email: userInformation.email,
+        firstName: userInformation.given_name ?? "First",
+        lastName: userInformation.family_name ?? "Last",
+      };
 
       await database.query(
-        "INSERT INTO users (auth_id, permission_level, email) VALUES ($1, $2, $3)",
-        [authId, permissionLevel.player.id, email]
+        "INSERT INTO users (auth_id, permission_level, email, first_name, last_name) VALUES ($1, $2, $3, $4, $5)",
+        [authId, user.permissionLevel, user.email, user.firstName, user.lastName]
       );
 
-      user.permissionLevel = permissionLevel.player.id;
       response.status(200).json({
-        message: JSON.stringify(user)
+        user: user
       });
     }
   };
 
-  static getUsers = (request: any, response: any) => {
-    database.query("SELECT * FROM users ORDER BY id ASC", (error: Error, results: QueryResult) => {
+  static getUsers = async (request: any, response: any) => {
+    const authId = request.user.sub;
+
+    const { rows } = await database.query(
+      "SELECT * FROM users WHERE auth_id = $1 AND permission_level = $2 LIMIT 1",
+      [authId, PermissionLevels.coach.id]
+    );
+
+
+    await database.query("SELECT * FROM users ORDER BY id ASC", (error: Error, results: QueryResult) => {
       if (error) throw error;
 
       response.status(200).json(results.rows);

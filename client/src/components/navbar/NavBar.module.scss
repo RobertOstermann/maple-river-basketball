@@ -1,8 +1,21 @@
+@import "~styles/colors";
+
 .active {
-  font-style: italic;
+  color: $navbar-button-active;
   font-size: larger;
+  text-decoration: none;
+}
+
+.active:hover {
+  color: $navbar-button-active;
 }
 
 .link {
+  color: $navbar-button;
   font-size: larger;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: $navbar-button-hover;
 }

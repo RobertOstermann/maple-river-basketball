@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "react-bootstrap";
 
 import NavBar from "./components/navbar/NavBar";
-import Router from "./components/Router/Router";
+import Router from "./components/routers/Router";
 
 import "./index.scss";
 import styles from "./MapleRiverBasketball.module.scss";

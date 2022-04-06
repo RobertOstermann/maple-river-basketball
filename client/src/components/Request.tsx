@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, FloatingLabel, Form } from "react-bootstrap";
 
 import { ActivityTypes } from "../shared/constants/ActivityTypes";
@@ -14,6 +14,10 @@ const Request = () => {
   });
 
   const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    getUserApi();
+  }, []);
 
   const updateActivity = (value: number) => {
     const updatedEntry = entry;
