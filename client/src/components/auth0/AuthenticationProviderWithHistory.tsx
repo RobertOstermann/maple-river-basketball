@@ -12,11 +12,6 @@ const AuthenticationProviderWithHistory = ({ children }: any) => {
     navigate(appState?.returnTo || window.location.pathname);
   };
 
-  console.log("Initializing Authentication Provider");
-  console.log(audience);
-  console.log(domain);
-  console.log(clientId);
-
   return (
     <Auth0Provider
       audience={audience}

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
 import AuthenticationProviderWithHistory from "components/auth0/AuthenticationProviderWithHistory";
-import App from "./App";
+import MapleRiverBasketball from "./MapleRiverBasketball";
 import reportWebVitals from "./reportWebVitals";
 
 import "index.scss";
@@ -12,7 +12,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthenticationProviderWithHistory>
-        <App />
+        <MapleRiverBasketball />
       </AuthenticationProviderWithHistory>
     </BrowserRouter>
   </React.StrictMode>,

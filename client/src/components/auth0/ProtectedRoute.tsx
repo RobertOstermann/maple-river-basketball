@@ -1,8 +1,18 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import { Route } from "react-router-dom";
+import React, { ComponentType } from "react";
 
-const ProtectedRoute = ({ component, ...args }: any) => (
-  <Route element={withAuthenticationRequired(component)} {...args} />
-);
+interface ProtectedRouteProps {
+  component: ComponentType;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component }) => {
+  const Component = withAuthenticationRequired(component, {
+    onRedirecting: () => {
+      return <div>Loading...</div>;
+    },
+  });
+
+  return <Component />;
+};
 
 export default ProtectedRoute;
