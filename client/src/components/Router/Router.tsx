@@ -16,11 +16,11 @@ export default function Router() {
       {/* Administrator Routes */}
       <Route path={ADMINISTRATOR_ROUTES.home.path} element={<Profile />} />
       {/* Coach Routes */}
-      <Route path={COACH_ROUTES.entries.path} element={<Profile />} />
-      <Route path={COACH_ROUTES.home.path} element={<Profile />} />
-      <Route path={COACH_ROUTES.players.path} element={<Profile />} />
+      <Route path={COACH_ROUTES.home.path} element={<Request />} />
+      <Route path={COACH_ROUTES.players.path} element={<Request />} />
+      <Route path={COACH_ROUTES.leaders.path} element={<Request />} />
+      <Route path={COACH_ROUTES.entries.path} element={<Request />} />
       <Route path={COACH_ROUTES.profile.path} element={<Profile />} />
-      <Route path={COACH_ROUTES.leaders.path} element={<Profile />} />
       {/* Player Routes */}
       <Route path={PLAYER_ROUTES.history.path} element={<Profile />} />
       <Route
