@@ -27,7 +27,15 @@ const Profile = () => {
     );
   }
 
-  return <React.Fragment />;
+  return (
+    <div>
+      <Card>
+        <ListGroup variant="flush">
+          <ListGroup.Item>Not Logged In</ListGroup.Item>
+        </ListGroup>
+      </Card>
+    </div>
+  );
 };
 
 export default Profile;

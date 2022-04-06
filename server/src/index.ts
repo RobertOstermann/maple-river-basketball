@@ -64,7 +64,17 @@ app.put("/api/v1/update-user", AuthController.jwtCheck, UserController.updateUse
 app.get("/api/v1/get-user-entries", AuthController.jwtCheck, EntryController.getUserEntries);
 app.post("/api/v1/create-entry", AuthController.jwtCheck, EntryController.createEntry);
 
-app.use(AuthController.jwtCheck);
+// This handles react routing for non-api requests.
+if (process.env.NODE_ENV === "production") {
+  app.get("/*", (request, response) => {
+    response.sendFile(path.resolve(__dirname, "../../client/build/index.html"), (error) => {
+      if (error) {
+        response.status(500).send(error);
+      }
+    });
+  });
+}
+
 app.listen(PORT, () => {
   console.log(
     `Server is running at https://localhost:${PORT}`

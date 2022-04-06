@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useState } from "react";
-import { Card, Container, FloatingLabel, Form } from "react-bootstrap";
+import { Card, FloatingLabel, Form } from "react-bootstrap";
 
 import { ActivityTypes } from "../shared/constants/ActivityTypes";
 import Entry from "../shared/models/Entry";
