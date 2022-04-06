@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useState } from "react";
-import { FloatingLabel, Form } from "react-bootstrap";
+import { Card, Container, FloatingLabel, Form } from "react-bootstrap";
 
 import { ActivityTypes } from "../shared/constants/ActivityTypes";
 import Entry from "../shared/models/Entry";
@@ -12,6 +12,7 @@ const Request = () => {
     activityType: ActivityTypes.game.id,
     activityDuration: 15,
   });
+
   const { getAccessTokenSilently } = useAuth0();
 
   const updateActivity = (value: number) => {
@@ -154,7 +155,9 @@ const Request = () => {
   return (
     <div>
       <br />
-      <p>{data}</p>
+      <Card>
+        <Card.Body>{data}</Card.Body>
+      </Card>
       <br />
       <button onClick={() => setData([])}>Remove Data</button>
       <br />
@@ -217,13 +220,30 @@ const Request = () => {
       <button onClick={() => createEntryApi()}>Create Entry Api</button>
       <br />
       <br />
-      <h4>{JSON.stringify(entry)}</h4>
-      <h4>{JSON.stringify(entry)}</h4>
-      <h4>{JSON.stringify(entry)}</h4>
-      <h4>{JSON.stringify(entry)}</h4>
-      <h4>{JSON.stringify(entry)}</h4>
-      <h4>{JSON.stringify(entry)}</h4>
-      <h4>{JSON.stringify(entry)}</h4>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
+      <Card>
+        <Card.Body>{JSON.stringify(entry)}</Card.Body>
+      </Card>
       <br />
       <br />
     </div>

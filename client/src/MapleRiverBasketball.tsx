@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { Container } from "react-bootstrap";
 
 import NavBar from "./components/navbar/NavBar";
 import Router from "./components/Router/Router";
@@ -14,11 +15,11 @@ export default function MapleRiverBasketball() {
   }
 
   return (
-    <div id="maple-river-basketball" className={styles.page}>
+    <Container id="maple-river-basketball" className={styles.page}>
       <NavBar />
-      <div className={styles.mapleRiverBasketball}>
+      <Container className={styles.mapleRiverBasketball}>
         <Router />
-      </div>
-    </div>
+      </Container>
+    </Container>
   );
 }
