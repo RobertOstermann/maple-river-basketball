@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Nav, Navbar } from "react-bootstrap";
@@ -6,47 +7,57 @@ import { NavLink } from "react-router-dom";
 import { PermissionLevels } from "../../shared/constants/PermissionLevels";
 import User from "../../shared/models/User";
 import RouterHelper, { RouterHelperInterface } from "../routers/RouterHelper";
-import { GetUser } from "../shared/UserRequests";
+import UserRequests from "../shared/UserRequests";
 
-import styles from "./NavBar.module.scss";
+import styles from "../navbar/NavBar.module.scss";
 
 export default function NavBar() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [routes, setRoutes] = useState();
+  const [routes, setRoutes] = useState<any>();
+
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    setIsLoading(true);
-
-    getRoutes();
+    getRoutes().then((elements) => {
+      setRoutes(elements);
+    });
   }, []);
+
+  const mapRoutes = (routes: any) => {
+    return Object.values(routes).map(
+      (tab: RouterHelperInterface | any, index) => (
+        <Nav.Item key={`tab-${index}`}>
+          <NavLink
+            end
+            to={tab.path}
+            className={({ isActive }) =>
+              isActive ? styles.active : styles.link
+            }
+          >
+            <FontAwesomeIcon size="lg" icon={tab.icon} />
+            <div>{tab.label}</div>
+          </NavLink>
+        </Nav.Item>
+      )
+    );
+  };
 
   const getRoutes = async () => {
     try {
-      const user = await GetUser();
+      const token = await getAccessTokenSilently();
+      const user: User = await UserRequests.getUser(token);
 
       if (
         user.permissionLevel === PermissionLevels.admin.id ||
         user.permissionLevel === PermissionLevels.coach.id
       ) {
-        return Object.values(RouterHelper.coach).map(
-          (tab: RouterHelperInterface, index) => (
-            <Nav.Item key={`tab-${index}`}>
-              <NavLink
-                end
-                to={tab.path}
-                className={({ isActive }) =>
-                  isActive ? styles.active : styles.link
-                }
-              >
-                <FontAwesomeIcon size="lg" icon={tab.icon} />
-                <div>{tab.label}</div>
-              </NavLink>
-            </Nav.Item>
-          )
-        );
+        return mapRoutes(RouterHelper.coach);
       }
+
+      return mapRoutes(RouterHelper.player);
     } catch (error) {
       console.log(error);
+
+      return mapRoutes(RouterHelper.player);
     }
   };
 
@@ -59,22 +70,7 @@ export default function NavBar() {
       variant="dark"
     >
       <Nav justify className="w-100">
-        {Object.values(RouterHelper.coach).map(
-          (tab: RouterHelperInterface, index) => (
-            <Nav.Item key={`tab-${index}`}>
-              <NavLink
-                end
-                to={tab.path}
-                className={({ isActive }) =>
-                  isActive ? styles.active : styles.link
-                }
-              >
-                <FontAwesomeIcon size="lg" icon={tab.icon} />
-                <div>{tab.label}</div>
-              </NavLink>
-            </Nav.Item>
-          )
-        )}
+        {routes}
       </Nav>
     </Navbar>
   );
