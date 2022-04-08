@@ -1,3 +1,8 @@
+export interface ActivityTypeInterface {
+  id: number,
+  ui: string;
+}
+
 export const ActivityTypes = {
   game: {
     id: 0,

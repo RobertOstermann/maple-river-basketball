@@ -1,0 +1,40 @@
+@import "../../../../styles/colors.scss";
+
+// Form
+.form {
+  padding-top: 0em;
+}
+
+// Form Group
+.formGroup {
+  padding-bottom: 2rem;
+  // text-align: center;
+}
+
+// DatePicker
+.datePicker {
+  width: 100%;
+  text-align: center;
+}
+
+// Logout Button
+.logoutDiv {
+  // top | horizontal | bottom
+  margin: 4rem 1rem 0rem;
+}
+
+.logoutButton {
+  color: $secondary;
+  width: 100%;
+}
+
+// Submit Button
+.submitDiv {
+  // top | horizontal | bottom
+  margin: 0rem 1rem 5.5rem;
+}
+
+.submitButton {
+  color: $secondary;
+  width: 100%;
+}

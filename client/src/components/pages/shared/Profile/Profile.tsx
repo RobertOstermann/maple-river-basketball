@@ -1,9 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
-import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 
 import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
-import User from "../../../../shared/models/User";
+import UserModel from "../../../../shared/models/UserModel";
 import UserRequests from "../../../shared/UserRequests";
 
 import styles from "./Profile.module.scss";
@@ -11,9 +11,11 @@ import styles from "./Profile.module.scss";
 export default function Profile() {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState<User>({});
+  const [user, setUser] = useState<UserModel>({});
   const [firstName, setFirstName] = useState<string | undefined>();
   const [lastName, setLastName] = useState<string | undefined>();
+  const [success, setSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const { getAccessTokenSilently, logout } = useAuth0();
 
@@ -54,7 +56,7 @@ export default function Profile() {
   const getUser = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const user: User = await UserRequests.getUser(token);
+      const user: UserModel = await UserRequests.getUser(token);
 
       return user;
     } catch (error) {
@@ -66,15 +68,16 @@ export default function Profile() {
 
   const submitUser = async () => {
     setIsLoading(true);
-    console.log(isLoading);
     try {
       const token = await getAccessTokenSilently();
       await UserRequests.updateUser(token, user);
+      setSuccess(true);
     } catch (error) {
       console.log(error);
+      setSuccess(false);
     }
+    setShowModal(true);
     setIsLoading(false);
-    console.log(isLoading);
   };
 
   const logoutButton = () => {
@@ -124,6 +127,28 @@ export default function Profile() {
     );
   };
 
+  const successModal = () => {
+    return (
+      <Modal size="lg" backdrop="static" centered show={showModal}>
+        <Modal.Header>
+          <Modal.Title>{success ? "Profile Updated" : "Error"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            {success
+              ? "The profile was updated successfully."
+              : "There was a problem updating the profile. Please try again."}
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Container fluid className="d-grid">
+            <Button onClick={() => setShowModal(false)}>Close</Button>
+          </Container>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
+
   return (
     <Container fluid>
       {logoutButton()}
@@ -156,6 +181,7 @@ export default function Profile() {
         </Form.Group>
       </Form>
       {submitButton()}
+      {successModal()}
     </Container>
   );
 }

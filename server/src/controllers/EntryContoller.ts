@@ -24,13 +24,12 @@ export default class EntryController {
 
     database.query(
       "INSERT INTO entries (auth_id, activity_type, activity_date, activity_duration) VALUES ($1, $2, $3, $4)",
-      [authId, entry.activityType, entry.activityDate, entry.activityDuration],
-      (error: Error) => {
-        if (error) throw error;
-
-        response.status(200).json({
-          message: JSON.stringify(entry)
-        });
+      [authId, entry.activityType, entry.activityDate, entry.activityDuration])
+      .then(() => {
+        response.status(200).json("Entry Created");
+      })
+      .catch((error) => {
+        response.status(400).json(error);
       });
   };
 

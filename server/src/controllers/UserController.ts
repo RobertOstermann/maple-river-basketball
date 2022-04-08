@@ -36,14 +36,17 @@ export default class UserController {
         lastName: userInformation.family_name ?? "Last",
       };
 
-      await database.query(
+      database.query(
         "INSERT INTO users (auth_id, permission_level, email, first_name, last_name) VALUES ($1, $2, $3, $4, $5)",
-        [authId, user.permissionLevel, user.email, user.firstName, user.lastName]
-      );
-
-      response.status(200).json({
-        user: user
-      });
+        [authId, user.permissionLevel, user.email, user.firstName, user.lastName])
+        .then(() => {
+          response.status(200).json({
+            user: user
+          });
+        })
+        .catch((error) => {
+          response.status(400).json(error);
+        });
     }
   };
 
@@ -56,11 +59,13 @@ export default class UserController {
     );
 
 
-    database.query("SELECT * FROM users ORDER BY id ASC", (error: Error, results: QueryResult) => {
-      if (error) throw error;
-
-      response.status(200).json(results.rows);
-    });
+    database.query("SELECT * FROM users ORDER BY id ASC")
+      .then((results: QueryResult) => {
+        response.status(200).json(results.rows);
+      })
+      .catch((error) => {
+        response.status(400).json(error);
+      });
   };
 
   static updateUser = async (request: any, response: any) => {
@@ -69,11 +74,12 @@ export default class UserController {
 
     database.query(
       "UPDATE users SET first_name = $1, last_name = $2 WHERE auth_id = $3",
-      [user.firstName, user.lastName, authId],
-      (error: Error) => {
-        if (error) throw error;
-
+      [user.firstName, user.lastName, authId])
+      .then(() => {
         response.status(200).json("User Updated");
+      })
+      .catch((error) => {
+        response.status(400).json(error);
       });
   };
 }

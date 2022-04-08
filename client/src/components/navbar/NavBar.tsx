@@ -5,7 +5,7 @@ import { Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 import { PermissionLevels } from "../../shared/constants/PermissionLevels";
-import User from "../../shared/models/User";
+import UserModel from "../../shared/models/UserModel";
 import RouterHelper, { RouterHelperInterface } from "../routers/RouterHelper";
 import UserRequests from "../shared/UserRequests";
 
@@ -44,7 +44,7 @@ export default function NavBar() {
   const getRoutes = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const user: User = await UserRequests.getUser(token);
+      const user: UserModel = await UserRequests.getUser(token);
 
       if (
         user.permissionLevel === PermissionLevels.admin.id ||

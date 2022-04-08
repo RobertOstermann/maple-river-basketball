@@ -1,11 +1,11 @@
 import axios from "axios";
 import camelcaseKeys from "camelcase-keys";
 
-import UserModel from "../../shared/models/UserModel";
+import EntryModel from "../../shared/models/EntryModel";
 import Helper from "./Helper";
 
-export default class UserRequests {
-  static getUser = async (token: string): Promise<UserModel> => {
+export default class EntryRequests {
+  static getEntries = async (token: string): Promise<EntryModel[]> => {
     try {
       const config = {
         headers: {
@@ -14,20 +14,25 @@ export default class UserRequests {
       };
 
       const response = await axios.get(
-        `${Helper.getApiRoute()}/get-user`,
+        `${Helper.getApiRoute()}/get-user-entries`,
         config
       );
 
-      const user: UserModel = camelcaseKeys(response.data.user);
+      const entries: EntryModel[] = camelcaseKeys(response.data.entries, {
+        deep: true,
+      });
 
-      return user;
+      return entries;
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get the user");
     }
   };
 
-  static updateUser = async (token: string, user: UserModel): Promise<void> => {
+  static createEntry = async (
+    token: string,
+    entry: EntryModel
+  ): Promise<void> => {
     try {
       const config = {
         headers: {
@@ -35,10 +40,10 @@ export default class UserRequests {
         },
       };
 
-      await axios.put(`${Helper.getApiRoute()}/update-user`, user, config);
+      await axios.post(`${Helper.getApiRoute()}/create-entry`, entry, config);
     } catch (error) {
       console.log(error);
-      throw new Error("Failed to update the user");
+      throw new Error("Failed to create the entry");
     }
   };
 }

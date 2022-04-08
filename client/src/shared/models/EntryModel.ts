@@ -1,4 +1,4 @@
-export default interface Entry {
+export default interface EntryModel {
   id?: number,
   authId?: string,
   activityType?: number,

@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { Card, FloatingLabel, Form } from "react-bootstrap";
 
 import { ActivityTypes } from "../shared/constants/ActivityTypes";
-import Entry from "../shared/models/Entry";
+import EntryModel from "../shared/models/EntryModel";
 
 const Request = () => {
   const [data, setData] = useState<any>([]);
-  const [entry, setEntry] = useState<Entry>({
+  const [entry, setEntry] = useState<EntryModel>({
     activityType: ActivityTypes.game.id,
     activityDuration: 15,
   });
