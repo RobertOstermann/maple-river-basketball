@@ -14,7 +14,7 @@ export default class EntryController {
     const entries: Entry[] = results.rows;
 
     response.status(200).json({
-      message: JSON.stringify(entries)
+      entries: entries
     });
   };
 

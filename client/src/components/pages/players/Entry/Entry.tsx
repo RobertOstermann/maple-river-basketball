@@ -10,7 +10,6 @@ import {
 import EntryModel from "../../../../shared/models/EntryModel";
 import EntryRequests from "../../../shared/EntryRequests";
 
-import "react-nice-dates/build/style.css";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Entry.module.scss";
 

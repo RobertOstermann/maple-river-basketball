@@ -1,14 +1,14 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, FloatingLabel, Form } from "react-bootstrap";
 
 import { ActivityTypes } from "../shared/constants/ActivityTypes";
-import EntryModel from "../shared/models/EntryModel";
+import Entry from "../shared/models/EntryModel";
 
 const Request = () => {
   const [data, setData] = useState<any>([]);
-  const [entry, setEntry] = useState<EntryModel>({
+  const [entry, setEntry] = useState<Entry>({
     activityType: ActivityTypes.game.id,
     activityDuration: 15,
   });

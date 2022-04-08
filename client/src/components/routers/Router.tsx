@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "../auth0/ProtectedRoute";
 import Entry from "../pages/players/Entry/Entry";
+import History from "../pages/players/History/History";
 import Home from "../pages/shared/Home/Home";
 import Profile from "../pages/shared/Profile/Profile";
 import Request from "../Request";
@@ -35,7 +36,7 @@ export default function Router() {
       />
       <Route
         path={PLAYER_ROUTES.history.path}
-        element={<ProtectedRoute component={Request} />}
+        element={<ProtectedRoute component={History} />}
       />
       <Route
         path={PLAYER_ROUTES.profile.path}
