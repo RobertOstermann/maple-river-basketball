@@ -7,7 +7,7 @@ export default class EntryController {
   static getUserEntries = async (request: Express.Request | any, response: Express.Response) => {
     const authId = request.user.sub;
     const results = await database.query(
-      "SELECT * FROM entries WHERE auth_id = $1",
+      "SELECT * FROM entries WHERE auth_id = $1 ORDER BY activity_date DESC, activity_duration DESC",
       [authId]
     );
 

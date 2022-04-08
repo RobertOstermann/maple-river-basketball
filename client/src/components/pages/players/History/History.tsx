@@ -5,8 +5,6 @@ import {
   Card,
   Col,
   Container,
-  Form,
-  Modal,
   Nav,
   Navbar,
   Row,
@@ -33,6 +31,7 @@ export default function History() {
   }, []);
 
   const getEntries = async (): Promise<void> => {
+    setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
       const entries: EntryModel[] = await EntryRequests.getEntries(token);
@@ -42,6 +41,7 @@ export default function History() {
       console.log(error);
       setEntries([]);
     }
+    setIsLoading(false);
   };
 
   const getActivityType = (id: number) => {
@@ -105,8 +105,9 @@ export default function History() {
       >
         <Nav justify className="w-100">
           <Button
-            variant="primary"
+            variant={isLoading ? "secondary" : "primary"}
             size="lg"
+            disabled={isLoading}
             onClick={isLoading ? undefined : () => getEntries()}
             className={styles.refreshButton}
           >
