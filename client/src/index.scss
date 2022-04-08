@@ -1,13 +1,13 @@
 @import "./styles/colors.scss";
 
 $theme-colors: (
-  "primary": $blue,
-  "secondary": $grey,
-  "success": $dark-green,
-  "danger": $red,
-  "warning": $orange,
-  "dark": $black,
-  "navbar": $navbar,
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "danger": $danger,
+  "warning": $warning,
+  "dark": $dark,
+  "navbar": $primary-dark,
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

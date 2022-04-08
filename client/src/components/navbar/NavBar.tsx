@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
@@ -62,16 +62,31 @@ export default function NavBar() {
   };
 
   return (
-    <Navbar
-      bg="navbar"
-      fixed="bottom"
-      id="navbar"
-      role="navigation"
-      variant="dark"
-    >
-      <Nav justify className="w-100">
-        {routes}
-      </Nav>
-    </Navbar>
+    <React.Fragment>
+      <Navbar
+        bg="navbar"
+        fixed="top"
+        id="navbar"
+        role="navigation"
+        variant="dark"
+      >
+        <Nav justify className="w-100 justify-content-center">
+          <Navbar.Brand className={styles.brand}>
+            Maple River Basketball
+          </Navbar.Brand>
+        </Nav>
+      </Navbar>
+      <Navbar
+        bg="navbar"
+        fixed="bottom"
+        id="navbar"
+        role="navigation"
+        variant="dark"
+      >
+        <Nav justify className="w-100">
+          {routes}
+        </Nav>
+      </Navbar>
+    </React.Fragment>
   );
 }

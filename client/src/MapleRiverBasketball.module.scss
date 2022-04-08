@@ -2,16 +2,11 @@
 
 .page {
   position: relative;
-  min-height: 100vh;
-}
-
-.paddingTop {
-  padding-top: 10rem;
 }
 
 .mapleRiverBasketball {
-  padding-top: 2.5rem;
-  padding-bottom: 5rem;
-  margin: 0 auto;
+  // vertical | horizontal
+  padding: 5rem 0rem;
+  margin: 0rem auto;
   width: 90vw;
 }

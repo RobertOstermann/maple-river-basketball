@@ -47,15 +47,15 @@ const RouterHelper = {
       label: "Home",
       icon: fontAwesome.faHome,
     },
-    history: {
-      path: "/player/history",
-      label: "History",
-      icon: fontAwesome.faHistory,
-    },
     newEntry: {
       path: "/player/new-entry",
       label: "Entry",
       icon: fontAwesome.faPlus,
+    },
+    history: {
+      path: "/player/history",
+      label: "History",
+      icon: fontAwesome.faHistory,
     },
     profile: {
       path: "/player/profile",

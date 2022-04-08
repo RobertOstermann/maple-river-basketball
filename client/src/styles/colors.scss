@@ -11,8 +11,13 @@ $light-green: #34a47c;
 $dark-green: #02301e;
 $orange: #ff7300;
 
-// NavBar
-$navbar: $dark-green;
-$navbar-button: $light-green;
-$navbar-button-hover: $green;
-$navbar-button-active: $light-grey;
+// Bootstrap
+$primary-dark: $dark-green;
+$primary-light: $light-green;
+
+$primary: $green;
+$secondary: $light-grey;
+$success: $dark-green;
+$danger: $red;
+$warning: $orange;
+$dark: $black;

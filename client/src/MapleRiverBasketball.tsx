@@ -15,9 +15,9 @@ export default function MapleRiverBasketball() {
   }
 
   return (
-    <Container id="maple-river-basketball" className={styles.page}>
+    <Container fluid id="maple-river-basketball" className={styles.page}>
       <NavBar />
-      <Container className={styles.mapleRiverBasketball}>
+      <Container fluid className={styles.mapleRiverBasketball}>
         <Router />
       </Container>
     </Container>

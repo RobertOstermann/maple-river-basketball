@@ -1,0 +1,28 @@
+@import "../../../styles/colors.scss";
+
+// Container
+.container {
+  height: 100;
+}
+
+// Form
+.form {
+  padding-top: 0em;
+}
+
+// Form Group
+.formGroup {
+  padding-bottom: 2rem;
+  // text-align: center;
+}
+
+// Submit Button
+.submitDiv {
+  // top | horizontal | bottom
+  margin: 0rem 1rem 5.5rem;
+}
+
+.submitButton {
+  color: $secondary;
+  width: 100%;
+}

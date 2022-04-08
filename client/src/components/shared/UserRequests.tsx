@@ -17,9 +17,24 @@ export default class UserRequests {
         `${Helper.getApiRoute()}/get-user`,
         config
       );
-      const user: User = camelcaseKeys(response.data.user);
 
+      const user: User = camelcaseKeys(response.data.user);
       return user;
+    } catch (error) {
+      console.log(error);
+      throw new Error("GetUser Failed");
+    }
+  };
+
+  static updateUser = async (token: string, user: User): Promise<void> => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      await axios.put(`${Helper.getApiRoute()}/update-user`, user, config);
     } catch (error) {
       console.log(error);
       throw new Error("GetUser Failed");

@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "../auth0/ProtectedRoute";
-import Profile from "../Profile";
+import Entry from "../pages/players/Entry";
+import Profile from "../pages/shared/Profile";
 import Request from "../Request";
 import {
   ADMINISTRATOR_ROUTES,
@@ -45,11 +46,11 @@ export default function Router() {
         element={<ProtectedRoute component={Request} />}
       />
       <Route
-        path={PLAYER_ROUTES.history.path}
-        element={<ProtectedRoute component={Request} />}
+        path={PLAYER_ROUTES.newEntry.path}
+        element={<ProtectedRoute component={Entry} />}
       />
       <Route
-        path={PLAYER_ROUTES.newEntry.path}
+        path={PLAYER_ROUTES.history.path}
         element={<ProtectedRoute component={Request} />}
       />
       <Route

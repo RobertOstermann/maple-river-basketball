@@ -1,21 +1,27 @@
 @import "../../styles/colors.scss";
 
+// Top NavBar
+.brand {
+  color: $primary-light !important;
+}
+
+// Bottom NavBar
 .active {
-  color: $navbar-button-active;
+  color: $secondary;
   font-size: larger;
   text-decoration: none;
 }
 
 .active:hover {
-  color: $navbar-button-active;
+  color: $secondary;
 }
 
 .link {
-  color: $navbar-button;
+  color: $primary;
   font-size: larger;
   text-decoration: none;
 }
 
 .link:hover {
-  color: $navbar-button-hover;
+  color: $primary;
 }

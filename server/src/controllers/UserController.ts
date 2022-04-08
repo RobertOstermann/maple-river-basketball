@@ -56,7 +56,7 @@ export default class UserController {
     );
 
 
-    await database.query("SELECT * FROM users ORDER BY id ASC", (error: Error, results: QueryResult) => {
+    database.query("SELECT * FROM users ORDER BY id ASC", (error: Error, results: QueryResult) => {
       if (error) throw error;
 
       response.status(200).json(results.rows);
@@ -73,9 +73,7 @@ export default class UserController {
       (error: Error) => {
         if (error) throw error;
 
-        response.status(200).json({
-          message: "User Updated"
-        });
+        response.status(200).json("User Updated");
       });
   };
 }
