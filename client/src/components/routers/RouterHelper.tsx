@@ -7,16 +7,9 @@ export interface RouterHelperInterface {
 }
 
 const RouterHelper = {
-  admin: {
-    home: {
-      path: "/admin",
-      label: "Home",
-      icon: fontAwesome.faHome,
-    },
-  },
   coach: {
     home: {
-      path: "/coach",
+      path: "/",
       label: "Home",
       icon: fontAwesome.faHome,
     },
@@ -43,7 +36,7 @@ const RouterHelper = {
   },
   player: {
     home: {
-      path: "/player",
+      path: "/",
       label: "Home",
       icon: fontAwesome.faHome,
     },
@@ -65,8 +58,6 @@ const RouterHelper = {
   },
 };
 
-// Array of all routes accessible by administrators
-export const ADMINISTRATOR_ROUTES = RouterHelper.admin;
 // Array of all routes accessible by coaches
 export const COACH_ROUTES = RouterHelper.coach;
 // Array of all routes accessible by players

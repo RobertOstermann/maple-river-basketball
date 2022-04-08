@@ -15,10 +15,6 @@ const Request = () => {
 
   const { getAccessTokenSilently } = useAuth0();
 
-  useEffect(() => {
-    getUserApi();
-  }, []);
-
   const updateActivity = (value: number) => {
     const updatedEntry = entry;
     updatedEntry.activityType = value;

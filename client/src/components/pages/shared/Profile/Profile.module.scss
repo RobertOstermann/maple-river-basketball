@@ -1,19 +1,25 @@
-@import "../../../styles/colors.scss";
-
-// Container
-.container {
-  height: 100;
-}
+@import "../../../../styles/colors.scss";
 
 // Form
 .form {
-  padding-top: 0em;
+  padding-top: 4em;
 }
 
 // Form Group
 .formGroup {
   padding-bottom: 2rem;
   // text-align: center;
+}
+
+// Logout Button
+.logoutDiv {
+  // top | horizontal | bottom
+  margin: 4rem 1rem 0rem;
+}
+
+.logoutButton {
+  color: $secondary;
+  width: 100%;
 }
 
 // Submit Button

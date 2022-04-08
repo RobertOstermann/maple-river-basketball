@@ -1,29 +1,17 @@
 import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "../auth0/ProtectedRoute";
-import Entry from "../pages/players/Entry";
-import Profile from "../pages/shared/Profile";
+import Entry from "../pages/players/Entry/Entry";
+import Home from "../pages/shared/Home/Home";
+import Profile from "../pages/shared/Profile/Profile";
 import Request from "../Request";
-import {
-  ADMINISTRATOR_ROUTES,
-  COACH_ROUTES,
-  PLAYER_ROUTES,
-} from "./RouterHelper";
+import { COACH_ROUTES, PLAYER_ROUTES } from "./RouterHelper";
 
 export default function Router() {
   return (
     <Routes>
-      <Route path="/" element={<ProtectedRoute component={Request} />} />
-      {/* Administrator Routes */}
-      <Route
-        path={ADMINISTRATOR_ROUTES.home.path}
-        element={<ProtectedRoute component={Request} />}
-      />
+      <Route path="/" element={<Home />} />
       {/* Coach Routes */}
-      <Route
-        path={COACH_ROUTES.home.path}
-        element={<ProtectedRoute component={Request} />}
-      />
       <Route
         path={COACH_ROUTES.players.path}
         element={<ProtectedRoute component={Request} />}
@@ -41,10 +29,6 @@ export default function Router() {
         element={<ProtectedRoute component={Profile} />}
       />
       {/* Player Routes */}
-      <Route
-        path={PLAYER_ROUTES.home.path}
-        element={<ProtectedRoute component={Request} />}
-      />
       <Route
         path={PLAYER_ROUTES.newEntry.path}
         element={<ProtectedRoute component={Entry} />}

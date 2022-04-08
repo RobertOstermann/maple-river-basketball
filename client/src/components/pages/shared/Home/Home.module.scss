@@ -1,0 +1,23 @@
+@import "../../../../styles/colors.scss";
+
+// Form
+.form {
+  padding-top: 4em;
+}
+
+// Form Group
+.formGroup {
+  padding-bottom: 2rem;
+  // text-align: center;
+}
+
+// Login Button
+.loginDiv {
+  // top | horizontal | bottom
+  margin: 0rem 1rem 5.5rem;
+}
+
+.loginButton {
+  color: $secondary;
+  width: 100%;
+}

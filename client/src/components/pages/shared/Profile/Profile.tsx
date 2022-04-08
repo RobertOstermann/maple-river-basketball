@@ -2,9 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
 
-import { PermissionLevels } from "../../../shared/constants/PermissionLevels";
-import User from "../../../shared/models/User";
-import UserRequests from "../../shared/UserRequests";
+import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
+import User from "../../../../shared/models/User";
+import UserRequests from "../../../shared/UserRequests";
 
 import styles from "./Profile.module.scss";
 
@@ -15,7 +15,7 @@ export default function Profile() {
   const [firstName, setFirstName] = useState<string | undefined>();
   const [lastName, setLastName] = useState<string | undefined>();
 
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, logout } = useAuth0();
 
   useEffect(() => {
     getUser().then((user) => {
@@ -77,8 +77,56 @@ export default function Profile() {
     console.log(isLoading);
   };
 
+  const logoutButton = () => {
+    return (
+      <Navbar
+        fixed="top"
+        id="navbar"
+        role="navigation"
+        variant="dark"
+        className={styles.logoutDiv}
+      >
+        <Nav justify className="w-100">
+          <Button
+            variant={"primary"}
+            size="lg"
+            onClick={() => logout({ returnTo: window.location.origin })}
+            className={styles.logoutButton}
+          >
+            Logout
+          </Button>
+        </Nav>
+      </Navbar>
+    );
+  };
+
+  const submitButton = () => {
+    return (
+      <Navbar
+        fixed="bottom"
+        id="navbar"
+        role="navigation"
+        variant="dark"
+        className={styles.submitDiv}
+      >
+        <Nav justify className="w-100">
+          <Button
+            variant={isDisabled ? "secondary" : "primary"}
+            size="lg"
+            onClick={isDisabled || isLoading ? undefined : submitUser}
+            className={styles.submitButton}
+            disabled={isDisabled || isLoading}
+          >
+            {isLoading ? "Submitting..." : "Submit Changes"}
+          </Button>
+        </Nav>
+      </Navbar>
+    );
+  };
+
   return (
-    <Container fluid className={styles.container}>
+    <Container fluid>
+      {logoutButton()}
       <Form className={styles.form}>
         <Form.Group className={styles.formGroup}>
           <Form.Label>Email Address</Form.Label>
@@ -107,25 +155,7 @@ export default function Profile() {
           />
         </Form.Group>
       </Form>
-      <Navbar
-        fixed="bottom"
-        id="navbar"
-        role="navigation"
-        variant="dark"
-        className={styles.submitDiv}
-      >
-        <Nav justify className="w-100">
-          <Button
-            variant={isDisabled ? "secondary" : "primary"}
-            size="lg"
-            onClick={isDisabled || isLoading ? undefined : submitUser}
-            className={styles.submitButton}
-            disabled={isDisabled || isLoading}
-          >
-            {isLoading ? "Submitting..." : "Submit Changes"}
-          </Button>
-        </Nav>
-      </Navbar>
+      {submitButton()}
     </Container>
   );
 }
