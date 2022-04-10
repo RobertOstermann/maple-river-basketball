@@ -1,14 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Nav,
-  Navbar,
-  Row,
-} from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 
 import {
   ActivityTypeInterface,
@@ -94,34 +86,9 @@ export default function History() {
     });
   };
 
-  const refreshButton = () => {
-    return (
-      <Navbar
-        fixed="bottom"
-        id="navbar"
-        role="navigation"
-        variant="dark"
-        className={styles.refreshDiv}
-      >
-        <Nav justify className="w-100">
-          <Button
-            variant={isLoading ? "secondary" : "primary"}
-            size="lg"
-            disabled={isLoading}
-            onClick={isLoading ? undefined : () => getEntries()}
-            className={styles.refreshButton}
-          >
-            {isLoading ? "Refreshing..." : "Refresh Entries"}
-          </Button>
-        </Nav>
-      </Navbar>
-    );
-  };
-
   return (
     <Container fluid>
       <div className={styles.entryDiv}>{entryCards()}</div>
-      {refreshButton()}
     </Container>
   );
 }
