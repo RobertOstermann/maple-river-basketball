@@ -1,4 +1,3 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "react-bootstrap";
 
 import NavBar from "./components/navbar/NavBar";
@@ -8,12 +7,6 @@ import "./index.scss";
 import styles from "./MapleRiverBasketball.module.scss";
 
 export default function MapleRiverBasketball() {
-  const { isLoading } = useAuth0();
-
-  if (isLoading) {
-    return <div>Loading ...</div>;
-  }
-
   return (
     <Container fluid id="maple-river-basketball" className={styles.page}>
       <NavBar />

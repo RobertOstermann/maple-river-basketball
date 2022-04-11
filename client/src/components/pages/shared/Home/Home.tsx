@@ -6,10 +6,12 @@ import { PermissionLevels } from "../../../../shared/constants/PermissionLevels"
 import UserModel from "../../../../shared/models/UserModel";
 import UserRequests from "../../../shared/UserRequests";
 import PlayerHome from "../../players/Home/PlayerHome";
+import Loading from "../Loading/Loading";
 
 import styles from "./Home.module.scss";
 
 export default function Home() {
+  const [isUserLoading, setIsUserLoading] = useState(true);
   const [user, setUser] = useState<UserModel>({});
 
   const {
@@ -23,6 +25,7 @@ export default function Home() {
     if (isAuthenticated) {
       getUser().then((user) => {
         setUser(user);
+        setIsUserLoading(false);
       });
     }
   }, [isAuthenticated]);
@@ -63,8 +66,8 @@ export default function Home() {
     );
   };
 
-  if (isLoading) {
-    return <Container>Loading...</Container>;
+  if (isLoading || isUserLoading) {
+    return <Loading />;
   }
 
   if (!isAuthenticated) {

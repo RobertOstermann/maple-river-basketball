@@ -8,12 +8,12 @@ import {
 } from "../../../../shared/constants/ActivityTypes";
 import EntryModel from "../../../../shared/models/EntryModel";
 import EntryRequests from "../../../shared/EntryRequests";
+import Loading from "../../shared/Loading/Loading";
 
 import styles from "./PlayerHome.module.scss";
 
 export default function PlayerHome() {
   const [isLoading, setIsLoading] = useState(false);
-  const [entries, setEntries] = useState<EntryModel[]>([]);
   const [totals, setTotals] = useState<any[]>([]);
 
   const { getAccessTokenSilently } = useAuth0();
@@ -45,11 +45,9 @@ export default function PlayerHome() {
         }
       });
 
-      setEntries(entries);
       setTotals(updatedTotals);
     } catch (error) {
       console.log(error);
-      setEntries([]);
     }
     setIsLoading(false);
   };
@@ -100,6 +98,10 @@ export default function PlayerHome() {
       );
     });
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Container fluid>

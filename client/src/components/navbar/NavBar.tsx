@@ -1,7 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import * as fontAwesome from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Stack } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 import { PermissionLevels } from "../../shared/constants/PermissionLevels";
@@ -14,7 +15,7 @@ import styles from "../navbar/NavBar.module.scss";
 export default function NavBar() {
   const [routes, setRoutes] = useState<any>();
 
-  const { getAccessTokenSilently } = useAuth0();
+  const { isLoading, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     getRoutes().then((elements) => {
@@ -84,7 +85,16 @@ export default function NavBar() {
         variant="dark"
       >
         <Nav justify className="w-100">
-          {routes}
+          {isLoading || !routes ? (
+            <Nav.Item key={"tab-loading"}>
+              <Stack className={styles.active} gap={1}>
+                <FontAwesomeIcon size="lg" icon={fontAwesome.faBasketball} />
+                <div>Loading</div>
+              </Stack>
+            </Nav.Item>
+          ) : (
+            routes
+          )}
         </Nav>
       </Navbar>
     </React.Fragment>

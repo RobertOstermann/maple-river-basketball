@@ -8,11 +8,12 @@ import {
 } from "../../../../shared/constants/ActivityTypes";
 import EntryModel from "../../../../shared/models/EntryModel";
 import EntryRequests from "../../../shared/EntryRequests";
+import Loading from "../../shared/Loading/Loading";
 
 import styles from "./History.module.scss";
 
 export default function History() {
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState<EntryModel[]>([]);
 
   const { getAccessTokenSilently } = useAuth0();
@@ -22,7 +23,7 @@ export default function History() {
   }, []);
 
   const getEntries = async (): Promise<void> => {
-    // setIsLoading(true);
+    setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
       const entries: EntryModel[] = await EntryRequests.getEntries(token);
@@ -32,7 +33,7 @@ export default function History() {
       console.log(error);
       setEntries([]);
     }
-    // setIsLoading(false);
+    setIsLoading(false);
   };
 
   const getActivityType = (id: number) => {
@@ -93,7 +94,11 @@ export default function History() {
 
   return (
     <Container fluid>
-      <div className={styles.entryDiv}>{entryCards()}</div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className={styles.entryDiv}>{entryCards()}</div>
+      )}
     </Container>
   );
 }
