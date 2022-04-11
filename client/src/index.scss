@@ -2,11 +2,13 @@
 
 $theme-colors: (
   "primary": $primary,
+  "primary-dark": $primary-dark,
+  "primary-light": $primary-light,
   "secondary": $secondary,
   "success": $success,
   "danger": $danger,
   "warning": $warning,
-  "dark": $primary-dark,
+  "dark": $dark,
   "navbar": $primary-dark,
 );
 

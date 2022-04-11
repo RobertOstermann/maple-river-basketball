@@ -9,11 +9,12 @@ import {
 import EntryModel from "../../../../shared/models/EntryModel";
 import EntryRequests from "../../../shared/EntryRequests";
 
-import styles from "./History.module.scss";
+import styles from "./PlayerHome.module.scss";
 
-export default function History() {
-  // const [isLoading, setIsLoading] = useState(false);
+export default function PlayerHome() {
+  const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState<EntryModel[]>([]);
+  const [totals, setTotals] = useState<any[]>([]);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -22,17 +23,35 @@ export default function History() {
   }, []);
 
   const getEntries = async (): Promise<void> => {
-    // setIsLoading(true);
+    setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
       const entries: EntryModel[] = await EntryRequests.getEntries(token);
+      const updatedTotals: any[] = [];
+
+      Object.values(ActivityTypes).map(
+        (activityType: ActivityTypeInterface) => {
+          updatedTotals[activityType.id] = 0;
+        }
+      );
+
+      entries.map((entry) => {
+        if (entry.activityType !== undefined) {
+          if (updatedTotals[entry.activityType]) {
+            updatedTotals[entry.activityType] += entry.activityDuration;
+          } else {
+            updatedTotals[entry.activityType] = entry.activityDuration;
+          }
+        }
+      });
 
       setEntries(entries);
+      setTotals(updatedTotals);
     } catch (error) {
       console.log(error);
       setEntries([]);
     }
-    // setIsLoading(false);
+    setIsLoading(false);
   };
 
   const getActivityType = (id: number) => {
@@ -57,10 +76,10 @@ export default function History() {
   };
 
   const entryCards = () => {
-    return entries.map((entry, index) => {
+    return totals.map((duration, activityType) => {
       return (
         <Card
-          key={index}
+          key={activityType}
           className={styles.entryCard}
           bg="primary-dark"
           border="primary-light"
@@ -68,22 +87,13 @@ export default function History() {
         >
           <Card.Body>
             <Row>
-              <Col>Date</Col>
-              <Col>
-                {new Date(entry.activityDate ?? Date.now())
-                  .toISOString()
-                  .slice(0, 10)}
-              </Col>
-            </Row>
-            <hr className={styles.entryHR} />
-            <Row>
               <Col>Activity</Col>
-              <Col>{getActivityType(entry.activityType ?? 0)}</Col>
+              <Col>{getActivityType(activityType ?? 0)}</Col>
             </Row>
             <hr className={styles.entryHR} />
             <Row>
-              <Col>Duration</Col>
-              <Col>{getDurationString(entry.activityDuration ?? 0)}</Col>
+              <Col>Total Duration</Col>
+              <Col>{getDurationString(duration ?? 0)}</Col>
             </Row>
           </Card.Body>
         </Card>

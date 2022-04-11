@@ -53,7 +53,7 @@ export default function Profile() {
     }
   };
 
-  const getUser = async () => {
+  const getUser = async (): Promise<UserModel> => {
     try {
       const token = await getAccessTokenSilently();
       const user: UserModel = await UserRequests.getUser(token);

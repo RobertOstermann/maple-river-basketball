@@ -1,10 +1,44 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
+
+import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
+import UserModel from "../../../../shared/models/UserModel";
+import UserRequests from "../../../shared/UserRequests";
+import PlayerHome from "../../players/Home/PlayerHome";
 
 import styles from "./Home.module.scss";
 
 export default function Home() {
-  const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
+  const [user, setUser] = useState<UserModel>({});
+
+  const {
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    getAccessTokenSilently,
+  } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getUser().then((user) => {
+        setUser(user);
+      });
+    }
+  }, [isAuthenticated]);
+
+  const getUser = async (): Promise<UserModel> => {
+    try {
+      const token = await getAccessTokenSilently();
+      const user: UserModel = await UserRequests.getUser(token);
+
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+
+    return {};
+  };
 
   const loginButton = () => {
     return (
@@ -37,6 +71,14 @@ export default function Home() {
     return <Container fluid>{loginButton()}</Container>;
   }
 
-  // Return a home page for either coaches or player
-  return <Container fluid>Return a home page for coach or player</Container>;
+  switch (user.permissionLevel) {
+    case PermissionLevels.coach.id:
+      return <Container fluid>Return a home page for the coach</Container>;
+    case PermissionLevels.player.id:
+      return <PlayerHome />;
+    default:
+      return (
+        <Container fluid>There was a problem loading the home page.</Container>
+      );
+  }
 }
