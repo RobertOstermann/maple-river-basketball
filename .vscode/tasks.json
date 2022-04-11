@@ -17,7 +17,8 @@
         "focus": false,
         "panel": "dedicated",
         "showReuseMessage": true,
-        "clear": false
+        "clear": false,
+        "close": true
       }
     },
     {
@@ -31,7 +32,8 @@
         "focus": false,
         "panel": "dedicated",
         "showReuseMessage": true,
-        "clear": false
+        "clear": false,
+        "close": true
       }
     },
     {

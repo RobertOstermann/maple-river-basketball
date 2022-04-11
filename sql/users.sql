@@ -1,5 +1,5 @@
 -- Delete the users table
-DROP TABLE users;
+-- DROP TABLE users;
 
 -- Create the users table
 CREATE TABLE IF NOT EXISTS users (
@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS users (
 -- Insert into the users table
 INSERT INTO "users" (auth_id, permission_level, email, first_name, last_name)
 VALUES (
-    'auth0|62422c51b0344000692f3c4d',
-    2,
+    'testuser',
+    1,
     'test@gmail.com',
     'test',
     'user'

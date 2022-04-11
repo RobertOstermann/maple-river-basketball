@@ -1,5 +1,5 @@
 -- Delete the entries table
-DROP TABLE entries;
+-- DROP TABLE entries;
 
 -- Create the entries table
 CREATE TABLE IF NOT EXISTS entries (
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS entries (
 -- Insert into the entries table
 INSERT INTO "entries" (auth_id, activity_type, activity_duration)
 VALUES (
-    'auth0|62422c51b0344000692f3c4c',
+    'testuser',
     0,
     30
 );
