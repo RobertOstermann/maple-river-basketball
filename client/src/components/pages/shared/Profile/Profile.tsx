@@ -5,6 +5,7 @@ import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
 import UserModel from "../../../../shared/models/UserModel";
 import UserRequests from "../../../shared/UserRequests";
+import Loading from "../Loading/Loading";
 
 import styles from "./Profile.module.scss";
 
@@ -148,6 +149,10 @@ export default function Profile() {
       </Modal>
     );
   };
+
+  if (Object.keys(user).length === 0) {
+    return <Loading />;
+  }
 
   return (
     <Container fluid>
