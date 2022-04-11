@@ -92,13 +92,13 @@ export default function History() {
     });
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Container fluid>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div className={styles.entryDiv}>{entryCards()}</div>
-      )}
+      <div className={styles.entryDiv}>{entryCards()}</div>
     </Container>
   );
 }

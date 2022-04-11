@@ -8,7 +8,7 @@ export default function Loading() {
       <ProgressBar
         animated
         now={100}
-        variant="primary-light"
+        variant="primary"
         className={styles.spinner}
       />
     </Container>
