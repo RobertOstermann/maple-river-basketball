@@ -26,7 +26,7 @@ export default function History() {
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const entries: EntryModel[] = await EntryRequests.getEntries(token);
+      const entries: EntryModel[] = await EntryRequests.getUserEntries(token);
 
       setEntries(entries);
     } catch (error) {

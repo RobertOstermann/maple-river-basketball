@@ -55,14 +55,19 @@ app.get(
   }
 );
 
-// Users
+// Player - Users
 app.get("/api/v1/get-user", AuthController.jwtCheck, UserController.getUser);
-app.get("/api/v1/coach/get-users", AuthController.jwtCheck, UserController.getUsers);
 app.put("/api/v1/update-user", AuthController.jwtCheck, UserController.updateUser);
 
-// Entries
+// Player - Entries
 app.get("/api/v1/get-user-entries", AuthController.jwtCheck, EntryController.getUserEntries);
 app.post("/api/v1/create-entry", AuthController.jwtCheck, EntryController.createEntry);
+
+// Coach - Users
+app.get("/api/v1/get-all-users", AuthController.jwtCheck, UserController.getAllUsers);
+
+// Coach - Entries
+app.get("/api/v1/get-all-entries", AuthController.jwtCheck, EntryController.getAllEntries);
 
 // This handles react routing for non-api requests.
 if (process.env.NODE_ENV === "production") {

@@ -1,4 +1,5 @@
 import * as Auth0 from "auth0";
+import camelcaseKeys from "camelcase-keys";
 import Express from "express";
 import { QueryResult } from "pg";
 
@@ -8,6 +9,21 @@ import User from "../models/User";
 import AuthController from "./AuthController";
 
 export default class UserController {
+  static getPermissionLevel = async (authId: string): Promise<number> => {
+    try {
+      const result = await database.query(
+        "SELECT * FROM users WHERE auth_id = $1 AND permission_level = $2 LIMIT 1",
+        [authId, PermissionLevels.coach.id]
+      );
+      const user: User = camelcaseKeys(result.rows[0]);
+
+      return user.permissionLevel;
+    } catch (error) {
+      console.log(error);
+      return PermissionLevels.player.id;
+    }
+  };
+
   static getUser = async (request: Express.Request | any, response: Express.Response) => {
     const authId = request.user.sub;
 
@@ -51,22 +67,23 @@ export default class UserController {
     }
   };
 
-  static getUsers = async (request: any, response: any) => {
+  static getAllUsers = async (request: any, response: any) => {
     const authId = request.user.sub;
+    const permissionLevel = await this.getPermissionLevel(authId);
 
-    const { rows } = await database.query(
-      "SELECT * FROM users WHERE auth_id = $1 AND permission_level = $2 LIMIT 1",
-      [authId, PermissionLevels.coach.id]
-    );
-
-
-    database.query("SELECT * FROM users ORDER BY id ASC")
-      .then((results: QueryResult) => {
-        response.status(200).json(results.rows);
-      })
-      .catch((error) => {
-        response.status(400).json(error);
-      });
+    if (permissionLevel === PermissionLevels.coach.id) {
+      database.query("SELECT * FROM users ORDER BY id ASC")
+        .then((results: QueryResult) => {
+          response.status(200).json({
+            users: results.rows
+          });
+        })
+        .catch((error) => {
+          response.status(400).json(error);
+        });
+    } else {
+      response.status(401).json("Invalid Permission Level");
+    }
   };
 
   static updateUser = async (request: any, response: any) => {

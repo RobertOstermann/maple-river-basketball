@@ -27,6 +27,30 @@ export default class UserRequests {
     }
   };
 
+  static getAllUsers = async (token: string): Promise<UserModel[]> => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(
+        `${Helper.getApiRoute()}/get-all-users`,
+        config
+      );
+
+      const users: UserModel[] = camelcaseKeys(response.data.users, {
+        deep: true,
+      });
+
+      return users;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get the user");
+    }
+  };
+
   static updateUser = async (token: string, user: UserModel): Promise<void> => {
     try {
       const config = {

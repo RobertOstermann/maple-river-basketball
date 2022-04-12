@@ -1,8 +1,11 @@
+import EntryModel from "./EntryModel";
+
 export default interface UserModel {
-  id?: number,
-  authId?: string,
-  permissionLevel?: number,
-  email?: string,
-  firstName?: string,
-  lastName?: string,
+  id?: number;
+  authId?: string;
+  permissionLevel?: number;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  entries?: EntryModel[];
 }

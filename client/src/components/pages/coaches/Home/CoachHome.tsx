@@ -26,7 +26,7 @@ export default function CoachHome() {
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const entries: EntryModel[] = await EntryRequests.getEntries(token);
+      const entries: EntryModel[] = await EntryRequests.getAllEntries(token);
       const updatedTotals: any[] = [];
 
       Object.values(ActivityTypes).map(
@@ -105,6 +105,9 @@ export default function CoachHome() {
 
   return (
     <Container fluid>
+      <div className={styles.headerDiv}>
+        <h2>Team Totals</h2>
+      </div>
       <div className={styles.entryDiv}>{entryCards()}</div>
     </Container>
   );

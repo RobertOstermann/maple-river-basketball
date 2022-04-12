@@ -5,6 +5,7 @@ import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import UserModel from "../../../../api/user/UserModel";
 import UserRequests from "../../../../api/user/UserRequests";
 import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
+import CoachHome from "../../coaches/Home/CoachHome";
 import PlayerHome from "../../players/Home/PlayerHome";
 import Loading from "../Loading/Loading";
 
@@ -76,7 +77,7 @@ export default function Home() {
 
   switch (user.permissionLevel) {
     case PermissionLevels.coach.id:
-      return <Container fluid>Return a home page for the coach</Container>;
+      return <CoachHome />;
     case PermissionLevels.player.id:
       return <PlayerHome />;
     default:

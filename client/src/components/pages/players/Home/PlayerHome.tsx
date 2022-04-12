@@ -26,7 +26,7 @@ export default function PlayerHome() {
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const entries: EntryModel[] = await EntryRequests.getEntries(token);
+      const entries: EntryModel[] = await EntryRequests.getUserEntries(token);
       const updatedTotals: any[] = [];
 
       Object.values(ActivityTypes).map(

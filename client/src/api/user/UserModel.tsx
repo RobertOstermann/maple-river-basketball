@@ -1,3 +1,5 @@
+import EntryModel from "../entry/EntryModel";
+
 export default interface UserModel {
   id?: number;
   authId?: string;
@@ -5,4 +7,5 @@ export default interface UserModel {
   email?: string;
   firstName?: string;
   lastName?: string;
+  entries?: EntryModel[];
 }

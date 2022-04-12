@@ -5,7 +5,7 @@ import Helper from "../Helper";
 import EntryModel from "./EntryModel";
 
 export default class EntryRequests {
-  static getEntries = async (token: string): Promise<EntryModel[]> => {
+  static getUserEntries = async (token: string): Promise<EntryModel[]> => {
     try {
       const config = {
         headers: {
@@ -15,6 +15,30 @@ export default class EntryRequests {
 
       const response = await axios.get(
         `${Helper.getApiRoute()}/get-user-entries`,
+        config
+      );
+
+      const entries: EntryModel[] = camelcaseKeys(response.data.entries, {
+        deep: true,
+      });
+
+      return entries;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get the user");
+    }
+  };
+
+  static getAllEntries = async (token: string): Promise<EntryModel[]> => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(
+        `${Helper.getApiRoute()}/get-all-entries`,
         config
       );
 
