@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "../auth0/ProtectedRoute";
+import * as CoachHistory from "../pages/coaches/History/History";
 import Entry from "../pages/players/Entry/Entry";
 import History from "../pages/players/History/History";
 import Home from "../pages/shared/Home/Home";
@@ -22,8 +23,8 @@ export default function Router() {
         element={<ProtectedRoute component={Request} />}
       />
       <Route
-        path={COACH_ROUTES.entries.path}
-        element={<ProtectedRoute component={Request} />}
+        path={COACH_ROUTES.history.path}
+        element={<ProtectedRoute component={CoachHistory.History} />}
       />
       <Route
         path={COACH_ROUTES.profile.path}

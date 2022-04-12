@@ -1,8 +1,10 @@
+import camelcaseKeys from "camelcase-keys";
 import Express from "express";
 
 import { PermissionLevels } from "../constants/PermissionLevels";
 import database from "../database/database";
 import Entry from "../models/Entry";
+import UserEntry from "../models/UserEntry";
 import UserController from "./UserController";
 
 export default class EntryController {
@@ -26,18 +28,43 @@ export default class EntryController {
     const permissionLevel = await UserController.getPermissionLevel(authId);
 
     if (permissionLevel === PermissionLevels.coach.id) {
-      database.query("SELECT * FROM entries ORDER BY auth_id, activity_date DESC, activity_duration DESC")
+      const query = {
+        name: "fetch-all-entries",
+        text: "SELECT users.first_name, users.last_name, entries.* " +
+          "FROM entries LEFT JOIN users ON users.auth_id = entries.auth_id " +
+          "ORDER BY entries.auth_id ASC, entries.activity_date DESC, entries.activity_duration DESC"
+      };
+      database.query(query)
         .then((results) => {
-          const entries: Entry[] = results.rows;
+          const entries: UserEntry[] = results.rows;
           response.status(200).json({
             entries: entries
           });
-        })
-        .catch((error) => {
+        }).catch((error) => {
           response.status(400).json(error);
         });
     } else {
       response.status(401).json("Invalid Permission Level");
+    }
+  };
+
+  static getAllEntriesByUser = async (authId: string): Promise<Entry[]> => {
+    const permissionLevel = await UserController.getPermissionLevel(authId);
+
+    if (permissionLevel === PermissionLevels.coach.id) {
+      database.query(
+        "SELECT * FROM entries WHERE auth_id = $1 ORDER BY activity_date DESC, activity_duration DESC",
+        [authId]
+      ).then((results) => {
+        const entries: Entry[] = camelcaseKeys(results.rows, { deep: true });
+        return entries;
+      }).catch((error) => {
+        console.log(error);
+        return [];
+      });
+    } else {
+      console.log("Invalid Permission Level");
+      return [];
     }
   };
 

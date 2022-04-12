@@ -3,8 +3,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Card, FloatingLabel, Form } from "react-bootstrap";
 
+import Entry from "../api/entry/EntryModel";
 import { ActivityTypes } from "../shared/constants/ActivityTypes";
-import Entry from "../shared/models/EntryModel";
 
 const Request = () => {
   const [data, setData] = useState<any>([]);

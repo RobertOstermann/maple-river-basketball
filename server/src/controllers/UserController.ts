@@ -7,6 +7,7 @@ import { PermissionLevels } from "../constants/PermissionLevels";
 import database from "../database/database";
 import User from "../models/User";
 import AuthController from "./AuthController";
+import EntryController from "./EntryContoller";
 
 export default class UserController {
   static getPermissionLevel = async (authId: string): Promise<number> => {
@@ -55,15 +56,14 @@ export default class UserController {
 
       database.query(
         "INSERT INTO users (auth_id, permission_level, email, first_name, last_name) VALUES ($1, $2, $3, $4, $5)",
-        [authId, user.permissionLevel, user.email, user.firstName, user.lastName])
-        .then(() => {
-          response.status(200).json({
-            user: user
-          });
-        })
-        .catch((error) => {
-          response.status(400).json(error);
+        [authId, user.permissionLevel, user.email, user.firstName, user.lastName]
+      ).then(() => {
+        response.status(200).json({
+          user: user
         });
+      }).catch((error) => {
+        response.status(400).json(error);
+      });
     }
   };
 
@@ -74,8 +74,12 @@ export default class UserController {
     if (permissionLevel === PermissionLevels.coach.id) {
       database.query("SELECT * FROM users ORDER BY id ASC")
         .then((results: QueryResult) => {
+          const users: User[] = camelcaseKeys(results.rows, { deep: true });
+          users.map(async (user) => {
+            user.entries = await EntryController.getAllEntriesByUser(authId);
+          });
           response.status(200).json({
-            users: results.rows
+            users: users
           });
         })
         .catch((error) => {

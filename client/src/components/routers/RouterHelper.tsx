@@ -23,9 +23,9 @@ const RouterHelper = {
       label: "Leaders",
       icon: fontAwesome.faBasketball,
     },
-    entries: {
+    history: {
       path: "/coach/players/entry-history",
-      label: "Entries",
+      label: "History",
       icon: fontAwesome.faHistory,
     },
     profile: {

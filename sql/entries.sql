@@ -22,3 +22,13 @@ VALUES (
 SELECT *
 FROM entries
 ORDER BY id;
+
+SELECT
+    entries.*,
+    users.first_name,
+    users.last_name
+FROM entries
+LEFT JOIN users ON users.auth_id = entries.auth_id
+ORDER BY entries.auth_id ASC,
+    entries.activity_date DESC,
+    entries.activity_duration DESC;

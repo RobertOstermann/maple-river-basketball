@@ -3,6 +3,7 @@ import camelcaseKeys from "camelcase-keys";
 
 import Helper from "../Helper";
 import EntryModel from "./EntryModel";
+import UserEntryModel from "./UserEntryModel";
 
 export default class EntryRequests {
   static getUserEntries = async (token: string): Promise<EntryModel[]> => {
@@ -29,7 +30,7 @@ export default class EntryRequests {
     }
   };
 
-  static getAllEntries = async (token: string): Promise<EntryModel[]> => {
+  static getAllEntries = async (token: string): Promise<UserEntryModel[]> => {
     try {
       const config = {
         headers: {
@@ -42,7 +43,7 @@ export default class EntryRequests {
         config
       );
 
-      const entries: EntryModel[] = camelcaseKeys(response.data.entries, {
+      const entries: UserEntryModel[] = camelcaseKeys(response.data.entries, {
         deep: true,
       });
 
