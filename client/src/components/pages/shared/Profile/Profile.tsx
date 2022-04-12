@@ -2,9 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 
+import UserModel from "../../../../api/user/UserModel";
+import UserRequests from "../../../../api/user/UserRequests";
 import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
-import UserModel from "../../../../shared/models/UserModel";
-import UserRequests from "../../../shared/UserRequests";
 import Loading from "../Loading/Loading";
 
 import styles from "./Profile.module.scss";

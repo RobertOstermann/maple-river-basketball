@@ -1,8 +1,8 @@
 import axios from "axios";
 import camelcaseKeys from "camelcase-keys";
 
-import UserModel from "../../shared/models/UserModel";
-import Helper from "./Helper";
+import Helper from "../Helper";
+import UserModel from "./UserModel";
 
 export default class UserRequests {
   static getUser = async (token: string): Promise<UserModel> => {

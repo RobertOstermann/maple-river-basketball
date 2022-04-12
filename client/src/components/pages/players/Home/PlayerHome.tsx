@@ -2,12 +2,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
+import EntryModel from "../../../../api/entry/EntryModel";
+import EntryRequests from "../../../../api/entry/EntryRequests";
 import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
-import EntryModel from "../../../../shared/models/EntryModel";
-import EntryRequests from "../../../shared/EntryRequests";
 import Loading from "../../shared/Loading/Loading";
 
 import styles from "./PlayerHome.module.scss";

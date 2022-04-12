@@ -29,6 +29,7 @@ export default class UserController {
     if (rowCount === 0) {
       const userInformation: Auth0.User = await AuthController.getUserInformation(authId);
       const user: User = {
+        id: 0,
         authId: authId,
         permissionLevel: PermissionLevels.player.id,
         email: userInformation.email,

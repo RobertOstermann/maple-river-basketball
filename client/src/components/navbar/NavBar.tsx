@@ -5,10 +5,10 @@ import React, { useEffect, useState } from "react";
 import { Nav, Navbar, Stack } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
+import UserModel from "../../api/user/UserModel";
+import UserRequests from "../../api/user/UserRequests";
 import { PermissionLevels } from "../../shared/constants/PermissionLevels";
-import UserModel from "../../shared/models/UserModel";
 import RouterHelper, { RouterHelperInterface } from "../routers/RouterHelper";
-import UserRequests from "../shared/UserRequests";
 
 import styles from "../navbar/NavBar.module.scss";
 

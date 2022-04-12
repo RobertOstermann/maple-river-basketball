@@ -10,11 +10,11 @@ import {
 } from "../../../../shared/constants/ActivityTypes";
 import Loading from "../../shared/Loading/Loading";
 
-import styles from "./History.module.scss";
+import styles from "./CoachHome.module.scss";
 
-export default function History() {
+export default function CoachHome() {
   const [isLoading, setIsLoading] = useState(false);
-  const [entries, setEntries] = useState<EntryModel[]>([]);
+  const [totals, setTotals] = useState<any[]>([]);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -27,11 +27,27 @@ export default function History() {
     try {
       const token = await getAccessTokenSilently();
       const entries: EntryModel[] = await EntryRequests.getEntries(token);
+      const updatedTotals: any[] = [];
 
-      setEntries(entries);
+      Object.values(ActivityTypes).map(
+        (activityType: ActivityTypeInterface) => {
+          updatedTotals[activityType.id] = 0;
+        }
+      );
+
+      entries.map((entry) => {
+        if (entry.activityType !== undefined) {
+          if (updatedTotals[entry.activityType]) {
+            updatedTotals[entry.activityType] += entry.activityDuration;
+          } else {
+            updatedTotals[entry.activityType] = entry.activityDuration;
+          }
+        }
+      });
+
+      setTotals(updatedTotals);
     } catch (error) {
       console.log(error);
-      setEntries([]);
     }
     setIsLoading(false);
   };
@@ -58,10 +74,10 @@ export default function History() {
   };
 
   const entryCards = () => {
-    return entries.map((entry, index) => {
+    return totals.map((duration, activityType) => {
       return (
         <Card
-          key={index}
+          key={activityType}
           className={styles.entryCard}
           bg="primary-dark"
           border="primary-light"
@@ -69,22 +85,13 @@ export default function History() {
         >
           <Card.Body>
             <Row>
-              <Col>Date</Col>
-              <Col>
-                {new Date(entry.activityDate ?? Date.now())
-                  .toISOString()
-                  .slice(0, 10)}
-              </Col>
-            </Row>
-            <hr className={styles.entryHR} />
-            <Row>
               <Col>Activity</Col>
-              <Col>{getActivityType(entry.activityType ?? 0)}</Col>
+              <Col>{getActivityType(activityType ?? 0)}</Col>
             </Row>
             <hr className={styles.entryHR} />
             <Row>
-              <Col>Duration</Col>
-              <Col>{getDurationString(entry.activityDuration ?? 0)}</Col>
+              <Col>Total Duration</Col>
+              <Col>{getDurationString(duration ?? 0)}</Col>
             </Row>
           </Card.Body>
         </Card>

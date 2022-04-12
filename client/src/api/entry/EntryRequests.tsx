@@ -1,8 +1,8 @@
 import axios from "axios";
 import camelcaseKeys from "camelcase-keys";
 
-import EntryModel from "../../shared/models/EntryModel";
-import Helper from "./Helper";
+import Helper from "../Helper";
+import EntryModel from "./EntryModel";
 
 export default class EntryRequests {
   static getEntries = async (token: string): Promise<EntryModel[]> => {

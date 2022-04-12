@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 
+import EntryModel from "../../../../api/entry/EntryModel";
+import EntryRequests from "../../../../api/entry/EntryRequests";
 import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
-import EntryModel from "../../../../shared/models/EntryModel";
-import EntryRequests from "../../../shared/EntryRequests";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Entry.module.scss";
