@@ -1,9 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
-import EntryModel from "../../../../api/entry/EntryModel";
 import UserModel from "../../../../api/user/UserModel";
 import UserRequests from "../../../../api/user/UserRequests";
 import {
@@ -106,9 +104,11 @@ export function Leaders() {
     );
   };
 
-  if (isLoading) {
+  if (isLoading || users.length === 0) {
     return <Loading />;
   }
+
+  console.log("Return");
 
   return (
     <Container fluid>
