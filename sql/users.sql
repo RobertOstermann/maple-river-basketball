@@ -2,13 +2,13 @@
 -- DROP TABLE users;
 
 -- Create the users table
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS "users" (
     id SERIAL PRIMARY KEY,
     auth_id VARCHAR UNIQUE NOT NULL,
     permission_level SMALLINT NOT NULL CHECK (permission_level >= 0),
     email VARCHAR NOT NULL,
-    first_name VARCHAR,
-    last_name VARCHAR
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL
 );
 
 -- Insert into the users table

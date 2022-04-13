@@ -2,11 +2,12 @@ import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "../auth0/ProtectedRoute";
 import * as CoachHistory from "../pages/coaches/History/History";
+import { Leaders } from "../pages/coaches/Leaders/Leaders";
+import { Players } from "../pages/coaches/Players/Players";
 import Entry from "../pages/players/Entry/Entry";
 import History from "../pages/players/History/History";
 import Home from "../pages/shared/Home/Home";
 import Profile from "../pages/shared/Profile/Profile";
-import Request from "../Request";
 import { COACH_ROUTES, PLAYER_ROUTES } from "./RouterHelper";
 
 export default function Router() {
@@ -16,11 +17,11 @@ export default function Router() {
       {/* Coach Routes */}
       <Route
         path={COACH_ROUTES.players.path}
-        element={<ProtectedRoute component={Request} />}
+        element={<ProtectedRoute component={Players} />}
       />
       <Route
         path={COACH_ROUTES.leaders.path}
-        element={<ProtectedRoute component={Request} />}
+        element={<ProtectedRoute component={Leaders} />}
       />
       <Route
         path={COACH_ROUTES.history.path}

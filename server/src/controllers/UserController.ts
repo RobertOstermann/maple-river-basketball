@@ -5,6 +5,7 @@ import { QueryResult } from "pg";
 
 import { PermissionLevels } from "../constants/PermissionLevels";
 import database from "../database/database";
+import Entry from "../models/Entry";
 import User from "../models/User";
 import AuthController from "./AuthController";
 import EntryController from "./EntryContoller";
@@ -70,21 +71,18 @@ export default class UserController {
   static getAllUsers = async (request: any, response: any) => {
     const authId = request.user.sub;
     const permissionLevel = await this.getPermissionLevel(authId);
+    let users: User[] = [];
+    if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
+      const results = await database.query("SELECT * FROM users ORDER BY id ASC");
+      users = camelcaseKeys(results.rows, { deep: true });
+      for await (const user of users) {
+        const entries: Entry[] = await EntryController.getAllEntriesByUser(authId, user.authId);
+        user.entries = entries;
+      }
 
-    if (permissionLevel === PermissionLevels.coach.id) {
-      database.query("SELECT * FROM users ORDER BY id ASC")
-        .then((results: QueryResult) => {
-          const users: User[] = camelcaseKeys(results.rows, { deep: true });
-          users.map(async (user) => {
-            user.entries = await EntryController.getAllEntriesByUser(authId);
-          });
-          response.status(200).json({
-            users: users
-          });
-        })
-        .catch((error) => {
-          response.status(400).json(error);
-        });
+      response.status(200).json({
+        users: users
+      });
     } else {
       response.status(401).json("Invalid Permission Level");
     }

@@ -21,6 +21,7 @@ VALUES (
 -- Query the entries table
 SELECT *
 FROM entries
+WHERE auth_id = 'auth0|624e0e86bee286006a6bff9d'
 ORDER BY id;
 
 SELECT

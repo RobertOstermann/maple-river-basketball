@@ -48,20 +48,16 @@ export default class EntryController {
     }
   };
 
-  static getAllEntriesByUser = async (authId: string): Promise<Entry[]> => {
-    const permissionLevel = await UserController.getPermissionLevel(authId);
+  static getAllEntriesByUser = async (coachAuthId: string, authId: string): Promise<Entry[]> => {
+    const permissionLevel = await UserController.getPermissionLevel(coachAuthId);
 
     if (permissionLevel === PermissionLevels.coach.id) {
-      database.query(
+      const results = await database.query(
         "SELECT * FROM entries WHERE auth_id = $1 ORDER BY activity_date DESC, activity_duration DESC",
         [authId]
-      ).then((results) => {
-        const entries: Entry[] = camelcaseKeys(results.rows, { deep: true });
-        return entries;
-      }).catch((error) => {
-        console.log(error);
-        return [];
-      });
+      );
+      const entries: Entry[] = camelcaseKeys(results.rows, { deep: true });
+      return entries;
     } else {
       console.log("Invalid Permission Level");
       return [];

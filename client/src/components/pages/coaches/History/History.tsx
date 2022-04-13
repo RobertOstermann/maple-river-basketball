@@ -29,8 +29,6 @@ export function History() {
       const entries: UserEntryModel[] = await EntryRequests.getAllEntries(
         token
       );
-      console.log(entries);
-
       setEntries(entries);
     } catch (error) {
       console.log(error);

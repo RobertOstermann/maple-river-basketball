@@ -1,0 +1,29 @@
+@import "../../../../styles/colors.scss";
+
+// User Cards
+.userDiv {
+  padding-bottom: 4.5rem;
+}
+
+.userCard {
+  border-width: 0.15rem;
+  margin-bottom: 1rem;
+}
+
+.userHR {
+  border-top: solid $primary-light;
+}
+
+// Entry Cards
+.entryDiv {
+  padding-bottom: 4.5rem;
+}
+
+.entryCard {
+  border-width: 0.15rem;
+  margin-bottom: 1rem;
+}
+
+.entryHR {
+  border-top: solid $primary-light;
+}

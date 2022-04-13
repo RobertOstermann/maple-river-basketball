@@ -23,11 +23,14 @@ export default function Home() {
   } = useAuth0();
 
   useEffect(() => {
+    setIsUserLoading(true);
     if (isAuthenticated) {
       getUser().then((user) => {
         setUser(user);
         setIsUserLoading(false);
       });
+    } else {
+      setIsUserLoading(false);
     }
   }, [isAuthenticated]);
 
