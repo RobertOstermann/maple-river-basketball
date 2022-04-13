@@ -1,7 +1,6 @@
 import * as Auth0 from "auth0";
 import camelcaseKeys from "camelcase-keys";
 import Express from "express";
-import { QueryResult } from "pg";
 
 import { PermissionLevels } from "../constants/PermissionLevels";
 import database from "../database/database";
@@ -19,7 +18,7 @@ export default class UserController {
       );
       const user: User = camelcaseKeys(result.rows[0]);
 
-      return user.permissionLevel;
+      return user.permissionLevel ? user.permissionLevel : PermissionLevels.player.id;
     } catch (error) {
       console.log(error);
       return PermissionLevels.player.id;
