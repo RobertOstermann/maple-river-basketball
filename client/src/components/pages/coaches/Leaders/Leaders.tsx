@@ -108,8 +108,6 @@ export function Leaders() {
     return <Loading />;
   }
 
-  console.log("Return");
-
   return (
     <Container fluid>
       <div className={styles.userDiv}>{getLeaders()}</div>

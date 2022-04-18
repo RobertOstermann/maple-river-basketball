@@ -11,15 +11,18 @@ CREATE TABLE IF NOT EXISTS "users" (
     last_name VARCHAR NOT NULL
 );
 
+ALTER TABLE "users"
+ADD graduation_year SMALLINT NOT NULL DEFAULT 0;
+
 -- Insert into the users table
-INSERT INTO "users" (auth_id, permission_level, email, first_name, last_name)
-VALUES (
-    'testuser',
-    1,
-    'test@gmail.com',
-    'test',
-    'user'
-);
+-- INSERT INTO "users" (auth_id, permission_level, email, first_name, last_name)
+-- VALUES (
+--     'testuser',
+--     1,
+--     'test@gmail.com',
+--     'test',
+--     'user'
+-- );
 
 -- Query the users table
 SELECT *

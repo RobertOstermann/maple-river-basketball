@@ -12,9 +12,14 @@ import styles from "./Profile.module.scss";
 export default function Profile() {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const [user, setUser] = useState<UserModel>({});
   const [firstName, setFirstName] = useState<string | undefined>();
   const [lastName, setLastName] = useState<string | undefined>();
+  const [graduationYear, setGraduationYear] = useState<number | undefined>();
+  const [validFirstName, setValidFirstName] = useState(false);
+  const [validLastName, setValidLastName] = useState(false);
+  const [validGraduationYear, setValidGraduationYear] = useState(false);
   const [success, setSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -25,21 +30,47 @@ export default function Profile() {
       setUser(user);
       setFirstName(user.firstName);
       setLastName(user.lastName);
+      setGraduationYear(user.graduationYear);
+      setIsPageLoading(false);
     });
   }, []);
 
   useEffect(() => {
-    const updatedUser = user;
-    updatedUser.firstName = firstName;
-    updatedUser.lastName = lastName;
-    setUser(updatedUser);
-
-    if (user.firstName && user.lastName) {
+    if (validFirstName && validLastName && validGraduationYear) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [firstName, lastName]);
+  }, [validFirstName, validLastName, validGraduationYear]);
+
+  useEffect(() => {
+    const updatedUser = user;
+    updatedUser.firstName = firstName;
+    setUser(updatedUser);
+
+    firstName ? setValidFirstName(true) : setValidFirstName(false);
+  }, [firstName]);
+
+  useEffect(() => {
+    const updatedUser = user;
+    updatedUser.lastName = lastName;
+    setUser(updatedUser);
+
+    lastName ? setValidLastName(true) : setValidLastName(false);
+  }, [lastName]);
+
+  useEffect(() => {
+    const updatedUser = user;
+    updatedUser.graduationYear = graduationYear;
+    setUser(updatedUser);
+
+    const year = graduationYear ? graduationYear : 0;
+    if (year !== 0 && (year < 2022 || year > 2026)) {
+      setValidGraduationYear(false);
+    } else {
+      setValidGraduationYear(true);
+    }
+  }, [graduationYear]);
 
   const getRole = (): string => {
     switch (user.permissionLevel) {
@@ -150,14 +181,14 @@ export default function Profile() {
     );
   };
 
-  if (Object.keys(user).length === 0) {
+  if (isPageLoading) {
     return <Loading />;
   }
 
   return (
     <Container fluid>
       {logoutButton()}
-      <Form className={styles.form}>
+      <Form className={styles.form} noValidate>
         <Form.Group className={styles.formGroup}>
           <Form.Label>Email Address</Form.Label>
           <Form.Control type="email" placeholder={user.email} disabled />
@@ -171,19 +202,48 @@ export default function Profile() {
           <Form.Control
             type="text"
             placeholder={firstName ? firstName : "Enter First Name"}
+            isInvalid={!validFirstName}
             value={firstName ? firstName : undefined}
             onChange={(event) => setFirstName(event.target.value)}
           />
+          <Form.Control.Feedback type="invalid">
+            Please enter a first name.
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group className={styles.formGroup}>
           <Form.Label>Last Name</Form.Label>
           <Form.Control
-            type="email"
+            type="text"
             placeholder={lastName ? lastName : "Enter Last Name"}
+            isInvalid={!validLastName}
             value={lastName ? lastName : undefined}
             onChange={(event) => setLastName(event.target.value)}
           />
+          <Form.Control.Feedback type="invalid">
+            Please enter a last name.
+          </Form.Control.Feedback>
         </Form.Group>
+        {user.permissionLevel === PermissionLevels.player.id && (
+          <Form.Group className={styles.formGroup}>
+            <Form.Label>Graduation Year</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder={
+                graduationYear
+                  ? graduationYear.toString()
+                  : "Enter Graduation Year"
+              }
+              isInvalid={!validGraduationYear}
+              value={graduationYear ? graduationYear : undefined}
+              onChange={(event) =>
+                setGraduationYear(parseInt(event.target.value))
+              }
+            />
+            <Form.Control.Feedback type="invalid">
+              Please enter a value between 2022 and 2026.
+            </Form.Control.Feedback>
+          </Form.Group>
+        )}
       </Form>
       {submitButton()}
       {successModal()}

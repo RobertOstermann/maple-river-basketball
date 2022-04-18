@@ -7,5 +7,6 @@ export default interface UserModel {
   email?: string;
   firstName?: string;
   lastName?: string;
+  graduationYear?: number;
   entries?: EntryModel[];
 }

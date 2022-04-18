@@ -7,6 +7,7 @@ import { Players } from "../pages/coaches/Players/Players";
 import Entry from "../pages/players/Entry/Entry";
 import History from "../pages/players/History/History";
 import Home from "../pages/shared/Home/Home";
+import Invalid from "../pages/shared/Invalid/Invalid";
 import Profile from "../pages/shared/Profile/Profile";
 import { COACH_ROUTES, PLAYER_ROUTES } from "./RouterHelper";
 
@@ -44,6 +45,8 @@ export default function Router() {
         path={PLAYER_ROUTES.profile.path}
         element={<ProtectedRoute component={Profile} />}
       />
+      {/* Invalid Routes */}
+      <Route path="*" element={<ProtectedRoute component={Invalid} />} />
     </Routes>
   );
 }
