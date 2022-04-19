@@ -68,15 +68,16 @@ export default class UserController {
     }
   };
 
-  static getAllUsers = async (request: any, response: any) => {
+  static getAllPlayers = async (request: any, response: any) => {
     const authId = request.user.sub;
     const permissionLevel = await this.getPermissionLevel(authId);
     let users: User[] = [];
     try {
       if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
         const query = {
-          name: "fetch-all-users",
-          text: "SELECT * FROM users ORDER BY graduation_year DESC, last_name ASC, first_name ASC, id ASC"
+          name: "fetch-all-players",
+          text: "SELECT * FROM users WHERE permission_level = $1 ORDER BY graduation_year DESC, last_name ASC, first_name ASC, id ASC",
+          values: [PermissionLevels.player.id]
         };
         const results = await database.query(query);
         users = camelcaseKeys(results.rows, { deep: true });

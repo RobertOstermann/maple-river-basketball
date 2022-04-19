@@ -27,7 +27,7 @@ export default class UserRequests {
     }
   };
 
-  static getAllUsers = async (token: string): Promise<UserModel[]> => {
+  static getAllPlayers = async (token: string): Promise<UserModel[]> => {
     try {
       const config = {
         headers: {
@@ -36,7 +36,7 @@ export default class UserRequests {
       };
 
       const response = await axios.get(
-        `${Helper.getApiRoute()}/get-all-users`,
+        `${Helper.getApiRoute()}/get-all-players`,
         config
       );
 

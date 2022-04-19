@@ -30,7 +30,7 @@ export function Players() {
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const users: UserModel[] = await UserRequests.getAllUsers(token);
+      const users: UserModel[] = await UserRequests.getAllPlayers(token);
       setUsers(users);
     } catch (error) {
       console.log(error);
