@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap";
 
-import styles from "./Invalid.module.scss";
+import styles from "./Player.module.scss";
 
-export default function Invalid() {
+export default function Player() {
   return (
     <Container fluid className={styles.container}>
-      <h1>Invalid Route</h1>
+      <h1>Player</h1>
     </Container>
   );
 }

@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "../auth0/ProtectedRoute";
 import * as CoachHistory from "../pages/coaches/History/History";
 import { Leaders } from "../pages/coaches/Leaders/Leaders";
+import Player from "../pages/coaches/Players/Player/Player";
 import { Players } from "../pages/coaches/Players/Players";
 import Entry from "../pages/players/Entry/Entry";
 import History from "../pages/players/History/History";
@@ -19,6 +20,10 @@ export default function Router() {
       <Route
         path={COACH_ROUTES.players.path}
         element={<ProtectedRoute component={Players} />}
+      />
+      <Route
+        path={`${COACH_ROUTES.players.path}/:id`}
+        element={<ProtectedRoute component={Player} />}
       />
       <Route
         path={COACH_ROUTES.leaders.path}
