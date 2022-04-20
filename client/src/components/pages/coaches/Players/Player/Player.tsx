@@ -4,7 +4,6 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 import EntryModel from "../../../../../api/entry/EntryModel";
-import EntryRequests from "../../../../../api/entry/EntryRequests";
 import UserModel from "../../../../../api/user/UserModel";
 import UserRequests from "../../../../../api/user/UserRequests";
 import {
