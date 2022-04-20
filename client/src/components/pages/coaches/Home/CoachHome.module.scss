@@ -6,16 +6,21 @@
   text-align: center;
 }
 
-// Entry Cards
-.entryDiv {
+// Category Cards
+.categoryDiv {
   padding-bottom: 4.5rem;
 }
 
-.entryCard {
+.categoryCard {
   border-width: 0.15rem;
   margin-bottom: 1rem;
 }
 
-.entryHR {
+.categoryHR {
   border-top: solid $primary-light;
+}
+
+// Total Card
+.totalRow {
+  text-align: center;
 }
