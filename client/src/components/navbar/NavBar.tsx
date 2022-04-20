@@ -28,7 +28,7 @@ export default function NavBar() {
       (tab: RouterHelperInterface | any, index) => (
         <Nav.Item key={`tab-${index}`}>
           <NavLink
-            end
+            end={tab.end}
             to={tab.path}
             className={({ isActive }) =>
               isActive ? styles.active : styles.link

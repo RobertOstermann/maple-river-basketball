@@ -13,8 +13,9 @@ import Loading from "../../shared/Loading/Loading";
 import styles from "./PlayerHome.module.scss";
 
 export default function PlayerHome() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [totals, setTotals] = useState<any[]>([]);
+  const [totalDuration, setTotalDuration] = useState<number>(0);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -28,6 +29,7 @@ export default function PlayerHome() {
       const token = await getAccessTokenSilently();
       const entries: EntryModel[] = await EntryRequests.getUserEntries(token);
       const updatedTotals: any[] = [];
+      let totalDuration = 0;
 
       Object.values(ActivityTypes).map(
         (activityType: ActivityTypeInterface) => {
@@ -37,6 +39,7 @@ export default function PlayerHome() {
 
       entries.map((entry) => {
         if (entry.activityType !== undefined) {
+          totalDuration += entry.activityDuration ? entry.activityDuration : 0;
           if (updatedTotals[entry.activityType]) {
             updatedTotals[entry.activityType] += entry.activityDuration;
           } else {
@@ -46,6 +49,7 @@ export default function PlayerHome() {
       });
 
       setTotals(updatedTotals);
+      setTotalDuration(totalDuration);
     } catch (error) {
       console.log(error);
     }
@@ -73,12 +77,12 @@ export default function PlayerHome() {
     return `${hoursString}${minutesString}`;
   };
 
-  const entryCards = () => {
+  const categoryCards = () => {
     return totals.map((duration, activityType) => {
       return (
         <Card
           key={activityType}
-          className={styles.entryCard}
+          className={styles.categoryCard}
           bg="primary-dark"
           border="primary-light"
           text="secondary"
@@ -88,7 +92,7 @@ export default function PlayerHome() {
               <Col>Activity</Col>
               <Col>{getActivityType(activityType ?? 0)}</Col>
             </Row>
-            <hr className={styles.entryHR} />
+            <hr className={styles.categoryHR} />
             <Row>
               <Col>Total Duration</Col>
               <Col>{getDurationString(duration ?? 0)}</Col>
@@ -99,13 +103,39 @@ export default function PlayerHome() {
     });
   };
 
+  const totalCard = () => {
+    return (
+      <Card
+        key="combined"
+        className={styles.categoryCard}
+        bg="primary-dark"
+        border="primary-light"
+        text="secondary"
+      >
+        <Card.Body>
+          <Row className={styles.totalRow}>
+            <Col>All Activities</Col>
+          </Row>
+          <hr className={styles.categoryHR} />
+          <Row>
+            <Col>Total Duration</Col>
+            <Col>{getDurationString(totalDuration ?? 0)}</Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    );
+  };
+
   if (isLoading) {
     return <Loading />;
   }
 
   return (
     <Container fluid>
-      <div className={styles.entryDiv}>{entryCards()}</div>
+      <div className={styles.categoryDiv}>
+        {totalCard()}
+        {categoryCards()}
+      </div>
     </Container>
   );
 }

@@ -18,7 +18,7 @@ export default class UserRequests {
         config
       );
 
-      const user: UserModel = camelcaseKeys(response.data.user);
+      const user: UserModel = camelcaseKeys(response.data.user, { deep: true });
 
       return user;
     } catch (error) {
@@ -27,7 +27,10 @@ export default class UserRequests {
     }
   };
 
-  static getAllUsers = async (token: string): Promise<UserModel[]> => {
+  static getUserById = async (
+    id: number,
+    token: string
+  ): Promise<UserModel> => {
     try {
       const config = {
         headers: {
@@ -36,15 +39,13 @@ export default class UserRequests {
       };
 
       const response = await axios.get(
-        `${Helper.getApiRoute()}/get-all-users`,
+        `${Helper.getApiRoute()}/get-user/${id}`,
         config
       );
 
-      const users: UserModel[] = camelcaseKeys(response.data.users, {
-        deep: true,
-      });
+      const user: UserModel = camelcaseKeys(response.data.user, { deep: true });
 
-      return users;
+      return user;
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get the user");
@@ -63,6 +64,30 @@ export default class UserRequests {
     } catch (error) {
       console.log(error);
       throw new Error("Failed to update the user");
+    }
+  };
+
+  static getAllPlayers = async (token: string): Promise<UserModel[]> => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(
+        `${Helper.getApiRoute()}/get-all-players`,
+        config
+      );
+
+      const users: UserModel[] = camelcaseKeys(response.data.users, {
+        deep: true,
+      });
+
+      return users;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get the user");
     }
   };
 }

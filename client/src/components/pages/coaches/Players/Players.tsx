@@ -1,7 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 import EntryModel from "../../../../api/entry/EntryModel";
 import UserModel from "../../../../api/user/UserModel";
@@ -10,12 +11,13 @@ import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
+import RouterHelper from "../../../routers/RouterHelper";
 import Loading from "../../shared/Loading/Loading";
 
 import styles from "./Players.module.scss";
 
 export function Players() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<UserModel[]>([]);
 
   const { getAccessTokenSilently } = useAuth0();
@@ -28,7 +30,7 @@ export function Players() {
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const users: UserModel[] = await UserRequests.getAllUsers(token);
+      const users: UserModel[] = await UserRequests.getAllPlayers(token);
       setUsers(users);
     } catch (error) {
       console.log(error);
@@ -82,10 +84,37 @@ export function Players() {
         >
           <Card.Body>
             <Row>
-              <Col>Player</Col>
+              <Col>Name</Col>
               <Col>{`${user.firstName} ${user.lastName}`}</Col>
             </Row>
-            {getTotals(user.entries ? user.entries : [])}
+            <hr className={styles.userHR} />
+            <Row>
+              <Col>Email</Col>
+              <Col>{user.email}</Col>
+            </Row>
+            <hr className={styles.userHR} />
+            <Row>
+              <Col>Class</Col>
+              <Col>{user.graduationYear?.toString()}</Col>
+            </Row>
+            <hr className={styles.userHR} />
+            <Row>
+              <Col>
+                <NavLink
+                  end
+                  to={`${RouterHelper.coach.players.path}/${user.id}`}
+                >
+                  <Button
+                    variant={"primary"}
+                    onClick={undefined}
+                    className={styles.userButton}
+                  >
+                    Details
+                  </Button>
+                </NavLink>
+              </Col>
+            </Row>
+            {/* {getTotals(user.entries ? user.entries : [])} */}
           </Card.Body>
         </Card>
       );

@@ -52,6 +52,7 @@ export default class UserController {
         email: userInformation.email,
         firstName: userInformation.given_name ?? "First",
         lastName: userInformation.family_name ?? "Last",
+        graduationYear: 0
       };
 
       database.query(
@@ -67,33 +68,83 @@ export default class UserController {
     }
   };
 
-  static getAllUsers = async (request: any, response: any) => {
+  static getUserById = async (request: Express.Request | any, response: Express.Response) => {
     const authId = request.user.sub;
+    const userId = request.params.id;
     const permissionLevel = await this.getPermissionLevel(authId);
+
+    try {
+      if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
+        const query = {
+          name: "fetch-user-by-id",
+          text: "SELECT * FROM users WHERE id = $1",
+          values: [userId]
+        };
+        const results = await database.query(query);
+        const user: User = camelcaseKeys(results.rows[0], { deep: true });
+        const entries: Entry[] = await EntryController.getAllEntriesByUser(user.authId);
+        user.entries = entries;
+
+        response.status(200).json({
+          user: user
+        });
+      } else {
+        response.status(401).json("Invalid Permission Level");
+      }
+    } catch (error) {
+      response.status(400).json(error);
+    }
+
+    return;
+  };
+
+  static getAllPlayers = async (request: any, response: any) => {
     let users: User[] = [];
-    if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
-      const results = await database.query("SELECT * FROM users ORDER BY id ASC");
+
+    try {
+      const query = {
+        name: "fetch-all-players",
+        text: "SELECT * FROM users WHERE permission_level = $1 ORDER BY graduation_year DESC, last_name ASC, first_name ASC, id ASC",
+        values: [PermissionLevels.player.id]
+      };
+      const results = await database.query(query);
       users = camelcaseKeys(results.rows, { deep: true });
+
       for await (const user of users) {
-        const entries: Entry[] = await EntryController.getAllEntriesByUser(authId, user.authId);
+        const entries: Entry[] = await EntryController.getAllEntriesByUser(user.authId);
         user.entries = entries;
       }
 
       response.status(200).json({
         users: users
       });
-    } else {
-      response.status(401).json("Invalid Permission Level");
+    } catch (error) {
+      response.status(400).json(error);
     }
   };
 
   static updateUser = async (request: any, response: any) => {
     const authId = request.user.sub;
     const user: User = request.body;
+    const { firstName, lastName, graduationYear } = user;
+    if (!firstName) {
+      response.status(400).json("Invalid First Name");
+      return;
+    }
+
+    if (!lastName) {
+      response.status(400).json("Invalid Last Name");
+      return;
+    }
+
+    if (graduationYear !== 0 && (graduationYear < 2022 || graduationYear > 2026)) {
+      response.status(400).json("Invalid Graduation Year");
+      return;
+    }
 
     database.query(
-      "UPDATE users SET first_name = $1, last_name = $2 WHERE auth_id = $3",
-      [user.firstName, user.lastName, authId])
+      "UPDATE users SET first_name = $1, last_name = $2, graduation_year = $3 WHERE auth_id = $4",
+      [firstName, lastName, graduationYear, authId])
       .then(() => {
         response.status(200).json("User Updated");
       })

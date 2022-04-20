@@ -1,33 +1,40 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 
-import EntryModel from "../../../../api/entry/EntryModel";
-import EntryRequests from "../../../../api/entry/EntryRequests";
+import EntryModel from "../../../../../api/entry/EntryModel";
+import UserModel from "../../../../../api/user/UserModel";
+import UserRequests from "../../../../../api/user/UserRequests";
 import {
   ActivityTypeInterface,
   ActivityTypes,
-} from "../../../../shared/constants/ActivityTypes";
-import Loading from "../../shared/Loading/Loading";
+} from "../../../../../shared/constants/ActivityTypes";
+import Loading from "../../../shared/Loading/Loading";
 
-import styles from "./CoachHome.module.scss";
+import styles from "./Player.module.scss";
 
-export default function CoachHome() {
+export default function Player() {
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<UserModel | undefined>();
   const [totals, setTotals] = useState<any[]>([]);
   const [totalDuration, setTotalDuration] = useState<number>(0);
 
   const { getAccessTokenSilently } = useAuth0();
+  const { id } = useParams();
 
   useEffect(() => {
-    getEntries();
+    if (id) {
+      getUserById(parseInt(id));
+    }
   }, []);
 
-  const getEntries = async (): Promise<void> => {
+  const getUserById = async (id: number): Promise<void> => {
     setIsLoading(true);
     try {
       const token = await getAccessTokenSilently();
-      const entries: EntryModel[] = await EntryRequests.getAllEntries(token);
+      const user: UserModel = await UserRequests.getUserById(id, token);
+      const entries: EntryModel[] = user.entries ? user.entries : [];
       const updatedTotals: any[] = [];
       let totalDuration = 0;
 
@@ -48,12 +55,25 @@ export default function CoachHome() {
         }
       });
 
+      setUser(user);
       setTotals(updatedTotals);
       setTotalDuration(totalDuration);
     } catch (error) {
       console.log(error);
     }
     setIsLoading(false);
+  };
+
+  const getHeader = () => {
+    if (!user) {
+      return <h2>Invalid ID</h2>;
+    }
+
+    return (
+      <h2>
+        {user?.firstName} {user?.lastName}
+      </h2>
+    );
   };
 
   const getActivityType = (id: number) => {
@@ -132,9 +152,7 @@ export default function CoachHome() {
 
   return (
     <Container fluid>
-      <div className={styles.headerDiv}>
-        <h2>Team Totals</h2>
-      </div>
+      <div className={styles.headerDiv}>{getHeader()}</div>
       <div className={styles.categoryDiv}>
         {totalCard()}
         {categoryCards()}

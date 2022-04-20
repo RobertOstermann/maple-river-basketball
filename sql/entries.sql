@@ -10,13 +10,16 @@ CREATE TABLE IF NOT EXISTS entries (
     activity_duration INTEGER NOT NULL CHECK (activity_duration >= 0)
 );
 
+ALTER TABLE "entries"
+ADD date_created DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
 -- Insert into the entries table
-INSERT INTO "entries" (auth_id, activity_type, activity_duration)
-VALUES (
-    'testuser',
-    0,
-    30
-);
+-- INSERT INTO "entries" (auth_id, activity_type, activity_duration)
+-- VALUES (
+--     'testuser',
+--     0,
+--     30
+-- );
 
 -- Query the entries table
 SELECT *

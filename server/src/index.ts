@@ -57,6 +57,7 @@ app.get(
 
 // Player - Users
 app.get("/api/v1/get-user", AuthController.jwtCheck, UserController.getUser);
+app.get("/api/v1/get-user/:id", AuthController.jwtCheck, UserController.getUserById);
 app.put("/api/v1/update-user", AuthController.jwtCheck, UserController.updateUser);
 
 // Player - Entries
@@ -64,7 +65,7 @@ app.get("/api/v1/get-user-entries", AuthController.jwtCheck, EntryController.get
 app.post("/api/v1/create-entry", AuthController.jwtCheck, EntryController.createEntry);
 
 // Coach - Users
-app.get("/api/v1/get-all-users", AuthController.jwtCheck, UserController.getAllUsers);
+app.get("/api/v1/get-all-players", AuthController.jwtCheck, UserController.getAllPlayers);
 
 // Coach - Entries
 app.get("/api/v1/get-all-entries", AuthController.jwtCheck, EntryController.getAllEntries);

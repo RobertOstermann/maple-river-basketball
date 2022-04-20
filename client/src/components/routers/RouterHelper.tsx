@@ -9,49 +9,64 @@ export interface RouterHelperInterface {
 const RouterHelper = {
   coach: {
     home: {
+      end: true,
       path: "/",
       label: "Home",
       icon: fontAwesome.faHome,
     },
     players: {
+      end: false,
       path: "/coach/players",
       label: "Players",
       icon: fontAwesome.faPeopleGroup,
     },
     leaders: {
-      path: "/coach/players/team-leaders",
+      end: true,
+      path: "/leaders",
       label: "Leaders",
       icon: fontAwesome.faBasketball,
     },
     history: {
-      path: "/coach/players/entry-history",
+      end: true,
+      path: "/coach/history",
       label: "History",
       icon: fontAwesome.faHistory,
     },
     profile: {
-      path: "/coach/profile",
+      end: true,
+      path: "/profile",
       label: "Profile",
       icon: fontAwesome.faUser,
     },
   },
   player: {
     home: {
+      end: true,
       path: "/",
       label: "Home",
       icon: fontAwesome.faHome,
     },
     newEntry: {
+      end: true,
       path: "/player/new-entry",
       label: "Entry",
       icon: fontAwesome.faPlus,
     },
+    leaders: {
+      end: true,
+      path: "/leaders",
+      label: "Leaders",
+      icon: fontAwesome.faBasketball,
+    },
     history: {
+      end: true,
       path: "/player/history",
       label: "History",
       icon: fontAwesome.faHistory,
     },
     profile: {
-      path: "/player/profile",
+      end: true,
+      path: "/profile",
       label: "Profile",
       icon: fontAwesome.faUser,
     },

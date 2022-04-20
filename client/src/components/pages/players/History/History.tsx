@@ -13,7 +13,7 @@ import Loading from "../../shared/Loading/Loading";
 import styles from "./History.module.scss";
 
 export default function History() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [entries, setEntries] = useState<EntryModel[]>([]);
 
   const { getAccessTokenSilently } = useAuth0();
