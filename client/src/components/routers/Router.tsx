@@ -2,13 +2,13 @@ import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "../auth0/ProtectedRoute";
 import * as CoachHistory from "../pages/coaches/History/History";
-import { Leaders } from "../pages/coaches/Leaders/Leaders";
 import Player from "../pages/coaches/Players/Player/Player";
 import { Players } from "../pages/coaches/Players/Players";
 import Entry from "../pages/players/Entry/Entry";
 import History from "../pages/players/History/History";
 import Home from "../pages/shared/Home/Home";
 import Invalid from "../pages/shared/Invalid/Invalid";
+import { Leaders } from "../pages/shared/Leaders/Leaders";
 import Profile from "../pages/shared/Profile/Profile";
 import { COACH_ROUTES, PLAYER_ROUTES } from "./RouterHelper";
 

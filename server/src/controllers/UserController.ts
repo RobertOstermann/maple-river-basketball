@@ -82,7 +82,7 @@ export default class UserController {
         };
         const results = await database.query(query);
         const user: User = camelcaseKeys(results.rows[0], { deep: true });
-        const entries: Entry[] = await EntryController.getAllEntriesByUser(authId, user.authId);
+        const entries: Entry[] = await EntryController.getAllEntriesByUser(user.authId);
         user.entries = entries;
 
         response.status(200).json({
@@ -104,30 +104,25 @@ export default class UserController {
     let users: User[] = [];
 
     try {
-      if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
-        const query = {
-          name: "fetch-all-players",
-          text: "SELECT * FROM users WHERE permission_level = $1 ORDER BY graduation_year DESC, last_name ASC, first_name ASC, id ASC",
-          values: [PermissionLevels.player.id]
-        };
-        const results = await database.query(query);
-        users = camelcaseKeys(results.rows, { deep: true });
+      const query = {
+        name: "fetch-all-players",
+        text: "SELECT * FROM users WHERE permission_level = $1 ORDER BY graduation_year DESC, last_name ASC, first_name ASC, id ASC",
+        values: [PermissionLevels.player.id]
+      };
+      const results = await database.query(query);
+      users = camelcaseKeys(results.rows, { deep: true });
 
-        for await (const user of users) {
-          const entries: Entry[] = await EntryController.getAllEntriesByUser(authId, user.authId);
-          user.entries = entries;
-        }
-
-        response.status(200).json({
-          users: users
-        });
-      } else {
-        response.status(401).json("Invalid Permission Level");
+      for await (const user of users) {
+        const entries: Entry[] = await EntryController.getAllEntriesByUser(user.authId);
+        user.entries = entries;
       }
+
+      response.status(200).json({
+        users: users
+      });
     } catch (error) {
       response.status(400).json(error);
     }
-
   };
 
   static updateUser = async (request: any, response: any) => {

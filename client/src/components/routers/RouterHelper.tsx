@@ -22,7 +22,7 @@ const RouterHelper = {
     },
     leaders: {
       end: true,
-      path: "/coach/leaders",
+      path: "/leaders",
       label: "Leaders",
       icon: fontAwesome.faBasketball,
     },
@@ -51,6 +51,12 @@ const RouterHelper = {
       path: "/player/new-entry",
       label: "Entry",
       icon: fontAwesome.faPlus,
+    },
+    leaders: {
+      end: true,
+      path: "/leaders",
+      label: "Leaders",
+      icon: fontAwesome.faBasketball,
     },
     history: {
       end: true,
