@@ -156,7 +156,7 @@ export function Leaders() {
     );
   };
 
-  if (isLoading || users.length === 0) {
+  if (isLoading) {
     return <Loading />;
   }
 

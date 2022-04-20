@@ -99,8 +99,6 @@ export default class UserController {
   };
 
   static getAllPlayers = async (request: any, response: any) => {
-    const authId = request.user.sub;
-    const permissionLevel = await this.getPermissionLevel(authId);
     let users: User[] = [];
 
     try {
