@@ -1,7 +1,26 @@
 @import "../../../../../styles/colors.scss";
 
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+// Header
+.headerDiv {
+  padding-bottom: 1rem;
+  text-align: center;
+}
+
+// Category Cards
+.categoryDiv {
+  padding-bottom: 4.5rem;
+}
+
+.categoryCard {
+  border-width: 0.15rem;
+  margin-bottom: 1rem;
+}
+
+.categoryHR {
+  border-top: solid $primary-light;
+}
+
+// Total Card
+.totalRow {
+  text-align: center;
 }

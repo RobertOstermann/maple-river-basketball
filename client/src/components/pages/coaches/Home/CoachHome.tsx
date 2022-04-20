@@ -13,7 +13,7 @@ import Loading from "../../shared/Loading/Loading";
 import styles from "./CoachHome.module.scss";
 
 export default function CoachHome() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [totals, setTotals] = useState<any[]>([]);
   const [totalDuration, setTotalDuration] = useState<number>(0);
 

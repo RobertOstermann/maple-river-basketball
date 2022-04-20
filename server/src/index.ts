@@ -57,6 +57,7 @@ app.get(
 
 // Player - Users
 app.get("/api/v1/get-user", AuthController.jwtCheck, UserController.getUser);
+app.get("/api/v1/get-user/:id", AuthController.jwtCheck, UserController.getUserById);
 app.put("/api/v1/update-user", AuthController.jwtCheck, UserController.updateUser);
 
 // Player - Entries

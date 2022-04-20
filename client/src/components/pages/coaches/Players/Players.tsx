@@ -17,7 +17,7 @@ import Loading from "../../shared/Loading/Loading";
 import styles from "./Players.module.scss";
 
 export function Players() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<UserModel[]>([]);
 
   const { getAccessTokenSilently } = useAuth0();

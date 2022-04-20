@@ -68,10 +68,41 @@ export default class UserController {
     }
   };
 
+  static getUserById = async (request: Express.Request | any, response: Express.Response) => {
+    const authId = request.user.sub;
+    const userId = request.params.id;
+    const permissionLevel = await this.getPermissionLevel(authId);
+
+    try {
+      if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
+        const query = {
+          name: "fetch-user-by-id",
+          text: "SELECT * FROM users WHERE id = $1",
+          values: [userId]
+        };
+        const results = await database.query(query);
+        const user: User = camelcaseKeys(results.rows[0], { deep: true });
+        const entries: Entry[] = await EntryController.getAllEntriesByUser(authId, user.authId);
+        user.entries = entries;
+
+        response.status(200).json({
+          user: user
+        });
+      } else {
+        response.status(401).json("Invalid Permission Level");
+      }
+    } catch (error) {
+      response.status(400).json(error);
+    }
+
+    return;
+  };
+
   static getAllPlayers = async (request: any, response: any) => {
     const authId = request.user.sub;
     const permissionLevel = await this.getPermissionLevel(authId);
     let users: User[] = [];
+
     try {
       if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
         const query = {
@@ -81,6 +112,7 @@ export default class UserController {
         };
         const results = await database.query(query);
         users = camelcaseKeys(results.rows, { deep: true });
+
         for await (const user of users) {
           const entries: Entry[] = await EntryController.getAllEntriesByUser(authId, user.authId);
           user.entries = entries;

@@ -13,7 +13,7 @@ import Loading from "../../shared/Loading/Loading";
 import styles from "./PlayerHome.module.scss";
 
 export default function PlayerHome() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [totals, setTotals] = useState<any[]>([]);
   const [totalDuration, setTotalDuration] = useState<number>(0);
 

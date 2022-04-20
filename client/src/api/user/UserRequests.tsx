@@ -18,12 +18,52 @@ export default class UserRequests {
         config
       );
 
-      const user: UserModel = camelcaseKeys(response.data.user);
+      const user: UserModel = camelcaseKeys(response.data.user, { deep: true });
 
       return user;
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get the user");
+    }
+  };
+
+  static getUserById = async (
+    id: number,
+    token: string
+  ): Promise<UserModel> => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(
+        `${Helper.getApiRoute()}/get-user/${id}`,
+        config
+      );
+
+      const user: UserModel = camelcaseKeys(response.data.user, { deep: true });
+
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to get the user");
+    }
+  };
+
+  static updateUser = async (token: string, user: UserModel): Promise<void> => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      await axios.put(`${Helper.getApiRoute()}/update-user`, user, config);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to update the user");
     }
   };
 
@@ -48,21 +88,6 @@ export default class UserRequests {
     } catch (error) {
       console.log(error);
       throw new Error("Failed to get the user");
-    }
-  };
-
-  static updateUser = async (token: string, user: UserModel): Promise<void> => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      await axios.put(`${Helper.getApiRoute()}/update-user`, user, config);
-    } catch (error) {
-      console.log(error);
-      throw new Error("Failed to update the user");
     }
   };
 }
