@@ -64,6 +64,18 @@ export default function Player() {
     setIsLoading(false);
   };
 
+  const getHeader = () => {
+    if (!user) {
+      return <h2>Invalid ID</h2>;
+    }
+
+    return (
+      <h2>
+        {user?.firstName} {user?.lastName}
+      </h2>
+    );
+  };
+
   const getActivityType = (id: number) => {
     let ui = "";
     Object.values(ActivityTypes).map((activityType: ActivityTypeInterface) => {
@@ -140,11 +152,7 @@ export default function Player() {
 
   return (
     <Container fluid>
-      <div className={styles.headerDiv}>
-        <h2>
-          {user?.firstName} {user?.lastName}
-        </h2>
-      </div>
+      <div className={styles.headerDiv}>{getHeader()}</div>
       <div className={styles.categoryDiv}>
         {totalCard()}
         {categoryCards()}
