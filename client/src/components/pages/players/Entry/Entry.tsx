@@ -14,7 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Entry.module.scss";
 
 export default function Entry() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [entry, setEntry] = useState<EntryModel>({});
   const [activity, setActivity] = useState<number>(ActivityTypes.game.id);
   const [duration, setDuration] = useState<number>(15);
