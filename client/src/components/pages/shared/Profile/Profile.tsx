@@ -65,7 +65,7 @@ export default function Profile() {
     setUser(updatedUser);
 
     const year = graduationYear ? graduationYear : 0;
-    if (year !== 0 && (year < 2022 || year > 2026)) {
+    if (year !== 0 && (year < 2023 || year > 2030)) {
       setValidGraduationYear(false);
     } else {
       setValidGraduationYear(true);
@@ -240,7 +240,7 @@ export default function Profile() {
               }
             />
             <Form.Control.Feedback type="invalid">
-              Please enter a value between 2022 and 2026.
+              Please enter a value between 2023 and 2030.
             </Form.Control.Feedback>
           </Form.Group>
         )}
