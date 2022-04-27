@@ -32,7 +32,9 @@ export default class EntryController {
         name: "fetch-all-entries",
         text: "SELECT users.first_name, users.last_name, entries.* " +
           "FROM entries LEFT JOIN users ON users.auth_id = entries.auth_id " +
-          "ORDER BY entries.auth_id ASC, entries.activity_date DESC, entries.activity_duration DESC"
+          "WHERE users.permission_level = $1 " +
+          "ORDER BY entries.activity_date DESC, entries.activity_duration DESC, entries.auth_id ASC",
+        values: [PermissionLevels.player.id]
       };
       database.query(query)
         .then((results) => {

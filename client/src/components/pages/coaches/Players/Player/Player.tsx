@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -97,6 +98,29 @@ export default function Player() {
     return `${hoursString}${minutesString}`;
   };
 
+  const totalCard = () => {
+    return (
+      <Card
+        key="combined"
+        className={styles.categoryCard}
+        bg="primary-dark"
+        border="primary-light"
+        text="secondary"
+      >
+        <Card.Body>
+          <Row className={styles.totalRow}>
+            <Col>All Activities</Col>
+          </Row>
+          <hr className={styles.categoryHR} />
+          <Row>
+            <Col>Total Duration</Col>
+            <Col>{getDurationString(totalDuration ?? 0)}</Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    );
+  };
+
   const categoryCards = () => {
     return totals.map((duration, activityType) => {
       return (
@@ -123,27 +147,40 @@ export default function Player() {
     });
   };
 
-  const totalCard = () => {
-    return (
-      <Card
-        key="combined"
-        className={styles.categoryCard}
-        bg="primary-dark"
-        border="primary-light"
-        text="secondary"
-      >
-        <Card.Body>
-          <Row className={styles.totalRow}>
-            <Col>All Activities</Col>
-          </Row>
-          <hr className={styles.categoryHR} />
-          <Row>
-            <Col>Total Duration</Col>
-            <Col>{getDurationString(totalDuration ?? 0)}</Col>
-          </Row>
-        </Card.Body>
-      </Card>
-    );
+  const entryCards = () => {
+    if (!user?.entries) return <React.Fragment />;
+    return user.entries.map((entry, index) => {
+      return (
+        <Card
+          key={index}
+          className={styles.entryCard}
+          bg="primary-dark"
+          border="primary-light"
+          text="secondary"
+        >
+          <Card.Body>
+            <Row>
+              <Col>Date</Col>
+              <Col>
+                {new Date(entry.activityDate ?? Date.now())
+                  .toISOString()
+                  .slice(0, 10)}
+              </Col>
+            </Row>
+            <hr className={styles.entryHR} />
+            <Row>
+              <Col>Activity</Col>
+              <Col>{getActivityType(entry.activityType ?? 0)}</Col>
+            </Row>
+            <hr className={styles.entryHR} />
+            <Row>
+              <Col>Duration</Col>
+              <Col>{getDurationString(entry.activityDuration ?? 0)}</Col>
+            </Row>
+          </Card.Body>
+        </Card>
+      );
+    });
   };
 
   if (isLoading) {
@@ -157,6 +194,10 @@ export default function Player() {
         {totalCard()}
         {categoryCards()}
       </div>
+      <div className={styles.historyHeader}>
+        <h2>History</h2>
+      </div>
+      <div className={styles.historyDiv}>{entryCards()}</div>
     </Container>
   );
 }

@@ -8,7 +8,7 @@
 
 // Category Cards
 .categoryDiv {
-  padding-bottom: 4.5rem;
+  padding-bottom: 0rem;
 }
 
 .categoryCard {
@@ -23,4 +23,22 @@
 // Total Card
 .totalRow {
   text-align: center;
+}
+
+// History Cards
+.historyHeader {
+  padding-bottom: 1rem;
+}
+
+.historyDiv {
+  padding-bottom: 4.5rem;
+}
+
+.entryCard {
+  border-width: 0.15rem;
+  margin-bottom: 1rem;
+}
+
+.entryHR {
+  border-top: solid $primary-light;
 }
