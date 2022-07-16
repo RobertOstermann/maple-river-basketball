@@ -17,7 +17,9 @@ app.options("*", cors());
 
 // Read the body of a json object.
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Node serves the frontend files.
 if (process.env.NODE_ENV === "production") {
