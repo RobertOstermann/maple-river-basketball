@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS entries (
     activity_duration INTEGER NOT NULL CHECK (activity_duration >= 0)
 );
 
-ALTER TABLE "entries"
+ALTER TABLE entries
 ADD date_created DATE NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 -- Insert into the entries table
