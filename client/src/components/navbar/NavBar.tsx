@@ -8,7 +8,8 @@ import { NavLink } from "react-router-dom";
 import UserModel from "../../api/user/UserModel";
 import UserRequests from "../../api/user/UserRequests";
 import { PermissionLevels } from "../../shared/constants/PermissionLevels";
-import RouterHelper, { RouterHelperInterface } from "../routers/RouterHelper";
+import { RouterHelperInterface } from "../routers/RouterHelper";
+import NavBarHelper from "./NavBarHelper";
 
 import styles from "../navbar/NavBar.module.scss";
 
@@ -51,14 +52,14 @@ export default function NavBar() {
         user.permissionLevel === PermissionLevels.admin.id ||
         user.permissionLevel === PermissionLevels.coach.id
       ) {
-        return mapRoutes(RouterHelper.coach);
+        return mapRoutes(NavBarHelper.coach);
       }
 
-      return mapRoutes(RouterHelper.player);
+      return mapRoutes(NavBarHelper.player);
     } catch (error) {
       console.log(error);
 
-      return mapRoutes(RouterHelper.player);
+      return mapRoutes(NavBarHelper.player);
     }
   };
 

@@ -10,7 +10,7 @@ import Home from "../pages/shared/Home/Home";
 import Invalid from "../pages/shared/Invalid/Invalid";
 import { Leaders } from "../pages/shared/Leaders/Leaders";
 import Profile from "../pages/shared/Profile/Profile";
-import { COACH_ROUTES, PLAYER_ROUTES } from "./RouterHelper";
+import RouterHelper from "./RouterHelper";
 
 export default function Router() {
   return (
@@ -18,36 +18,33 @@ export default function Router() {
       <Route path="/" element={<Home />} />
       {/* Coach Routes */}
       <Route
-        path={COACH_ROUTES.players.path}
+        path={RouterHelper.coach.players.path}
         element={<ProtectedRoute component={Players} />}
       />
       <Route
-        path={`${COACH_ROUTES.players.path}/:id`}
+        path={`${RouterHelper.coach.players.path}/:id`}
         element={<ProtectedRoute component={Player} />}
       />
       <Route
-        path={COACH_ROUTES.leaders.path}
-        element={<ProtectedRoute component={Leaders} />}
-      />
-      <Route
-        path={COACH_ROUTES.history.path}
+        path={RouterHelper.coach.history.path}
         element={<ProtectedRoute component={CoachHistory.History} />}
-      />
-      <Route
-        path={COACH_ROUTES.profile.path}
-        element={<ProtectedRoute component={Profile} />}
       />
       {/* Player Routes */}
       <Route
-        path={PLAYER_ROUTES.newEntry.path}
+        path={RouterHelper.player.newEntry.path}
         element={<ProtectedRoute component={Entry} />}
       />
       <Route
-        path={PLAYER_ROUTES.history.path}
+        path={RouterHelper.player.history.path}
         element={<ProtectedRoute component={History} />}
       />
+      {/* Shared Routes */}
       <Route
-        path={PLAYER_ROUTES.profile.path}
+        path={RouterHelper.shared.leaders.path}
+        element={<ProtectedRoute component={Leaders} />}
+      />
+      <Route
+        path={RouterHelper.shared.profile.path}
         element={<ProtectedRoute component={Profile} />}
       />
       {/* Invalid Routes */}
