@@ -5,7 +5,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
-      - POSTGRES_DB=marchMadnessDB
+      - POSTGRES_DB=mapleRiverBasketballDB
     ports:
       - "5432:5432"
     restart: always

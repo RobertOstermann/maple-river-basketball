@@ -1,6 +1,6 @@
 # March Madness Auction
 
-This is an auction site for the NCAA Tournament.
+This is the website for the maple river basketball offseason program.
 
 # Server
 
@@ -24,7 +24,7 @@ Select Servers->Register->Server...
 
 - Host = postgresql_database
 - Port = 5432
-- Maitenance database = marchMadnessDB
+- Database = mapleRiverBasketballDB
 - Username = admin
 - Password = admin1234
 
