@@ -1,13 +1,9 @@
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import React, { ComponentType } from "react";
+import React from "react";
 
 import Loading from "../pages/shared/Loading/Loading";
 
-interface ProtectedRouteProps {
-  component: ComponentType;
-}
-
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component }) => {
+const ProtectedRoute: React.FC<any> = ({ component, ...componentProps }) => {
   const { isLoading } = useAuth0();
 
   if (isLoading) {
@@ -20,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component }) => {
     },
   });
 
-  return <Component />;
+  return <Component {...componentProps} />;
 };
 
 export default ProtectedRoute;

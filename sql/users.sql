@@ -28,3 +28,7 @@ ADD graduation_year SMALLINT NOT NULL DEFAULT 0;
 SELECT *
 FROM users
 ORDER BY id;
+
+SELECT *
+FROM users
+WHERE email LIKE 'loothunder%';

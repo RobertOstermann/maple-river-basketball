@@ -11,6 +11,7 @@ import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../../shared/constants/ActivityTypes";
+import { getDurationString } from "../../../shared/Leaders/Leaders";
 import Loading from "../../../shared/Loading/Loading";
 
 import styles from "./Player.module.scss";
@@ -86,16 +87,6 @@ export default function Player() {
     });
 
     return ui;
-  };
-
-  const getDurationString = (duration: number) => {
-    const hours = Math.floor(duration / 60);
-    const hoursString =
-      hours > 0 ? (hours === 1 ? `${hours} Hour ` : `${hours} Hours `) : "";
-    const minutes = duration % 60;
-    const minutesString = `${minutes} minutes`;
-
-    return `${hoursString}${minutesString}`;
   };
 
   const totalCard = () => {

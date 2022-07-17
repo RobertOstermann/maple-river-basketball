@@ -46,10 +46,22 @@ const RouterHelper = {
       icon: fontAwesome.faHome,
     },
     leaders: {
-      end: true,
+      end: false,
       path: "/leaders",
       label: "Leaders",
       icon: fontAwesome.faBasketball,
+    },
+    leaders_category: {
+      end: true,
+      path: "/leaders/category",
+      label: "Category",
+      icon: null,
+    },
+    leaders_totals: {
+      end: true,
+      path: "/leaders/totals",
+      label: "Totals",
+      icon: null,
     },
     profile: {
       end: true,

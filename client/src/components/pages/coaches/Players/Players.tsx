@@ -4,19 +4,14 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
-import EntryModel from "../../../../api/entry/EntryModel";
 import UserModel from "../../../../api/user/UserModel";
 import UserRequests from "../../../../api/user/UserRequests";
-import {
-  ActivityTypeInterface,
-  ActivityTypes,
-} from "../../../../shared/constants/ActivityTypes";
 import RouterHelper from "../../../routers/RouterHelper";
 import Loading from "../../shared/Loading/Loading";
 
 import styles from "./Players.module.scss";
 
-export function Players() {
+export default function Players() {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<UserModel[]>([]);
 
@@ -37,39 +32,6 @@ export function Players() {
       setUsers([]);
     }
     setIsLoading(false);
-  };
-
-  const getDurationString = (duration: number) => {
-    const hours = Math.floor(duration / 60);
-    const hoursString =
-      hours > 0 ? (hours === 1 ? `${hours} Hour ` : `${hours} Hours `) : "";
-    const minutes = duration % 60;
-    const minutesString = `${minutes} minutes`;
-
-    return `${hoursString}${minutesString}`;
-  };
-
-  const getTotals = (entries: EntryModel[]) => {
-    return Object.values(ActivityTypes).map(
-      (activityType: ActivityTypeInterface) => {
-        const totalDuration = entries
-          .filter((entry) => entry.activityType === activityType.id)
-          .reduce(
-            (previous, { activityDuration }) =>
-              previous + (activityDuration ? activityDuration : 0),
-            0
-          );
-        return (
-          <React.Fragment>
-            <hr className={styles.userHR} />
-            <Row>
-              <Col>{activityType.ui}</Col>
-              <Col>{getDurationString(totalDuration)}</Col>
-            </Row>
-          </React.Fragment>
-        );
-      }
-    );
   };
 
   const userCards = () => {

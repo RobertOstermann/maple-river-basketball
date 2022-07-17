@@ -104,7 +104,7 @@ export default class UserController {
     try {
       const query = {
         name: "fetch-all-players",
-        text: "SELECT * FROM users WHERE permission_level = $1 ORDER BY graduation_year DESC, last_name ASC, first_name ASC, id ASC",
+        text: "SELECT * FROM users WHERE permission_level = $1 ORDER BY CASE WHEN graduation_year = 0 THEN 1 ELSE 0 END ASC, graduation_year ASC, last_name ASC, first_name ASC, id ASC",
         values: [PermissionLevels.player.id]
       };
       const results = await database.query(query);
