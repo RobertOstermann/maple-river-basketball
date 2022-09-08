@@ -2,38 +2,37 @@
 
 # base
 
-.vscode/
-sql/
+.vscode
+sql
 .editorconfig
 .gitattributes
 .gitignore
 CODEOWNERS
 docker-compose.yml
 package-lock.json
-README.md
-TODO.md
 
 # client
 
-# client/node_modules
+client/node_modules
 # client/.cert
-# client/public
-# client/src
+client/public
+client/src
 client/.env
 client/.eslintignore
 client/.eslintrc
 client/package-lock.json
-client/package.json
+# client/package.json
 client/tsconfig.json
 
 # server
 
+# server/dist
 # server/node_modules
-# server/src
+server/src
 server/.env
 server/.eslintignore
 server/.eslintrc
 server/.gitignore
 server/package-lock.json
-server/package.json
+# server/package.json
 server/tsconfig.json
