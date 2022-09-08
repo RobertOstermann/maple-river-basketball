@@ -13,15 +13,14 @@ package-lock.json
 
 # client
 
-client/node_modules
 # client/.cert
+client/node_modules
 client/public
 client/src
 client/.env
 client/.eslintignore
 client/.eslintrc
 client/package-lock.json
-# client/package.json
 client/tsconfig.json
 
 # server
@@ -34,5 +33,4 @@ server/.eslintignore
 server/.eslintrc
 server/.gitignore
 server/package-lock.json
-# server/package.json
 server/tsconfig.json
