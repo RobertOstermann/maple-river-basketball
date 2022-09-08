@@ -2,9 +2,9 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 const AuthenticationProviderWithHistory = ({ children }: any) => {
-  const audience = process.env.REACT_APP_AUTH0_AUDIENCE ?? "";
-  const domain = process.env.REACT_APP_AUTH0_DOMAIN ?? "";
-  const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID ?? "";
+  const audience = process.env.REACT_APP_AUTH0_AUDIENCE ?? "https://maple-river-basketball.com/api/v1";
+  const domain = process.env.REACT_APP_AUTH0_DOMAIN ?? "maple-river-basketball.us.auth0.com";
+  const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID ?? "Xzac7ckkszykz9YporyR3DbTiAKoT5EV";
 
   const navigate = useNavigate();
 
