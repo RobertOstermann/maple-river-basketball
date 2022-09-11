@@ -11,7 +11,7 @@
       "port": 9229,
       "restart": true,
       "localRoot": "${workspaceFolder}/server/src",
-      "remoteRoot": "/server/dist"
+      "remoteRoot": "/server/build"
     }
   ]
 }
