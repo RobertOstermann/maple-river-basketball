@@ -25,8 +25,8 @@ client/tsconfig.json
 
 # server
 
-# server/dist
-# server/node_modules
+# server/build
+server/node_modules
 server/src
 server/.env
 server/.eslintignore
