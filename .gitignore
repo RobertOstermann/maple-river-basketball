@@ -11,6 +11,9 @@ server/build
 server/node_modules
 server/.env
 
+# sql
+sql/queries.sql
+
 # dependencies
 /node_modules
 /.pnp

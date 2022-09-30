@@ -1,9 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 import EntryModel from "../../../../api/entry/EntryModel";
 import EntryRequests from "../../../../api/entry/EntryRequests";
+import Helper from "../../../../api/Helper";
 import {
   ActivityTypeInterface,
   ActivityTypes,
@@ -126,6 +129,27 @@ export default function CoachHome() {
     );
   };
 
+  const downloadPlayerStats = async () => {
+    const token = await getAccessTokenSilently();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await axios.get(
+      `${Helper.getApiRoute()}/download-player-stats`,
+      config
+    );
+
+    const blob = new Blob([response.data]);
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "player-stats.csv";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 0);
+    link.remove();
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -138,6 +162,12 @@ export default function CoachHome() {
       <div className={styles.categoryDiv}>
         {totalCard()}
         {categoryCards()}
+      </div>
+      <div className={styles.headerDiv}>
+        <h2>Downloads</h2>
+      </div>
+      <div className={styles.downloadDiv}>
+        <Button size='lg' className={styles.downloadButtom} onClick={downloadPlayerStats}>Export Stats (CSV)</Button>
       </div>
     </Container>
   );
