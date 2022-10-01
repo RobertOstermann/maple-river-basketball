@@ -28,14 +28,18 @@ export default class EntryController {
     const permissionLevel = await UserController.getPermissionLevel(authId);
 
     if (permissionLevel === PermissionLevels.coach.id) {
+      const sql = /*sql*/ `
+        SELECT users.first_name, users.last_name, entries.*
+        FROM entries LEFT JOIN users ON users.auth_id = entries.auth_id
+        WHERE users.permission_level = $1
+        ORDER BY entries.activity_date DESC, entries.activity_duration DESC, entries.auth_id ASC
+      `;
       const query = {
         name: "fetch-all-entries",
-        text: "SELECT users.first_name, users.last_name, entries.* " +
-          "FROM entries LEFT JOIN users ON users.auth_id = entries.auth_id " +
-          "WHERE users.permission_level = $1 " +
-          "ORDER BY entries.activity_date DESC, entries.activity_duration DESC, entries.auth_id ASC",
+        text: sql,
         values: [PermissionLevels.player.id]
       };
+
       database.query(query)
         .then((results) => {
           const entries: UserEntry[] = results.rows;

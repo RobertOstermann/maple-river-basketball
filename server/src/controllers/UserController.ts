@@ -102,9 +102,15 @@ export default class UserController {
     let users: User[] = [];
 
     try {
+      const sql = /*sql*/ `
+        SELECT *
+        FROM users
+        WHERE permission_level = $1
+        ORDER BY CASE WHEN graduation_year = 0 THEN 1 ELSE 0 END ASC, graduation_year ASC, last_name ASC, first_name ASC, id ASC
+      `;
       const query = {
         name: "fetch-all-players",
-        text: "SELECT * FROM users WHERE permission_level = $1 ORDER BY CASE WHEN graduation_year = 0 THEN 1 ELSE 0 END ASC, graduation_year ASC, last_name ASC, first_name ASC, id ASC",
+        text: sql,
         values: [PermissionLevels.player.id]
       };
       const results = await database.query(query);

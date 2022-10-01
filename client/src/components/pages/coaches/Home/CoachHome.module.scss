@@ -8,7 +8,7 @@
 
 // Category Cards
 .categoryDiv {
-  padding-bottom: 4.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .categoryCard {
@@ -18,6 +18,17 @@
 
 .categoryHR {
   border-top: solid $primary-light;
+}
+
+// Download Cards
+.downloadDiv {
+  padding-bottom: 4.5rem;
+  text-align: center;
+}
+
+.downloadButtom {
+  width: 50%;
+  margin-bottom: 1rem;
 }
 
 // Total Card

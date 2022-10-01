@@ -6,6 +6,7 @@ import express, { Request, Response } from "express";
 import path from "path";
 
 import AuthController from "./controllers/AuthController";
+import DownloadController from "./controllers/DownloadController";
 import EntryController from "./controllers/EntryContoller";
 import UserController from "./controllers/UserController";
 
@@ -76,6 +77,15 @@ app.get("/api/v1/backup-database", (req: any, res: Response) => {
   });
 });
 
+// Downloads
+app.get("/api/v1/download-player-stats", AuthController.jwtCheck, DownloadController.downloadPlayerStats);
+
+// Coach - Users
+app.get("/api/v1/get-all-players", AuthController.jwtCheck, UserController.getAllPlayers);
+
+// Coach - Entries
+app.get("/api/v1/get-all-entries", AuthController.jwtCheck, EntryController.getAllEntries);
+
 // Player - Users
 app.get("/api/v1/get-user", AuthController.jwtCheck, UserController.getUser);
 app.get("/api/v1/get-user/:id", AuthController.jwtCheck, UserController.getUserById);
@@ -84,12 +94,6 @@ app.put("/api/v1/update-user", AuthController.jwtCheck, UserController.updateUse
 // Player - Entries
 app.get("/api/v1/get-user-entries", AuthController.jwtCheck, EntryController.getUserEntries);
 app.post("/api/v1/create-entry", AuthController.jwtCheck, EntryController.createEntry);
-
-// Coach - Users
-app.get("/api/v1/get-all-players", AuthController.jwtCheck, UserController.getAllPlayers);
-
-// Coach - Entries
-app.get("/api/v1/get-all-entries", AuthController.jwtCheck, EntryController.getAllEntries);
 
 // This handles react routing for non-api requests.
 if (process.env.NODE_ENV === "production") {
