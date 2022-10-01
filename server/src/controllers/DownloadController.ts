@@ -7,7 +7,7 @@ import UserController from "./UserController";
 
 export default class DownloadController {
   static downloadResource = (response: Express.Response, fileName: string, fields: any, data: JSON) => {
-    const json2csv = new Parser({ fields });
+    const json2csv = fields ? new Parser({ fields }) : new Parser();
     const csv = json2csv.parse(data);
     response.header("Content-Type", "text/csv");
     response.attachment(fileName);
@@ -21,8 +21,15 @@ export default class DownloadController {
     try {
       if ((permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id)) {
         const sql = /*sql*/ `
-          SELECT id, first_name
-          FROM users;
+        SELECT
+          CONCAT(users.first_name, ' ', users.last_name) AS "Name",
+          activity_types.activity_text AS "Entry Type",
+          TO_CHAR(entries.activity_date, 'mm/dd/yyyy') AS "Entry Date",
+          entries.activity_duration AS "Entry Duration (min)"
+        FROM users
+          LEFT JOIN entries ON entries.auth_id = users.auth_id
+          INNER JOIN activity_types ON activity_types.activity_id = entries.activity_type
+        WHERE users.permission_level = 2;
         `;
         const query = {
           name: "download-player-stats",
@@ -30,21 +37,10 @@ export default class DownloadController {
         };
         const results = await database.query(query);
 
-        const fields = [
-          {
-            label: "id",
-            value: "id",
-          },
-          {
-            label: "First Name",
-            value: "first_name"
-          }
-        ];
-
         return DownloadController.downloadResource(
           response,
           "player-stats.csv",
-          fields,
+          undefined,
           JSON.parse(JSON.stringify(results.rows))
         );
       } else {

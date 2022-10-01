@@ -2,7 +2,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 
 import EntryModel from "../../../../api/entry/EntryModel";
 import EntryRequests from "../../../../api/entry/EntryRequests";
@@ -141,13 +140,7 @@ export default function CoachHome() {
       config
     );
 
-    const blob = new Blob([response.data]);
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "player-stats.csv";
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(link.href), 0);
-    link.remove();
+    Helper.DownloadCSV(response, "player-stats");
   };
 
   if (isLoading) {
