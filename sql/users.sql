@@ -29,6 +29,3 @@ SELECT *
 FROM users
 ORDER BY id;
 
-SELECT *
-FROM users
-WHERE email LIKE 'loothunder%';
