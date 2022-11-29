@@ -3,7 +3,7 @@
   "name": "maple-river-basketball",
   "version": "0.1.0",
   "engines": {
-    "node": "16.6.1"
+    "node": "16.16.0"
   },
   "main": "server/build/index.js",
   "scripts": {

@@ -10,6 +10,8 @@ import DownloadController from "./controllers/DownloadController";
 import EntryController from "./controllers/EntryContoller";
 import UserController from "./controllers/UserController";
 
+console.log("Initializing Server");
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -23,10 +25,14 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+
 // Node serves the frontend files.
 if (process.env.NODE_ENV === "production") {
+  console.log("Serving static files.");
   app.use(express.static(path.resolve(__dirname, "../../client/build")));
 }
+
+console.log("Setting up routes.");
 
 // This route doesn't need authentication.
 app.get("/api/v1/public", (req: any, res: Response) => {
@@ -97,6 +103,7 @@ app.post("/api/v1/create-entry", AuthController.jwtCheck, EntryController.create
 
 // This handles react routing for non-api requests.
 if (process.env.NODE_ENV === "production") {
+  console.log("Setting up react routing.");
   app.get("/*", (request, response) => {
     response.sendFile(path.resolve(__dirname, "../../client/build/index.html"), (error) => {
       if (error) {
