@@ -70,7 +70,7 @@ app.get("/api/v1/backup-database", (req: any, res: Response) => {
   const data = {
     db: "ybqbejar"
   };
-  const config = {
+  const config: any = {
     auth: {
       username: "",
       password: process.env.ELEPHANT_SQL_API
@@ -105,6 +105,7 @@ app.post("/api/v1/create-entry", AuthController.jwtCheck, EntryController.create
 if (process.env.NODE_ENV === "production") {
   console.log("Setting up react routing.");
   app.get("/*", (request, response) => {
+    console.log("Retrieving react file.");
     response.sendFile(path.resolve(__dirname, "../../client/build/index.html"), (error) => {
       if (error) {
         response.status(500).send(error);

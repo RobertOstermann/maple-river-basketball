@@ -4,7 +4,7 @@ export default interface User {
   id: number;
   authId: string;
   permissionLevel: number;
-  email: string;
+  email?: string;
   firstName: string;
   lastName: string;
   graduationYear?: number;
