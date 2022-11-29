@@ -8,7 +8,7 @@
   "main": "server/build/index.js",
   "scripts": {
     "install": "cd client && npm install && cd ../server && npm install",
-    "start": "cd server && npm start",
+    "start": "cd server && npm start --loglevel=silent",
     "build": "cd client && npm install && npm run build && cd ../server && npm install && npm run build"
   },
   "browserslist": {
