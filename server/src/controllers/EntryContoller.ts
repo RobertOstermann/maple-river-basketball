@@ -9,7 +9,9 @@ import UserController from "./UserController";
 
 export default class EntryController {
   static createEntry = async (request: any, response: any) => {
-    const authId = request.user.sub;
+    const authId = request?.user?.sub;
+    if (!authId) return;
+
     const entry: Entry = request.body;
 
     database.query(
@@ -24,7 +26,9 @@ export default class EntryController {
   };
 
   static getAllEntries = async (request: Express.Request | any, response: Express.Response) => {
-    const authId = request.user.sub;
+    const authId = request?.user?.sub;
+    if (!authId) return;
+
     const permissionLevel = await UserController.getPermissionLevel(authId);
 
     if (permissionLevel === PermissionLevels.coach.id) {
@@ -64,7 +68,9 @@ export default class EntryController {
   };
 
   static getUserEntries = async (request: Express.Request | any, response: Express.Response) => {
-    const authId = request.user.sub;
+    const authId = request?.user?.sub;
+    if (!authId) return;
+
     const results = await database.query(
       "SELECT * FROM entries WHERE auth_id = $1 ORDER BY activity_date DESC, activity_duration DESC",
       [authId]
@@ -78,7 +84,9 @@ export default class EntryController {
   };
 
   static updateEntry = async (request: any, response: any) => {
-    const authId = request.user.sub;
+    const authId = request?.user?.sub;
+    if (!authId) return;
+
     const entry: Entry = request.body;
 
     database.query(

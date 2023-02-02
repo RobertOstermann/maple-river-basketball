@@ -26,7 +26,8 @@ export default class UserController {
   };
 
   static getUser = async (request: Express.Request | any, response: Express.Response) => {
-    const authId = request.user.sub;
+    const authId = request?.user?.sub;
+    if (!authId) return;
 
     const { rows, rowCount } = await database.query(
       "SELECT * FROM users WHERE auth_id = $1 LIMIT 1",
@@ -69,7 +70,8 @@ export default class UserController {
   };
 
   static getUserById = async (request: Express.Request | any, response: Express.Response) => {
-    const authId = request.user.sub;
+    const authId = request?.user?.sub;
+    if (!authId) return;
     const userId = request.params.id;
     const permissionLevel = await this.getPermissionLevel(authId);
 
@@ -130,7 +132,8 @@ export default class UserController {
   };
 
   static updateUser = async (request: any, response: any) => {
-    const authId = request.user.sub;
+    const authId = request?.user?.sub;
+    if (!authId) return;
     const user: User = request.body;
     const { firstName, lastName, graduationYear } = user;
     if (!firstName) {
