@@ -5,11 +5,10 @@
   "engines": {
     "node": "18.12.1"
   },
-  "main": "server/build/index.js",
+  "main": "server/build/server.js",
   "scripts": {
     "install": "cd client && npm install && cd ../server && npm install",
-    "start": "cd server && npm start --loglevel=silent",
-    "build": "cd client && npm install && npm run build && cd ../server && npm install && npm run build"
+    "build": "cd client && npm run build && cd ../server && npm run build"
   },
   "browserslist": {
     "production": [

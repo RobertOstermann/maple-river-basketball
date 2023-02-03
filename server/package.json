@@ -3,10 +3,10 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "main": "build/index.js",
+  "main": "build/server.js",
   "scripts": {
     "build": "npm run esbuild",
-    "start": "node build/index.js",
+    "start": "node build/server.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon --inspect=0.0.0.0:9229 -q build/index.js\"",
     "esbuild": "rimraf build && esbuild ./src/index.ts --outfile=build/index.js --bundle --minify --platform=node --external:'pg-native' --external:'superagent-proxy'"
   },
