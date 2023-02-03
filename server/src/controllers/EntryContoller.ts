@@ -9,7 +9,7 @@ import UserController from "./UserController";
 
 export default class EntryController {
   static createEntry = async (request: any, response: any) => {
-    const authId = request?.user?.sub;
+    const authId = request?.auth?.sub;
     if (!authId) return;
 
     const entry: Entry = request.body;
@@ -26,7 +26,7 @@ export default class EntryController {
   };
 
   static getAllEntries = async (request: Express.Request | any, response: Express.Response) => {
-    const authId = request?.user?.sub;
+    const authId = request?.auth?.sub;
     if (!authId) return;
 
     const permissionLevel = await UserController.getPermissionLevel(authId);
@@ -68,7 +68,7 @@ export default class EntryController {
   };
 
   static getUserEntries = async (request: Express.Request | any, response: Express.Response) => {
-    const authId = request?.user?.sub;
+    const authId = request?.auth?.sub;
     if (!authId) return;
 
     const results = await database.query(
@@ -84,7 +84,7 @@ export default class EntryController {
   };
 
   static updateEntry = async (request: any, response: any) => {
-    const authId = request?.user?.sub;
+    const authId = request?.auth?.sub;
     if (!authId) return;
 
     const entry: Entry = request.body;

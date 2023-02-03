@@ -7,8 +7,9 @@
   "scripts": {
     "build": "npm run esbuild",
     "start": "node build/server.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon --inspect=0.0.0.0:9229 -q build/server.js\"",
-    "esbuild": "rimraf build && esbuild ./src/server.ts --outfile=build/server.js --bundle --minify --platform=node --external:'pg-native' --external:'superagent-proxy'"
+    "dev": "concurrently \"npm run esbuild-watch\" \"nodemon --inspect=0.0.0.0:9229 -q build/server.js\"",
+    "esbuild": "rimraf build && esbuild ./src/server.ts --outfile=build/server.js --bundle --minify --platform=node --external:'pg-native' --external:'superagent-proxy'",
+    "esbuild-watch": "esbuild ./src/server.ts --outfile=build/server.js --watch --bundle --sourcemap --platform=node --external:'pg-native' --external:'superagent-proxy'"
   },
   "dependencies": {
     "@types/auth0": "^2.35.7",

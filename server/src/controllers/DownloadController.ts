@@ -15,7 +15,7 @@ export default class DownloadController {
   };
 
   static downloadPlayerStats = async (request: Express.Request | any, response: Express.Response) => {
-    const authId = request?.user?.sub;
+    const authId = request?.auth?.sub;
     if (!authId) return;
 
     const permissionLevel = await UserController.getPermissionLevel(authId);
