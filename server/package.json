@@ -6,7 +6,6 @@
   "main": "build/index.js",
   "scripts": {
     "build": "npm run esbuild",
-    "prestart": "npm run build",
     "start": "node build/index.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon --inspect=0.0.0.0:9229 -q build/index.js\"",
     "esbuild": "rimraf build && esbuild ./src/index.ts --outfile=build/index.js --bundle --minify --platform=node --external:'pg-native' --external:'superagent-proxy'"
