@@ -9,6 +9,9 @@ on:
       - release
   workflow_dispatch:
 
+env:
+  NODE_ENV: production
+
 jobs:
   build-base:
     name: Build Base
@@ -37,16 +40,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
-
-      - name: Set Git Config
-        run: git config --global url."git@github.com:".insteadOf git://github.com/
+          cache: 'npm'
+          cache-dependency-path: '**/client/package-lock.json'
 
       - name: Install
         run: npm ci
@@ -78,9 +73,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+          cache: 'npm'
+          cache-dependency-path: '**/server/package-lock.json'
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build
