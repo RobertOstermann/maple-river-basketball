@@ -8,7 +8,7 @@
   "main": "server/build/server.js",
   "scripts": {
     "install": "cd client && npm install && cd ../server && npm install",
-    "start": "cd server && npm start",
+    "start": "node server/build/server.js",
     "build": "cd client && npm run build && cd ../server && npm run build"
   },
   "browserslist": {
