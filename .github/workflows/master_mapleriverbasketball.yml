@@ -82,7 +82,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: server-app
-          path: server/package.json
+          path: server
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
