@@ -64,13 +64,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: client-app
-          path: client
+          path: client/build
 
       - name: Download Server Artifacts
         uses: actions/download-artifact@v3
         with:
           name: server-app
-          path: server
+          path: server/build
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
