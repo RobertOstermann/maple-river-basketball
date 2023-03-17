@@ -1,4 +1,10 @@
 {
   "typescript.tsdk": "client/node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/964cf311-5944-40d7-b3c8-961f15a52243/resourceGroups/Azure-Resources/providers/Microsoft.Web/sites/mapleriverbasketball",
+  "appService.deploySubpath": "."
 }
