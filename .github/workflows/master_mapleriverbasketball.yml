@@ -34,17 +34,23 @@ jobs:
           name: node-app
           path: package.json
 
-      - name: Upload Client Artifacts
+      - name: Upload Client Build Folder
         uses: actions/upload-artifact@v3
         with:
           name: client-app
           path: client/build
 
-      - name: Upload Server Artifacts
+      - name: Upload Server Build Folder
         uses: actions/upload-artifact@v3
         with:
           name: server-app
           path: server/build
+
+      - name: Upload Server package.json
+        uses: actions/upload-artifact@v3
+        with:
+          name: server-app
+          path: server/package.json
 
   deploy:
     name: Deploy
@@ -60,17 +66,23 @@ jobs:
         with:
           name: node-app
 
-      - name: Download Client Artifacts
+      - name: Download Client Build Folder
         uses: actions/download-artifact@v3
         with:
           name: client-app
           path: client/build
 
-      - name: Download Server Artifacts
+      - name: Download Server Build Folder
         uses: actions/download-artifact@v3
         with:
           name: server-app
           path: server/build
+
+      - name: Download Server package.json
+        uses: actions/download-artifact@v3
+        with:
+          name: server-app
+          path: server/package.json
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
