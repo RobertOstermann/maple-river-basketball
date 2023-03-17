@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-base:
-    name: Build
+    name: Build Base
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
           path: package.json
 
   build-client:
-    name: Build
+    name: Build Client
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -51,7 +51,7 @@ jobs:
           path: client/build
 
   build-server:
-    name: Build
+    name: Build Server
     runs-on: ubuntu-latest
     defaults:
       run:
