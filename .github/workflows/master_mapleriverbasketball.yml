@@ -110,7 +110,7 @@ jobs:
           name: server-build
           path: server/build
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
