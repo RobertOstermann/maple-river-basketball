@@ -50,6 +50,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          REACT_APP_AUTH0_AUDIENCE: ${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
+          REACT_APP_AUTH0_DOMAIN: ${{ secrets.REACT_APP_AUTH0_DOMAIN }}
+          REACT_APP_AUTH0_CLIENT_ID: ${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
 
       - name: Upload
         uses: actions/upload-artifact@v3
@@ -77,6 +81,13 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          REACT_APP_AUTH0_AUDIENCE: ${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
+          REACT_APP_AUTH0_DOMAIN: ${{ secrets.REACT_APP_AUTH0_DOMAIN }}
+          AUTH0_API_CLIENT_ID: ${{ secrets.AUTH0_API_CLIENT_ID }}
+          AUTH0_API_CLIENT_SECRET: ${{ secrets.AUTH0_API_CLIENT_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ELEPHANT_SQL_API: ${{ secrets.ELEPHANT_SQL_API }}
 
       - name: Upload
         uses: actions/upload-artifact@v3
