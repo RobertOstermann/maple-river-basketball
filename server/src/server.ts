@@ -114,8 +114,16 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => {
-  console.log(
-    `Server is running at https://localhost:${PORT}`
-  );
-});
+if (process.env.NODE_ENV === "production") {
+  app.listen(PORT, () => {
+    console.log(
+      `Server is running on port ${PORT}`
+    );
+  });
+} else {
+  app.listen(PORT, () => {
+    console.log(
+      `Server is running at https://localhost:${PORT}`
+    );
+  });
+}

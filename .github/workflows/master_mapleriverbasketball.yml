@@ -45,6 +45,9 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
 
+      - name: Set Git Config
+        run: git config --global url."git@github.com:".insteadOf git://github.com/
+
       - name: Install
         run: npm ci
 
