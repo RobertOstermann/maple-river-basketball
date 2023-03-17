@@ -37,13 +37,13 @@ jobs:
       - name: Upload Client Build Folder
         uses: actions/upload-artifact@v3
         with:
-          name: client-app
+          name: client-build
           path: client/build
 
       - name: Upload Server Build Folder
         uses: actions/upload-artifact@v3
         with:
-          name: server-app
+          name: server-build
           path: server/build
 
       - name: Upload Server package.json
@@ -69,13 +69,13 @@ jobs:
       - name: Download Client Build Folder
         uses: actions/download-artifact@v3
         with:
-          name: client-app
+          name: client-build
           path: client/build
 
       - name: Download Server Build Folder
         uses: actions/download-artifact@v3
         with:
-          name: server-app
+          name: server-build
           path: server/build
 
       - name: Download Server package.json
