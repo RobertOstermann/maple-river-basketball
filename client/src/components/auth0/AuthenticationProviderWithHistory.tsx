@@ -1,5 +1,5 @@
-import { Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 const AuthenticationProviderWithHistory = ({ children }: any) => {
   const audience = process.env.REACT_APP_AUTH0_AUDIENCE ?? "https://maple-river-basketball.com/api/v1";

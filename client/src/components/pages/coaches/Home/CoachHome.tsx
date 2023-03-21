@@ -1,7 +1,7 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 
 import EntryModel from "../../../../api/entry/EntryModel";
 import EntryRequests from "../../../../api/entry/EntryRequests";

@@ -1,8 +1,8 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import UserModel from "../../../../../api/user/UserModel";
 import UserRequests from "../../../../../api/user/UserRequests";
@@ -82,7 +82,7 @@ export default function Category() {
             );
 
             return (
-              <React.Fragment>
+              <React.Fragment key={index}>
                 {index !== 0 && <hr className={styles.userHR} />}
                 <Row>
                   <Col>{`${user.firstName} ${user.lastName}`}</Col>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useQuery, UseQueryOptions } from "react-query";
 
 import EntryRequests from "../../../../api/entry/EntryRequests";
 import UserEntryModel from "../../../../api/entry/UserEntryModel";
@@ -8,34 +8,42 @@ import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
+import { useAuthenticationStore } from "../../../../store/authentication/AuthenticationStore";
 import Loading from "../../shared/Loading/Loading";
 
 import styles from "./History.module.scss";
 
 export function History() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [entries, setEntries] = useState<UserEntryModel[]>([]);
 
-  const { getAccessTokenSilently } = useAuth0();
+  const token = useAuthenticationStore((state) => state.token);
+
+  const queryOptions: UseQueryOptions<unknown, unknown, unknown, any> = {
+    enabled: token !== "",
+    refetchOnWindowFocus: false,
+    retry: 1,
+    cacheTime: 30 * 60 * 1000, // 30 minutes
+  };
+  const queryResponse = useQuery(
+    ["coach-history"],
+    () => EntryRequests.getAllEntries(token),
+    queryOptions
+  );
 
   useEffect(() => {
-    getAllEntries();
-  }, []);
+    if (queryResponse.isSuccess) {
+      const data: UserEntryModel[] = queryResponse.data as UserEntryModel[];
+      if (!data) return;
 
-  const getAllEntries = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const token = await getAccessTokenSilently();
-      const entries: UserEntryModel[] = await EntryRequests.getAllEntries(
-        token
-      );
-      setEntries(entries);
-    } catch (error) {
-      console.log(error);
-      setEntries([]);
+      setEntries(data);
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  };
+
+    if (queryResponse.isError) {
+      setIsLoading(false);
+    }
+  }, [queryResponse.data, queryResponse.isSuccess]);
 
   const getActivityType = (id: number) => {
     let ui = "";

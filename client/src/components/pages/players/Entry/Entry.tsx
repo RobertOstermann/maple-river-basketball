@@ -1,7 +1,7 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import EntryModel from "../../../../api/entry/EntryModel";
 import EntryRequests from "../../../../api/entry/EntryRequests";
@@ -149,9 +149,9 @@ export default function Entry() {
             onChange={(event) => setActivity(parseInt(event.target.value))}
           >
             {Object.values(ActivityTypes).map(
-              (activityType: ActivityTypeInterface) => {
+              (activityType: ActivityTypeInterface, index: number) => {
                 return (
-                  <option value={activityType.id}>{activityType.ui}</option>
+                  <option value={activityType.id} key={index}>{activityType.ui}</option>
                 );
               }
             )}

@@ -1,5 +1,5 @@
 export interface ActivityTypeInterface {
-  id: number,
+  id: number;
   ui: string;
 }
 

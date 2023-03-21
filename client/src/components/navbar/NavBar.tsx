@@ -1,9 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import * as fontAwesome from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Nav, Navbar, Stack } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import * as fontAwesome from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import UserModel from "../../api/user/UserModel";
 import UserRequests from "../../api/user/UserRequests";
