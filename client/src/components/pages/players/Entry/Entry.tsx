@@ -35,6 +35,13 @@ export default function Entry() {
     onSuccess: () => {
       queryClient.invalidateQueries();
       setSuccess(true);
+    },
+    onError: () => {
+      setSuccess(false);
+    },
+    onSettled: () => {
+      setShowModal(true);
+      setIsLoading(false);
     }
   });
 
@@ -50,14 +57,7 @@ export default function Entry() {
 
   const submitEntry = async () => {
     setIsLoading(true);
-    try {
-      mutation.mutate();
-    } catch (error) {
-      console.log(error);
-      setSuccess(false);
-    }
-    setShowModal(true);
-    setIsLoading(false);
+    mutation.mutate();
   };
 
   const dateButton = () => {
