@@ -1,5 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 
 import AuthenticationProviderWithHistory from "components/auth0/AuthenticationProviderWithHistory";
@@ -8,15 +9,22 @@ import reportWebVitals from "./reportWebVitals";
 
 import "index.scss";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+const queryClient = new QueryClient();
+
+root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthenticationProviderWithHistory>
-        <MapleRiverBasketball />
-      </AuthenticationProviderWithHistory>
+      <QueryClientProvider client={queryClient}>
+        <AuthenticationProviderWithHistory>
+          <MapleRiverBasketball />
+        </AuthenticationProviderWithHistory>
+      </QueryClientProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

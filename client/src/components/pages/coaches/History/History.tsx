@@ -1,6 +1,6 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import EntryRequests from "../../../../api/entry/EntryRequests";
 import UserEntryModel from "../../../../api/entry/UserEntryModel";
