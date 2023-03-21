@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { useQuery, UseQueryOptions } from "react-query";
 import { useParams } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import EntryModel from "../../../../../api/entry/EntryModel";
 import UserModel from "../../../../../api/user/UserModel";
@@ -11,31 +11,44 @@ import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../../shared/constants/ActivityTypes";
+import { useStoreAuthentication } from "../../../../../store/authentication/AuthenticationStore";
 import { getDurationString } from "../../../shared/Leaders/Leaders";
 import Loading from "../../../shared/Loading/Loading";
 
 import styles from "./Player.module.scss";
 
 export default function Player() {
+  const { id } = useParams();
+
+  const token = useStoreAuthentication((state) => state.token);
+
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<UserModel | undefined>();
   const [totals, setTotals] = useState<any[]>([]);
   const [totalDuration, setTotalDuration] = useState<number>(0);
 
-  const { getAccessTokenSilently } = useAuth0();
-  const { id } = useParams();
+  const queryOptions: UseQueryOptions<unknown, unknown, unknown, any> = {
+    enabled: token !== "" && id !== undefined,
+    refetchOnWindowFocus: false,
+    retry: 1,
+    staleTime: 15 * 60 * 1000, // 15 minutes
+    cacheTime: 30 * 60 * 1000, // 30 minutes
+  };
+  const queryResponse = useQuery(
+    [`get-user-${id}`],
+    () => UserRequests.getUserById(parseInt(id ?? "0"), token),
+    queryOptions
+  );
 
   useEffect(() => {
-    if (id) {
-      getUserById(parseInt(id));
+    if (queryResponse.isSuccess || queryResponse.isError) {
+      setIsLoading(false);
     }
-  }, []);
 
-  const getUserById = async (id: number): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const token = await getAccessTokenSilently();
-      const user: UserModel = await UserRequests.getUserById(id, token);
+    if (queryResponse.isSuccess) {
+      const user: UserModel = queryResponse.data as UserModel;
+      if (!user) return;
+
       const entries: EntryModel[] = user.entries ? user.entries : [];
       const updatedTotals: any[] = [];
       let totalDuration = 0;
@@ -60,11 +73,8 @@ export default function Player() {
       setUser(user);
       setTotals(updatedTotals);
       setTotalDuration(totalDuration);
-    } catch (error) {
-      console.log(error);
     }
-    setIsLoading(false);
-  };
+  }, [queryResponse.data, queryResponse.isSuccess, queryResponse.isError]);
 
   const getHeader = () => {
     if (!user) {

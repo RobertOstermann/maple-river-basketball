@@ -8,7 +8,7 @@ import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
-import { useAuthenticationStore } from "../../../../store/authentication/AuthenticationStore";
+import { useStoreAuthentication } from "../../../../store/authentication/AuthenticationStore";
 import Loading from "../../shared/Loading/Loading";
 
 import styles from "./History.module.scss";
@@ -17,21 +17,26 @@ export function History() {
   const [isLoading, setIsLoading] = useState(true);
   const [entries, setEntries] = useState<UserEntryModel[]>([]);
 
-  const token = useAuthenticationStore((state) => state.token);
+  const token = useStoreAuthentication((state) => state.token);
 
   const queryOptions: UseQueryOptions<unknown, unknown, unknown, any> = {
     enabled: token !== "",
     refetchOnWindowFocus: false,
     retry: 1,
+    staleTime: 15 * 60 * 1000, // 15 minutes
     cacheTime: 30 * 60 * 1000, // 30 minutes
   };
   const queryResponse = useQuery(
-    ["coach-history"],
+    ["get-all-entries"],
     () => EntryRequests.getAllEntries(token),
     queryOptions
   );
 
   useEffect(() => {
+    if (queryResponse.isSuccess || queryResponse.isError) {
+      setIsLoading(false);
+    }
+
     if (queryResponse.isSuccess) {
       const data: UserEntryModel[] = queryResponse.data as UserEntryModel[];
       if (!data) return;
@@ -39,11 +44,7 @@ export function History() {
       setEntries(data);
       setIsLoading(false);
     }
-
-    if (queryResponse.isError) {
-      setIsLoading(false);
-    }
-  }, [queryResponse.data, queryResponse.isSuccess]);
+  }, [queryResponse.data, queryResponse.isSuccess, queryResponse.isError]);
 
   const getActivityType = (id: number) => {
     let ui = "";

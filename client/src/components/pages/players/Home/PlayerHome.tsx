@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { useQuery, UseQueryOptions } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import EntryModel from "../../../../api/entry/EntryModel";
@@ -8,6 +9,7 @@ import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
+import { useStoreAuthentication } from "../../../../store/authentication/AuthenticationStore";
 import Loading from "../../shared/Loading/Loading";
 
 import styles from "./PlayerHome.module.scss";
@@ -17,17 +19,30 @@ export default function PlayerHome() {
   const [totals, setTotals] = useState<any[]>([]);
   const [totalDuration, setTotalDuration] = useState<number>(0);
 
-  const { getAccessTokenSilently } = useAuth0();
+  const token = useStoreAuthentication((state) => state.token);
+
+  const queryOptions: UseQueryOptions<unknown, unknown, unknown, any> = {
+    enabled: token !== "",
+    refetchOnWindowFocus: false,
+    retry: 1,
+    staleTime: 15 * 60 * 1000, // 15 minutes
+    cacheTime: 30 * 60 * 1000, // 30 minutes
+  };
+  const queryResponse = useQuery(
+    ["get-user-entries"],
+    () => EntryRequests.getUserEntries(token),
+    queryOptions
+  );
 
   useEffect(() => {
-    getEntries();
-  }, []);
+    if (queryResponse.isSuccess || queryResponse.isError) {
+      setIsLoading(false);
+    }
 
-  const getEntries = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const token = await getAccessTokenSilently();
-      const entries: EntryModel[] = await EntryRequests.getUserEntries(token);
+    if (queryResponse.isSuccess) {
+      const data: EntryModel[] = queryResponse.data as EntryModel[];
+      if (!data) return;
+
       const updatedTotals: any[] = [];
       let totalDuration = 0;
 
@@ -37,7 +52,7 @@ export default function PlayerHome() {
         }
       );
 
-      entries.map((entry) => {
+      data.map((entry) => {
         if (entry.activityType !== undefined) {
           totalDuration += entry.activityDuration ? entry.activityDuration : 0;
           if (updatedTotals[entry.activityType]) {
@@ -50,11 +65,8 @@ export default function PlayerHome() {
 
       setTotals(updatedTotals);
       setTotalDuration(totalDuration);
-    } catch (error) {
-      console.log(error);
     }
-    setIsLoading(false);
-  };
+  }, [queryResponse.data, queryResponse.isSuccess, queryResponse.isError]);
 
   const getActivityType = (id: number) => {
     let ui = "";

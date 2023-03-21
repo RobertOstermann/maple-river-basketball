@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import { useMutation, useQueryClient } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import EntryModel from "../../../../api/entry/EntryModel";
@@ -9,11 +10,14 @@ import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
+import { useStoreAuthentication } from "../../../../store/authentication/AuthenticationStore";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Entry.module.scss";
 
 export default function Entry() {
+  const queryClient = useQueryClient();
+
   const [isLoading, setIsLoading] = useState(false);
   const [entry, setEntry] = useState<EntryModel>({});
   const [activity, setActivity] = useState<number>(ActivityTypes.game.id);
@@ -24,7 +28,15 @@ export default function Entry() {
   const [success, setSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const { getAccessTokenSilently } = useAuth0();
+  const token = useStoreAuthentication((state) => state.token);
+
+  const mutation = useMutation({
+    mutationFn: () => EntryRequests.createEntry(token, entry),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      setSuccess(true);
+    }
+  });
 
   useEffect(() => {
     const updatedEntry: EntryModel = {
@@ -39,9 +51,7 @@ export default function Entry() {
   const submitEntry = async () => {
     setIsLoading(true);
     try {
-      const token = await getAccessTokenSilently();
-      await EntryRequests.createEntry(token, entry);
-      setSuccess(true);
+      mutation.mutate();
     } catch (error) {
       console.log(error);
       setSuccess(false);
@@ -76,6 +86,7 @@ export default function Entry() {
     let currentDuration = 15;
     const maxDuration = 180;
 
+    let index = 0;
     while (currentDuration <= maxDuration) {
       currentDuration += 15;
       const hours = Math.floor(currentDuration / 60);
@@ -86,9 +97,11 @@ export default function Entry() {
 
       options.push(
         <option
+          key={`duration-${index}`}
           value={currentDuration}
         >{`${hoursString}${minutesString}`}</option>
       );
+      index++;
     }
 
     return options;
@@ -151,7 +164,7 @@ export default function Entry() {
             {Object.values(ActivityTypes).map(
               (activityType: ActivityTypeInterface, index: number) => {
                 return (
-                  <option value={activityType.id} key={index}>{activityType.ui}</option>
+                  <option value={activityType.id} key={`activity-${index}`}>{activityType.ui}</option>
                 );
               }
             )}

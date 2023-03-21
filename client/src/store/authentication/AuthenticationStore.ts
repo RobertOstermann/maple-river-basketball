@@ -5,7 +5,7 @@ export type AuthenticationState = {
   setToken: (token: string) => void;
 };
 
-export const useAuthenticationStore = create<AuthenticationState>()((set) => ({
+export const useStoreAuthentication = create<AuthenticationState>()((set) => ({
   token: "",
   setToken: (token: string) => set(() => ({ token: token })),
 }));

@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import UserModel from "../../../../api/user/UserModel";
-import UserRequests from "../../../../api/user/UserRequests";
 import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
+import { useStoreUser } from "../../../../store/user/UserStore";
 import CoachHome from "../../coaches/Home/CoachHome";
 import PlayerHome from "../../players/Home/PlayerHome";
 import Loading from "../Loading/Loading";
@@ -12,40 +10,13 @@ import Loading from "../Loading/Loading";
 import styles from "./Home.module.scss";
 
 export default function Home() {
-  const [isUserLoading, setIsUserLoading] = useState(true);
-  const [user, setUser] = useState<UserModel>({});
+  const user = useStoreUser((state) => state.user);
 
   const {
     isLoading,
     isAuthenticated,
     loginWithRedirect,
-    getAccessTokenSilently,
   } = useAuth0();
-
-  useEffect(() => {
-    setIsUserLoading(true);
-    if (isAuthenticated) {
-      getUser().then((user) => {
-        setUser(user);
-        setIsUserLoading(false);
-      });
-    } else {
-      setIsUserLoading(false);
-    }
-  }, [isAuthenticated]);
-
-  const getUser = async (): Promise<UserModel> => {
-    try {
-      const token = await getAccessTokenSilently();
-      const user: UserModel = await UserRequests.getUser(token);
-
-      return user;
-    } catch (error) {
-      console.log(error);
-    }
-
-    return {};
-  };
 
   const loginButton = () => {
     return (
@@ -70,11 +41,11 @@ export default function Home() {
     );
   };
 
-  if (isLoading || isUserLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return <Container fluid>{loginButton()}</Container>;
   }
 

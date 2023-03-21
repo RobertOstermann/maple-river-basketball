@@ -1,10 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useQuery, UseQueryOptions } from "react-query";
 
+import UserHelper from "../../../../../api/user/UserHelper";
 import UserModel from "../../../../../api/user/UserModel";
 import UserRequests from "../../../../../api/user/UserRequests";
+import { useStoreAuthentication } from "../../../../../store/authentication/AuthenticationStore";
 import Loading from "../../../shared/Loading/Loading";
 import { getDurationString } from "../Leaders";
 
@@ -14,41 +16,35 @@ export default function Totals() {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<UserModel[]>([]);
 
-  const { getAccessTokenSilently } = useAuth0();
+  const token = useStoreAuthentication((state) => state.token);
+
+  const queryOptions: UseQueryOptions<unknown, unknown, unknown, any> = {
+    enabled: token !== "",
+    refetchOnWindowFocus: false,
+    retry: 1,
+    staleTime: 15 * 60 * 1000, // 15 minutes
+    cacheTime: 30 * 60 * 1000, // 30 minutes
+  };
+  const queryResponse = useQuery(
+    ["get-all-players"],
+    () => UserRequests.getAllPlayers(token),
+    queryOptions
+  );
 
   useEffect(() => {
-    getAllUsers();
-  }, []);
-
-  const getAllUsers = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const token = await getAccessTokenSilently();
-      const users: UserModel[] = await UserRequests.getAllPlayers(token);
-      users.sort((first, second) => {
-        let firstDuration = first.entries?.reduce(
-          (previous, { activityDuration }) =>
-            previous + (activityDuration ? activityDuration : 0),
-          0
-        );
-        firstDuration = firstDuration ? firstDuration : 0;
-
-        let secondDuration = second.entries?.reduce(
-          (previous, { activityDuration }) =>
-            previous + (activityDuration ? activityDuration : 0),
-          0
-        );
-        secondDuration = secondDuration ? secondDuration : 0;
-
-        return secondDuration - firstDuration;
-      });
-      setUsers(users);
-    } catch (error) {
-      console.log(error);
-      setUsers([]);
+    if (queryResponse.isSuccess || queryResponse.isError) {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  };
+
+    if (queryResponse.isSuccess) {
+      const data: UserModel[] = queryResponse.data as UserModel[];
+      if (!data) return;
+
+      data.sort((first, second) => UserHelper.sortUserModels(first, second));
+
+      setUsers(data);
+    }
+  }, [queryResponse.data, queryResponse.isSuccess, queryResponse.isError]);
 
   const getTotalsLeaders = () => {
     return (

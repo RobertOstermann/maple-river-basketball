@@ -5,6 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Client",
+      "type": "chrome",
+      "port": 9222,
+      "request": "attach",
+      "urlFilter": "https://localhost:3000*",
+      "pauseForSourceMap": false,
+      "resolveSourceMapLocations": [
+        "!**/node_modules/**"
+      ],
+      "webRoot": "${workspaceFolder}",
+    },
+    {
       "name": "Server",
       "type": "node",
       "request": "attach",

@@ -5,24 +5,25 @@ import { useAuth0 } from "@auth0/auth0-react";
 import * as fontAwesome from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import UserModel from "../../api/user/UserModel";
-import UserRequests from "../../api/user/UserRequests";
 import { PermissionLevels } from "../../shared/constants/PermissionLevels";
+import { useStoreUser } from "../../store/user/UserStore";
 import { RouterHelperInterface } from "../routers/RouterHelper";
 import NavBarHelper from "./NavBarHelper";
 
 import styles from "../navbar/NavBar.module.scss";
 
 export default function NavBar() {
-  const [routes, setRoutes] = useState<any>();
+  const { isLoading } = useAuth0();
 
-  const { isLoading, getAccessTokenSilently } = useAuth0();
+  const user = useStoreUser((state) => state.user);
+
+  const [routes, setRoutes] = useState<any>();
 
   useEffect(() => {
     getRoutes().then((elements) => {
       setRoutes(elements);
     });
-  }, []);
+  }, [user]);
 
   const mapRoutes = (routes: any) => {
     return Object.values(routes).map(
@@ -44,10 +45,9 @@ export default function NavBar() {
   };
 
   const getRoutes = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-      const user: UserModel = await UserRequests.getUser(token);
+    if (user === undefined) return mapRoutes(NavBarHelper.player);
 
+    try {
       if (
         user.permissionLevel === PermissionLevels.admin.id ||
         user.permissionLevel === PermissionLevels.coach.id

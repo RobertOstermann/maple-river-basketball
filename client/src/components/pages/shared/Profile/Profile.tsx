@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
+import { useMutation, useQueryClient } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import UserModel from "../../../../api/user/UserModel";
 import UserRequests from "../../../../api/user/UserRequests";
 import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
+import { useStoreAuthentication } from "../../../../store/authentication/AuthenticationStore";
+import { useStoreUser } from "../../../../store/user/UserStore";
 import Loading from "../Loading/Loading";
 
 import styles from "./Profile.module.scss";
 
 export default function Profile() {
+  const { logout } = useAuth0();
+  const queryClient = useQueryClient();
+
+  const user = useStoreUser((state) => state.user);
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
-  const [user, setUser] = useState<UserModel>({});
+  const [updatedUser, setUpdatedUser] = useState<UserModel>({});
   const [firstName, setFirstName] = useState<string | undefined>();
   const [lastName, setLastName] = useState<string | undefined>();
   const [graduationYear, setGraduationYear] = useState<number | undefined>();
@@ -23,17 +31,32 @@ export default function Profile() {
   const [success, setSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const { getAccessTokenSilently, logout } = useAuth0();
+  const token = useStoreAuthentication((state) => state.token);
+
+  const mutation = useMutation({
+    mutationFn: () => UserRequests.updateUser(token, updatedUser),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      setSuccess(true);
+    },
+    onError: () => {
+      setSuccess(false);
+    },
+    onSettled: () => {
+      setShowModal(true);
+      setIsLoading(false);
+    }
+  });
 
   useEffect(() => {
-    getUser().then((user) => {
-      setUser(user);
+    if (user) {
+      setUpdatedUser(user);
       setFirstName(user.firstName);
       setLastName(user.lastName);
       setGraduationYear(user.graduationYear);
       setIsPageLoading(false);
-    });
-  }, []);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (validFirstName && validLastName && validGraduationYear) {
@@ -44,25 +67,25 @@ export default function Profile() {
   }, [validFirstName, validLastName, validGraduationYear]);
 
   useEffect(() => {
-    const updatedUser = user;
-    updatedUser.firstName = firstName;
-    setUser(updatedUser);
+    const user = updatedUser;
+    user.firstName = firstName;
+    setUpdatedUser(user);
 
     firstName ? setValidFirstName(true) : setValidFirstName(false);
   }, [firstName]);
 
   useEffect(() => {
-    const updatedUser = user;
-    updatedUser.lastName = lastName;
-    setUser(updatedUser);
+    const user = updatedUser;
+    user.lastName = lastName;
+    setUpdatedUser(user);
 
     lastName ? setValidLastName(true) : setValidLastName(false);
   }, [lastName]);
 
   useEffect(() => {
-    const updatedUser = user;
-    updatedUser.graduationYear = graduationYear;
-    setUser(updatedUser);
+    const user = updatedUser;
+    user.graduationYear = graduationYear;
+    setUpdatedUser(user);
 
     const year = graduationYear ? graduationYear : 0;
     if (year !== 0 && (year < 2023 || year > 2030)) {
@@ -73,7 +96,7 @@ export default function Profile() {
   }, [graduationYear]);
 
   const getRole = (): string => {
-    switch (user.permissionLevel) {
+    switch (user?.permissionLevel) {
       case PermissionLevels.admin.id:
         return PermissionLevels.admin.ui;
       case PermissionLevels.coach.id:
@@ -85,31 +108,9 @@ export default function Profile() {
     }
   };
 
-  const getUser = async (): Promise<UserModel> => {
-    try {
-      const token = await getAccessTokenSilently();
-      const user: UserModel = await UserRequests.getUser(token);
-
-      return user;
-    } catch (error) {
-      console.log(error);
-    }
-
-    return {};
-  };
-
   const submitUser = async () => {
     setIsLoading(true);
-    try {
-      const token = await getAccessTokenSilently();
-      await UserRequests.updateUser(token, user);
-      setSuccess(true);
-    } catch (error) {
-      console.log(error);
-      setSuccess(false);
-    }
-    setShowModal(true);
-    setIsLoading(false);
+    mutation.mutate();
   };
 
   const logoutButton = () => {
@@ -181,7 +182,7 @@ export default function Profile() {
     );
   };
 
-  if (isPageLoading) {
+  if (isPageLoading || !user) {
     return <Loading />;
   }
 
