@@ -38,9 +38,9 @@ export default function Leaders() {
 
   const getCategoryButtons = () => {
     return Object.values(ActivityTypes).map(
-      (activityType: ActivityTypeInterface) => {
+      (activityType: ActivityTypeInterface, index: number) => {
         return (
-          <Container className={styles.buttonDiv}>
+          <Container className={styles.buttonDiv} key={index}>
             <NavLink
               end
               to={`${RouterHelper.shared.leaders_category.path}/${activityType.id}`}
