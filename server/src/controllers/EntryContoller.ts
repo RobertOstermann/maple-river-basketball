@@ -36,6 +36,7 @@ export default class EntryController {
         SELECT users.first_name, users.last_name, entries.*
         FROM entries LEFT JOIN users ON users.auth_id = entries.auth_id
         WHERE users.permission_level = $1
+          AND users.active = true
         ORDER BY entries.activity_date DESC, entries.activity_duration DESC, entries.auth_id ASC
       `;
       const query = {

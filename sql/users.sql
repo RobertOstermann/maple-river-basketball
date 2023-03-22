@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS users (
     permission_level SMALLINT NOT NULL CHECK (permission_level >= 0),
     email VARCHAR NOT NULL,
     first_name VARCHAR NOT NULL,
-    last_name VARCHAR NOT NULL
+    last_name VARCHAR NOT NULL,
+    graduation_year SMALLINT NOT NULL DEFAULT 0,
+    active boolean NOT NULL DEFAULT TRUE,
 );
 
 ALTER TABLE users
@@ -28,4 +30,3 @@ ADD graduation_year SMALLINT NOT NULL DEFAULT 0;
 SELECT *
 FROM users
 ORDER BY id;
-

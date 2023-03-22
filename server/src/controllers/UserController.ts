@@ -36,6 +36,15 @@ export default class UserController {
 
     if (rowCount === 1) {
       const user = rows[0];
+      if (user.id && user.active === false) {
+        const query = {
+          name: "fetch-user-by-id",
+          text: "UPDATE users SET active = TRUE WHERE id = $1",
+          values: [user.id]
+        };
+
+        database.query(query);
+      }
 
       response.status(200).json({
         user: user
@@ -53,7 +62,8 @@ export default class UserController {
         email: userInformation.email,
         firstName: userInformation.given_name ?? "First",
         lastName: userInformation.family_name ?? "Last",
-        graduationYear: 0
+        graduationYear: 0,
+        active: true,
       };
 
       database.query(
@@ -79,7 +89,7 @@ export default class UserController {
       if (permissionLevel !== undefined && permissionLevel === PermissionLevels.coach.id) {
         const query = {
           name: "fetch-user-by-id",
-          text: "SELECT * FROM users WHERE id = $1",
+          text: "SELECT * FROM users WHERE id = $1 AND active = true",
           values: [userId]
         };
         const results = await database.query(query);
@@ -108,7 +118,13 @@ export default class UserController {
         SELECT *
         FROM users
         WHERE permission_level = $1
-        ORDER BY CASE WHEN graduation_year = 0 THEN 1 ELSE 0 END ASC, graduation_year ASC, last_name ASC, first_name ASC, id ASC
+          AND active = true
+        ORDER BY
+          CASE WHEN graduation_year = 0 THEN 1 ELSE 0 END ASC,
+          graduation_year ASC,
+          last_name ASC,
+          first_name ASC,
+          id ASC
       `;
       const query = {
         name: "fetch-all-players",

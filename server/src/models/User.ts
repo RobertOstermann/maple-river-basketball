@@ -9,4 +9,5 @@ export default interface User {
   lastName: string;
   graduationYear?: number;
   entries?: Entry[];
+  active: boolean;
 }
