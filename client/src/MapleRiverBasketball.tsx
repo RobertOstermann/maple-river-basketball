@@ -1,15 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Container } from "react-bootstrap";
-import { useQuery, UseQueryOptions } from "react-query";
 import { RedirectLoginOptions, useAuth0 } from "@auth0/auth0-react";
 
-import UserModel from "./api/user/UserModel";
-import UserRequests from "./api/user/UserRequests";
 import NavBar from "./components/navbar/NavBar";
 import Router from "./components/routers/Router";
 import Setup from "./components/setup/Setup";
 import { useStoreAuthentication } from "./store/authentication/AuthenticationStore";
-import { useStoreUser } from "./store/user/UserStore";
 
 import "./index.scss";
 import styles from "./MapleRiverBasketball.module.scss";

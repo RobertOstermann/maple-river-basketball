@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { useMutation, useQueryClient } from "react-query";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import EntryModel from "../../../../api/entry/EntryModel";
 import EntryRequests from "../../../../api/entry/EntryRequests";

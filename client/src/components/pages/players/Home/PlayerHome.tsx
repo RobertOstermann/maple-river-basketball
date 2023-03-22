@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { useQuery, UseQueryOptions } from "react-query";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import EntryModel from "../../../../api/entry/EntryModel";
 import EntryRequests from "../../../../api/entry/EntryRequests";

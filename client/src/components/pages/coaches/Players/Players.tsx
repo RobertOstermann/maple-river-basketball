@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useQuery, UseQueryOptions } from "react-query";
 import { NavLink } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import UserHelper from "../../../../api/user/UserHelper";
 import UserModel from "../../../../api/user/UserModel";
