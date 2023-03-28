@@ -125,6 +125,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
+          images: ''
           app-name: 'mapleriverbasketball'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_725A7776FF3A481CB7B0C252AFBE1432 }}
