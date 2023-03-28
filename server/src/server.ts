@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import "dotenv/config";
-
 import axios from "axios";
 import express, { Request, Response } from "express";
 import path from "path";
+
+import "dotenv/config";
 
 import AuthController from "./controllers/AuthController";
 import DownloadController from "./controllers/DownloadController";

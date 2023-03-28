@@ -1,8 +1,8 @@
-import "dotenv/config";
-
 import * as Auth0 from "auth0";
 import { expressjwt } from "express-jwt";
 import jwks from "jwks-rsa";
+
+import "dotenv/config";
 
 export default class AuthController {
   static options: any = {
@@ -44,7 +44,7 @@ export default class AuthController {
     const auth0 = new Auth0.ManagementClient({
       domain: process.env.REACT_APP_AUTH0_DOMAIN || "",
       clientId: process.env.AUTH0_API_CLIENT_ID || "",
-      clientSecret: process.env.AUTH0_API_CLIENT_SECRET || ""
+      clientSecret: process.env.AUTH0_API_CLIENT_SECRET || "",
     });
 
     const userObject: Auth0.ObjectWithId = {
