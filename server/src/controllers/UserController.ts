@@ -162,7 +162,7 @@ export default class UserController {
       return;
     }
 
-    if (graduationYear && graduationYear !== 0 && (graduationYear < 2023 || graduationYear > 2030)) {
+    if (graduationYear && graduationYear !== 0 && (graduationYear < 2023 || graduationYear > 2032)) {
       response.status(400).json("Invalid Graduation Year");
       return;
     }
