@@ -40,7 +40,7 @@ export default function Totals() {
       const data: UserModel[] = queryResponse.data as UserModel[];
       if (!data) return;
 
-      data.sort((first, second) => UserHelper.sortUserModels(first, second));
+      data.sort((first, second) => UserHelper.sortByTotal(first, second));
 
       setUsers(data);
     }

@@ -22,7 +22,6 @@ export default function Category() {
   const [users, setUsers] = useState<UserModel[]>([]);
   const { id } = useParams();
   const categoryId = parseInt(id ? id : "0");
-  console.log(users);
 
   const token = useStoreAuthentication((state) => state.token);
 
@@ -48,7 +47,7 @@ export default function Category() {
       const data: UserModel[] = queryResponse.data as UserModel[];
       if (!data) return;
 
-      data.sort((first, second) => UserHelper.sortUserModels(first, second));
+      data.sort((first, second) => UserHelper.sortByCategory(first, second, categoryId));
 
       setUsers(data);
     }
@@ -65,9 +64,9 @@ export default function Category() {
       >
         <Card.Body>
           {users.map((user, index) => {
-            const totalDuration = user.entries?.reduce(
-              (previous, entry) =>
-                previous + (entry.activityType === categoryId ? (entry.activityDuration ? entry.activityDuration : 0) : 0),
+            const totalDuration = user.entries?.filter((entry) => entry.activityType === categoryId)?.reduce(
+              (previous, { activityDuration }) =>
+                previous + (activityDuration ? activityDuration : 0),
               0
             );
 
