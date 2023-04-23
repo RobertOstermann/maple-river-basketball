@@ -22,6 +22,7 @@ export default function Category() {
   const [users, setUsers] = useState<UserModel[]>([]);
   const { id } = useParams();
   const categoryId = parseInt(id ? id : "0");
+  console.log(users);
 
   const token = useStoreAuthentication((state) => state.token);
 
@@ -65,8 +66,8 @@ export default function Category() {
         <Card.Body>
           {users.map((user, index) => {
             const totalDuration = user.entries?.reduce(
-              (previous, { activityDuration }) =>
-                previous + (activityDuration ? activityDuration : 0),
+              (previous, entry) =>
+                previous + (entry.activityType === categoryId ? (entry.activityDuration ? entry.activityDuration : 0) : 0),
               0
             );
 
