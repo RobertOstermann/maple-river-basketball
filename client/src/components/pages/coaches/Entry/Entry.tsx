@@ -24,7 +24,7 @@ export default function CoachEntry() {
   const [user, setUser] = useState<UserModel | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [activity, setActivity] = useState<number>(ActivityTypes.game.id);
-  const [duration, setDuration] = useState<number>(15);
+  const [duration, setDuration] = useState<number | string>(15);
   const [date, setDate] = useState<Date>(
     new Date(new Date().setHours(0, 0, 0, 0))
   );
@@ -50,7 +50,7 @@ export default function CoachEntry() {
     mutationFn: () => EntryRequests.createEntry(token, {
       authId: user?.authId,
       activityType: activity,
-      activityDuration: duration,
+      activityDuration: typeof duration === "number" ? duration : 0,
       activityDate: date,
     }),
     onSuccess: () => {
@@ -103,32 +103,6 @@ export default function CoachEntry() {
         />
       </Container>
     );
-  };
-
-  const durationOptions = () => {
-    const options = [];
-    let currentDuration = 15;
-    const maxDuration = 180;
-
-    let index = 0;
-    while (currentDuration <= maxDuration) {
-      currentDuration += 15;
-      const hours = Math.floor(currentDuration / 60);
-      const hoursString =
-        hours > 0 ? (hours === 1 ? `${hours} Hour ` : `${hours} Hours `) : "";
-      const minutes = currentDuration % 60;
-      const minutesString = `${minutes} minutes`;
-
-      options.push(
-        <option
-          key={`duration-${index}`}
-          value={currentDuration}
-        >{`${hoursString}${minutesString}`}</option>
-      );
-      index++;
-    }
-
-    return options;
   };
 
   const submitButton = () => {
@@ -203,12 +177,18 @@ export default function CoachEntry() {
           </Form.Select>
         </Form.Group>
         <Form.Group className={styles.formGroup}>
-          <Form.Label>Duration</Form.Label>
-          <Form.Select
-            onChange={(event) => setDuration(parseInt(event.target.value))}
-          >
-            {durationOptions()}
-          </Form.Select>
+          <Form.Label>Duration (minutes)</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="Duration in minutes"
+            isInvalid={duration < 0}
+            value={duration ?? ""}
+            onChange={(event) => {
+              const number = parseInt(event.target.value);
+              if (isNaN(number)) setDuration("");
+              else setDuration(parseInt(event.target.value))
+            }}
+          />
         </Form.Group>
       </Form>
       {submitButton()}
