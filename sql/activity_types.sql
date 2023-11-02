@@ -17,6 +17,12 @@ VALUES
 (3, 'Community Service'),
 (4, 'Weight Room');
 
+INSERT INTO activity_types (activity_id, activity_text)
+VALUES
+(5, 'Bonus'),
+(6, 'Other Sport'),
+(7, 'Honor Roll');
+
 -- Query the activity_types table
 SELECT *
 FROM activity_types;

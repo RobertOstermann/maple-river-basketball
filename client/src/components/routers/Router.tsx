@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "../auth0/ProtectedRoute";
+import CoachEntry from "../pages/coaches/Entry/Entry";
 import * as CoachHistory from "../pages/coaches/History/History";
 import Player from "../pages/coaches/Players/Player/Player";
 import Players from "../pages/coaches/Players/Players";
@@ -26,6 +27,10 @@ export default function Router() {
       <Route
         path={`${RouterHelper.coach.players.path}/:id`}
         element={<ProtectedRoute component={Player} />}
+      />
+      <Route
+        path={`${RouterHelper.coach.players.path}/:id/new-entry`}
+        element={<ProtectedRoute component={CoachEntry} />}
       />
       <Route
         path={RouterHelper.coach.history.path}

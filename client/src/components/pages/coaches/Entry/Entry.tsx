@@ -1,22 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Form, Modal, Nav, Navbar } from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient, UseQueryOptions } from "react-query";
+import { NavLink, useParams } from "react-router-dom";
 
 import EntryRequests from "../../../../api/entry/EntryRequests";
+import UserModel from "../../../../api/user/UserModel";
+import UserRequests from "../../../../api/user/UserRequests";
 import {
   ActivityTypeInterface,
   ActivityTypes,
 } from "../../../../shared/constants/ActivityTypes";
-import { PermissionLevels } from "../../../../shared/constants/PermissionLevels";
 import { useStoreAuthentication } from "../../../../store/authentication/AuthenticationStore";
+import RouterHelper from "../../../routers/RouterHelper";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Entry.module.scss";
 
-export default function Entry() {
+export default function CoachEntry() {
+  const { id } = useParams();
   const queryClient = useQueryClient();
 
+  const [user, setUser] = useState<UserModel | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [activity, setActivity] = useState<number>(ActivityTypes.game.id);
   const [duration, setDuration] = useState<number>(15);
@@ -28,8 +33,22 @@ export default function Entry() {
 
   const token = useStoreAuthentication((state) => state.token);
 
+  const queryOptions: UseQueryOptions<unknown, unknown, unknown, any> = {
+    enabled: token !== "" && id !== undefined,
+    refetchOnWindowFocus: false,
+    retry: 1,
+    staleTime: 15 * 60 * 1000, // 15 minutes
+    cacheTime: 30 * 60 * 1000, // 30 minutes
+  };
+  const queryResponse = useQuery(
+    [`get-user-${id}`],
+    () => UserRequests.getUserById(parseInt(id ?? "0"), token),
+    queryOptions
+  );
+
   const mutation = useMutation({
     mutationFn: () => EntryRequests.createEntry(token, {
+      authId: user?.authId,
       activityType: activity,
       activityDuration: duration,
       activityDate: date,
@@ -46,6 +65,19 @@ export default function Entry() {
       setIsLoading(false);
     }
   });
+
+  useEffect(() => {
+    if (queryResponse.isSuccess || queryResponse.isError) {
+      setIsLoading(false);
+    }
+
+    if (queryResponse.isSuccess) {
+      const user: UserModel = queryResponse.data as UserModel;
+      if (!user) return;
+
+      setUser(user);
+    }
+  }, [queryResponse.data, queryResponse.isSuccess, queryResponse.isError]);
 
   const submitEntry = async () => {
     setIsLoading(true);
@@ -146,6 +178,14 @@ export default function Entry() {
 
   return (
     <Container fluid>
+      <NavLink
+        end
+        to={`${RouterHelper.coach.players.path}/${id}`}
+      >
+        <Button className={styles.button} size="lg">
+          {user?.firstName} {user?.lastName}
+        </Button>
+      </NavLink>
       <Form className={styles.form}>
         <Form.Group className={styles.formGroup}>{dateButton()}</Form.Group>
         <Form.Group className={styles.formGroup}>
@@ -155,8 +195,6 @@ export default function Entry() {
           >
             {Object.values(ActivityTypes).map(
               (activityType: ActivityTypeInterface, index: number) => {
-                if (activityType.permissionLevel !== PermissionLevels.player.id) return;
-
                 return (
                   <option value={activityType.id} key={`activity-${index}`}>{activityType.ui}</option>
                 );

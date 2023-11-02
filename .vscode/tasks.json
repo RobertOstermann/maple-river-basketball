@@ -36,31 +36,5 @@
         "close": true
       }
     },
-    {
-      "label": "Database Info: maple-river-basketball",
-      "command": "heroku pg:info --app maple-river-basketball",
-      "problemMatcher": [],
-      "type": "shell",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": true
-      }
-    },
-    {
-      "label": "Database Info: robbie-training",
-      "command": "heroku pg:info --app robbie-training",
-      "problemMatcher": [],
-      "type": "shell",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": true
-      }
-    }
   ]
 }

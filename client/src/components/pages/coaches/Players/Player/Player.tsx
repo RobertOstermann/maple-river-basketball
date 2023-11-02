@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useQuery, UseQueryOptions } from "react-query";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 import EntryModel from "../../../../../api/entry/EntryModel";
 import UserModel from "../../../../../api/user/UserModel";
@@ -12,6 +12,7 @@ import {
   ActivityTypes,
 } from "../../../../../shared/constants/ActivityTypes";
 import { useStoreAuthentication } from "../../../../../store/authentication/AuthenticationStore";
+import RouterHelper from "../../../../routers/RouterHelper";
 import { getDurationString } from "../../../shared/Leaders/Leaders";
 import Loading from "../../../shared/Loading/Loading";
 
@@ -191,6 +192,14 @@ export default function Player() {
   return (
     <Container fluid>
       <div className={styles.headerDiv}>{getHeader()}</div>
+      <NavLink
+        end
+        to={`${RouterHelper.coach.players.path}/${id}/new-entry`}
+      >
+        <Button className={styles.button} size="lg">
+          Add Entry
+        </Button>
+      </NavLink>
       <div className={styles.categoryDiv}>
         {totalCard()}
         {categoryCards()}

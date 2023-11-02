@@ -14,9 +14,12 @@ export default class EntryController {
 
     const entry: Entry = request.body;
 
+    const permissionLevel = await UserController.getPermissionLevel(authId);
+    const coach = permissionLevel === PermissionLevels.coach.id;
+
     database.query(
       "INSERT INTO entries (auth_id, activity_type, activity_date, activity_duration) VALUES ($1, $2, $3, $4)",
-      [authId, entry.activityType, entry.activityDate, entry.activityDuration])
+      [coach ? entry.authId : authId, entry.activityType, entry.activityDate, entry.activityDuration])
       .then(() => {
         response.status(200).json("Entry Created");
       })

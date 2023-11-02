@@ -1,9 +1,6 @@
-export default interface UserEntryModel {
-  id?: number;
-  authId?: string;
-  activityType?: number;
-  activityDate?: any;
-  activityDuration?: number;
+import EntryModel from "./EntryModel";
+
+export default interface UserEntryModel extends EntryModel {
   firstName?: string;
   lastName?: string;
 }
