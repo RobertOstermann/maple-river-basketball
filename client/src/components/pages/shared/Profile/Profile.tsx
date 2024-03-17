@@ -33,6 +33,8 @@ export default function Profile() {
 
   const token = useStoreAuthentication((state) => state.token);
 
+  const currentYear = (new Date()).getFullYear();
+
   const mutation = useMutation({
     mutationFn: () => UserRequests.updateUser(token, updatedUser),
     onSuccess: () => {
@@ -88,7 +90,7 @@ export default function Profile() {
     setUpdatedUser(user);
 
     const year = graduationYear ? graduationYear : 0;
-    if (year !== 0 && (year < 2023 || year > 2032)) {
+    if (year !== 0 && (year < currentYear - 1 || year > currentYear + 10)) {
       setValidGraduationYear(false);
     } else {
       setValidGraduationYear(true);
@@ -241,7 +243,7 @@ export default function Profile() {
               }
             />
             <Form.Control.Feedback type="invalid">
-              Please enter a value between 2023 and 2032.
+              Please enter a value between {currentYear - 1} and {currentYear + 10}.
             </Form.Control.Feedback>
           </Form.Group>
         )}
