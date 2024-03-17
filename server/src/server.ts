@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import axios from "axios";
 import express, { Request, Response } from "express";
 import path from "path";
 
@@ -64,24 +63,6 @@ app.get(
     });
   }
 );
-
-// This route requests ElephantSQL to create a database backup.
-app.get("/api/v1/backup-database", (req: any, res: Response) => {
-  const data = {
-    db: "ybqbejar"
-  };
-  const config: any = {
-    auth: {
-      username: "",
-      password: process.env.ELEPHANT_SQL_API
-    },
-  };
-  axios.post("https://api.elephantsql.com/api/backup", data, config);
-  res.json({
-    message:
-      "ElephantSQL database backup requested.",
-  });
-});
 
 // Downloads
 app.get("/api/v1/download-player-stats", AuthController.jwtCheck, DownloadController.downloadPlayerStats);
